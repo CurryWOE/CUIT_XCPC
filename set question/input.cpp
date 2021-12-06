@@ -6,7 +6,7 @@ int main()
 {
     int tests = 10;
     int test = 0;
-    srand((unsigned)time(NULL));
+    srand(0);
     //使用当前时钟作为随机数种子,必需加
     while(++test <= tests)
     {
