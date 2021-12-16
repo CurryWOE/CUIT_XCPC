@@ -7,25 +7,29 @@ y^(a*m) ≡ z*y^b  (mod p)
 右边的b枚举[0,m)，算出z∗y^b (mod p)，哈希存起来
 左边a枚举(0,m+1]，算出y^(a∗m) (mod p)查表就行了
 */
-long long bsgs(long long a,long long b,long long p)
+long long bsgs(long long base,long long remain,long long p)
 {
 	map<long long,long long> hash;
     hash.clear();
-	b%=p;
+	base%=p;
+	remain%=p;
 	long long t=sqrt(p)+1;
 	for(register long long i=0;i<t;++i)
-		hash[b*fast_power(a,i,p)%p]=i;
-	a=fast_power(a,t,p);
-	if(!a)
-        return b==0?1:-1;//特判
-	for(register long long i=1;i<=t;++i)
     {
-		long long val=fast_power(a,i,p);
-		int j=hash.find(val)==hash.end()?-1:hash[val];
-		if(j>=0&&i*t-j>=0)
-            return i*t-j;
+		hash[remain]=i;
+        remain=remain*base%p;
+    }
+	base=fast_power(base,t,p);
+	if(!base)
+        return remain==0 ? 1 : -1;
+    remain=1;
+	for(long long i=1;i<=t;++i)
+    {
+		remain=remain*base%p;
+        if(hash.count(remain))
+            return i*t-hash[remain];
 	}
-	return -1;//无解返回-1
+	return -1;
 }
 /*
 exbsgs
@@ -41,34 +45,40 @@ y/d * y^(x-1) + k*(p/d) = z/d
 此时的形式就变成了
 y^k/d *y^(x-k) = z/d (mod p/d)
 */
-int ex_BSGS(int y,int z,int p)//Hash是一个散列表
+ll EXbsgs(ll base,ll remain,ll mod)
 {
-	if(z==1)
+    base%=mod;
+    remain%=mod;
+	if(remain==1)
         return 0;
-	int k=0,a=1;
-	while(1)
+	ll k=0,a=1;
+	for(ll g=__gcd(base,mod);g>1;g=__gcd(base,mod))
 	{
-		int d=__gcd(y,p);
-        if(d==1)
-            break;
-		if(z%d)
+		if(remain%g)
             return -1;
-		z/=d;
-        p/=d;
+		remain/=g;
+        mod/=g;
         ++k;
-        a=1ll*a*y/d%p;
-		if(z==a)
+        a=a*(base/g)%mod;
+		if(remain==a)
             return k;
 	}
-	Hash.clear();
-	int m=sqrt(p)+1;
-	for(int i=0,t=z;i<m;++i,t=1ll*t*y%p)
-        Hash.Insert(t,i);
-	for(int i=1,tt=fast_power(y,m,p),t=1ll*a*tt%p;i<=m;++i,t=1ll*t*tt%p)
+    map<ll,ll> hash;
+    hash.clear();
+	ll m=sqrt(mod)+1;
+	for(int i=0;i<m;++i)
+    {
+        hash[remain]=i;
+        remain=remain*base%mod;
+    }
+    base=fast_power(base,m,mod);
+    remain=a;
+	for(ll i=1;i<=m;++i)
 	{
-		int B=Hash.Query(t);
-        if(B!=-1)
-    		return i*m-B+k;
+        remain=remain*base%mod;
+        if(hash.count(remain))
+            return (i*m-hash[remain]+k);
 	}
 	return -1;
 }
+//返回值要求余mod,但不能在子函数里，因为mod变了

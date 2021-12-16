@@ -10,12 +10,11 @@
 long long fast_power(long long base,long long exponent)
 {
     long long result=1;
-    while(exponent>0)
+    for(;exponent>0;exponent>>=1)
     {
         if(exponent&1)
             result=result*base;
         base=base*base;
-        exponent>>=1;
     }
     return result;
 }
@@ -104,12 +103,11 @@ matrix Matrix_fast_power(matrix base,ll exponent)
 {
     matrix result = e;
     result.column=result.row=MAXN;
-    while(exponent)
+    for(;exponent;exponent>>=1)
     {
         if(exponent&1)
             result = Matrix_multiplication(result,base);
         base = Matrix_multiplication(base,base);
-        exponent>>=1;
     }
     return result;
 }
