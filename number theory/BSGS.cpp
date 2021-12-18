@@ -6,6 +6,7 @@ y^x ≡ z (mod p)
 y^(a*m) ≡ z*y^b  (mod p)
 右边的b枚举[0,m)，算出z∗y^b (mod p)，哈希存起来
 左边a枚举(0,m+1]，算出y^(a∗m) (mod p)查表就行了
+时间复杂度O(根号p)
 */
 long long bsgs(long long base,long long remain,long long p)
 {
