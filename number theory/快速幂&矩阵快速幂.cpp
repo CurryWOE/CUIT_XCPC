@@ -1,4 +1,5 @@
 /*
+part 1
 快速幂：
 给出底数和指数，快速求出幂
 时间复杂度O(log n)
@@ -7,6 +8,21 @@
 计算2^k,位运算最快:1<<k(1左移k位)
 若用LL，则1LL<<k
 */
+//递归，方便理解
+int qpow(int a, int n)
+{
+    if (n == 0)
+        return 1;
+    else if (n % 2 == 1)
+        return qpow(a, n - 1) * a;
+    else
+    {
+        int temp = qpow(a, n / 2);
+        return temp * temp;
+    }
+}
+//循环，常用，牵扯到二进制理解
+//怎么理解见https://zhuanlan.zhihu.com/p/95902286
 long long fast_power(long long base,long long exponent)
 {
     long long result=1;
@@ -19,6 +35,7 @@ long long fast_power(long long base,long long exponent)
     return result;
 }
 /*
+part 2
 矩阵快速幂：
 给出底矩阵和指数，快速求出幂矩阵
 时间复杂度O(t^3*log n),t是矩阵边长，t^3表示矩阵乘法

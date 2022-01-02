@@ -1,4 +1,5 @@
 /*
+part 1
 中国剩余定理CRT（Chinese remainder theorem)
 时间复杂度O(nlog n)
 求解如下形式的一元线性同余方程组（其中ni两两互质）：
@@ -18,31 +19,6 @@ x=ak(mod nk)
 3.方程组的唯一解为x= Σ    ai*ci(mod n)
                    i=1
 */
-/*
-证明：
-证明 x = ai (mod ni)
-      k
-mj =( ∏  ni) / nj
-     i=1
-∏为求积符号，Σ为求和符号
-所以当 i ≠ j 时，mj = 0 (mod ni)
-①cj = mj = 0 (mod ni)
-②ci = mi * mi^-1
-    = 1 (mod ni)
- k
- Σ  ai*ci = t*n+x
-i=1
-
- k
- Σ  ai*ci = 0 + x (mod ni)
-i=1
-
-    k
-x = Σ  aj*cj   (mod ni)
-   j=1
-  = ai * ci  (mod ni)  由①得
-  = ai     (mod ni)  由②得
-*/
 long long CRT(int number,long long* remainder,long long* modulus) 
 {
     long long m,x,y,product = 1, ans = 0;
@@ -57,6 +33,7 @@ long long CRT(int number,long long* remainder,long long* modulus)
     return (ans % product + product) % product;
 }
 /*
+part 2
 模数不互质的情况
 两个方程
 设两个方程分别是 x=a1 (mod m1),x=a2(mod m2)
