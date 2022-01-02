@@ -7,7 +7,7 @@ p存放素数
 i%p[j]==0 break;减少重复筛
 */
 const long long N=1e7+3;
-int v[N],p[N<<2];
+int v[N],p[N>>2];
 void Euler_seive()
 {
 	int cnt=0;
@@ -48,7 +48,7 @@ void Euler_seive()
 1-n,和n互质的数的个数
 */
 const long long N=1e7+3; 
-int v[N],p[N<<2],phi[N];
+int v[N],p[N>>2],phi[N];
 void getphi()
 {
 	int cnt=0;
@@ -68,8 +68,7 @@ void getphi()
                 phi[i*p[j]]=phi[i]*p[j];
                 break;
             }
-            else
-				phi[i*p[j]]=phi[i]*phi[p[j]];
+			phi[i*p[j]]=phi[i]*phi[p[j]];
         }
     }
 }
@@ -78,7 +77,7 @@ void getphi()
 否则，函数=(-1)^k,k为质因子个数
 */
 const long long N=1e7+3;
-int v[N],p[N<<2],mu[N];
+int v[N],p[N>>2],mu[N];
 void getmu()
 {
 	int cnt=0;
@@ -112,7 +111,7 @@ https://blog.csdn.net/controlbear/article/details/77527115
 //约数个数
 //dn:divisor number,mpdn:minimum prime divisor number
 const long long N=1e7+3;
-int v[N],p[N<<2],dn[N],mpdn[N];
+int v[N],p[N>>2],dn[N],mpdn[N];
 void getDivisorNumber()
 {
 	int cnt=0;
@@ -143,7 +142,7 @@ void getDivisorNumber()
 //sd:sum of divisor,smpd:sum of minimum prime divisor polynomial
 //sd约数和，smpd最小质因子的那个多项式（也可以理解为由最小质因子组成的数的约数和吧） 
 const long long N=1e7+3;
-int v[N],p[N<<2],sd[N],smpd[N];
+int v[N],p[N>>2],sd[N],smpd[N];
 void getSumOfDivisors()
 {
 	int cnt=0;
