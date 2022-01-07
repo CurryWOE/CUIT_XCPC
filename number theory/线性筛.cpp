@@ -57,7 +57,7 @@ void getphi()
     {
         if(!v[i])
         {
-            prime[cnt++]=i;
+            p[cnt++]=i;
             phi[i]=i-1;
         }
         for(int j=0;j < cnt && p[j]*i < N;++j)
@@ -132,7 +132,7 @@ void getDivisorNumber()
             if(i%p[j]==0)
             {
 				mpdn[i*p[j]] = mpdn[i]+1;
-                dn[i*p[j]]=dn[i]/(mpdn[i]+1)*(mpdn[i]+1);
+                dn[i*p[j]]=dn[i]/(mpdn[i]+1)*(mpdn[i]+2);
                 break;
             }
 			dn[i*p[j]]=dn[i]*dn[p[j]];
@@ -158,7 +158,7 @@ void getSumOfDivisors()
 			sd[i]=i+1;
 			smpd[i]=i+1;
 		}
-        for(int j=0;j<cnt && i*prime[j]<N;++j)
+        for(int j=0;j<cnt && i*p[j]<N;++j)
         {
             v[i*p[j]]=1;
             if(i%p[j]==0)
