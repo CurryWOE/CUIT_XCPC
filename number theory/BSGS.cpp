@@ -1,12 +1,13 @@
 /*
+part 1
 y^x ≡ z (mod p)
 给定y,z,p，求最小x
 要求gcd(y,p)=1
-设x=a*m-b,m=向上取整(根号p),a∈(0,m+1],b∈[0,m)
+设x=a*m-b,m=向上取整(sqrt(p)),a∈(0,m+1],b∈[0,m)
 y^(a*m) ≡ z*y^b  (mod p)
 右边的b枚举[0,m)，算出z∗y^b (mod p)，哈希存起来
 左边a枚举(0,m+1]，算出y^(a∗m) (mod p)查表就行了
-时间复杂度O(根号p)
+时间复杂度O(sqrt(p))
 */
 long long bsgs(long long base,long long remain,long long p)
 {
@@ -33,6 +34,7 @@ long long bsgs(long long base,long long remain,long long p)
 	return -1;
 }
 /*
+part 2
 exbsgs
 gcd(y,p)!=1
 d=gcd(y,p)

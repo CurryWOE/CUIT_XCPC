@@ -1,7 +1,8 @@
 /*
 证明啥的太复杂，也用不上，就不写了
-//https://zhuanlan.zhihu.com/p/166043237
-//https://www.luogu.com.cn/problem/solution/P6091
+参考博客
+https://zhuanlan.zhihu.com/p/166043237
+https://www.luogu.com.cn/problem/solution/P6091
 原根(Primitive Root)定义:
 如果a^x≡1 (mod p),且x为最小正整数解,且x=φ(p)
 则a为模p下的一个原根
@@ -12,7 +13,6 @@ a^φ(p)≡1 (mod p)或者gcd(a,p)=1(欧拉定理)
 
 原根数量：
 φ(φ(p))
-//φ表示欧拉函数
 
 求 p 的所有原根的步骤为：
 1.线性筛出不大于 p 的素数，并求出所有不大于 p 的正整数的欧拉函数值。

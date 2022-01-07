@@ -38,32 +38,29 @@ int cmp(const void * a, const void * b)
 }
 /*这里做个注释，本来是因为要判断如果a==b返回0的，
 但是严格来说，两个double数是不可能相等的，
-只能说fabs(a-b)<1e-20之类的这样来判断，所以这里只返回了1和-1*/
-Quickselect 求第K个最大的元素
-class Solution {
-public:
-    int findKthLargest(vector<int>& v, int k) {
-        srand(time(NULL));
-        return findKthLargest(v,0,v.size()-1,k);
-    }
-private:
-    int findKthLargest(vector<int>& v,int l,int r,int k)
+只能说fabs(a-b)<1e-6之类的这样来判断，所以这里只返回了1和-1*/
+//求第K个最大的元素
+int findKthLargest(vector<int>& v, int k)
+{
+    srand(time(NULL));
+    return findKthLargest(v,0,v.size()-1,k);
+}
+int findKthLargest(vector<int>& v,int l,int r,int k)
+{
+    int index=partition(v,l,r);
+    if(index+1==k) return v[index];
+    else if(index+1>k) return findKthLargest(v,l,index-1,k);
+    else return findKthLargest(v,index+1,r,k);
+}
+int partition(vector<int>& v,int l,int r)
+{
+    swap(v[l],v[rand()%(r-l+1)+l]);
+    int first=l,last=l+1;
+    for(;last<=r;++last)
     {
-        int index=partition(v,l,r);
-        if(index+1==k) return v[index];
-        else if(index+1>k) return findKthLargest(v,l,index-1,k);
-        else return findKthLargest(v,index+1,r,k);
+        if(v[last]>v[l])
+            swap(v[++first],v[last]);
     }
-    int partition(vector<int>& v,int l,int r)
-    {
-        swap(v[l],v[rand()%(r-l+1)+l]);
-        int first=l,last=l+1;
-        for(;last<=r;++last)
-        {
-            if(v[last]>v[l])
-                swap(v[++first],v[last]);
-        }
-        swap(v[first],v[l]);
-        return first;
-    }
-};
+    swap(v[first],v[l]);
+    return first;
+}
