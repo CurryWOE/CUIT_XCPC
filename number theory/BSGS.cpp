@@ -8,28 +8,30 @@ y^(a*m) ≡ z*y^b  (mod p)
 右边的b枚举[0,m)，算出z∗y^b (mod p)，哈希存起来
 左边a枚举(0,m+1]，算出y^(a∗m) (mod p)查表就行了
 时间复杂度O(sqrt(p))
+空间复杂度O(sqrt(p))
+哈希表放最下面
 */
-long long bsgs(long long base,long long remain,long long p)
+ll bsgs(ll base,ll remain,ll p)
 {
-	map<long long,long long> hash;
-    hash.clear();
 	base%=p;
 	remain%=p;
-	long long t=sqrt(p)+1;
-	for(register long long i=0;i<t;++i)
+	ll t=ceil(sqrt(1.0*p));
+	for(ll i=1;i<=t;++i)
     {
-		hash[remain]=i;
         remain=remain*base%p;
+        insert(i,remain);
     }
 	base=fast_power(base,t,p);
 	if(!base)
-        return remain==0 ? 1 : -1;
+        return !remain ? 1 : -1;
     remain=1;
-	for(long long i=1;i<=t;++i)
+    int flag;
+	for(ll i=1;i<=t;++i)
     {
 		remain=remain*base%p;
-        if(hash.count(remain))
-            return i*t-hash[remain];
+        flag=find(remain);
+        if(flag!=-1)
+            return i*t-flag;
 	}
 	return -1;
 }
@@ -66,22 +68,56 @@ ll EXbsgs(ll base,ll remain,ll mod)
 		if(remain==a)
             return k;
 	}
-    map<ll,ll> hash;
-    hash.clear();
-	ll m=sqrt(mod)+1;
-	for(int i=0;i<m;++i)
+    init();
+	ll m=ceil(sqrt(1.0*mod));
+	for(int i=1;i<=m;++i)
     {
-        hash[remain]=i;
         remain=remain*base%mod;
+        insert(i,remain);
     }
     base=fast_power(base,m,mod);
     remain=a;
+    ll flag;
 	for(ll i=1;i<=m;++i)
 	{
         remain=remain*base%mod;
-        if(hash.count(remain))
-            return (i*m-hash[remain]+k);
+        flag=find(remain);
+        if(flag!=-1)
+            return (i*m-flag+k);
 	}
 	return -1;
 }
 //返回值要求余mod,但不能在子函数里，因为mod变了
+//哈希表
+typedef long long ll;
+const int MAXN=1e7+1;
+struct hash
+{
+    ll id,value;
+    int next;
+}e[MAXN];
+int head[MAXN];
+int tot;
+inline ll hashfunc(ll x) 
+{
+    return x%MAXN;
+}
+void insert(ll id,ll x)
+{
+    e[++tot]={id,x,head[hashfunc(x)]};
+    head[hashfunc(x)]=tot;
+}
+ll find(ll x)
+{
+    for(int i=head[hashfunc(x)];i;i=e[i].next)
+    {
+        if(e[i].value==x)
+            return e[i].id;
+    }
+    return -1;
+}
+void clear()
+{
+    for(;tot;--tot)
+        head[hashfunc(e[tot].value)]=0;
+}

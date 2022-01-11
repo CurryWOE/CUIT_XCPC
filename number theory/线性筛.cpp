@@ -8,7 +8,8 @@ p存放素数
 i%p[j]==0 break;减少重复筛
 */
 const long long N=1e7+3;
-int v[N],p[N>>2];
+bitset<N> v;
+int p[N>>2];
 void Euler_seive()
 {
 	int cnt=0;
@@ -18,7 +19,7 @@ void Euler_seive()
 			p[cnt++]=i;
 		for(int j=0;j<cnt && i*p[j]<N;++j)
 		{
-			v[i*p[j]]=1;
+			v[i*p[j]]=true;
 			if(i%p[j]==0)
 				break;
 		}
