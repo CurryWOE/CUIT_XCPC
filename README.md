@@ -3,7 +3,7 @@ Algorithm and data structures
 
 This repository is created for cuit students to learn knowledge about ICPC/CCPC.
 
-main content is written by CurryWOE.
+main content is written by CurryWOE.He mainly learn math.
 
 1.number theory数论
 
