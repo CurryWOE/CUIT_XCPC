@@ -39,6 +39,8 @@ long long Lucas(long long n, long long m, long long p)
 /*
 3.exLucas
 适用条件：n,m较大，p不为素数
+前置知识：快速幂，逆元，lucas，crt
+原理讲解见
 https://www.cnblogs.com/fzl194/p/9095177.html
 时间复杂度：O(plog p)
 */
