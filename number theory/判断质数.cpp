@@ -19,6 +19,7 @@ int isprime(int i)
 /*
 part 2
 米勒-拉宾素性检验（Miller–Rabin primality test）:
+原理见
 https://zhuanlan.zhihu.com/p/220203643
 这是一种概率算法，
 但是，Jim Sinclair发现了一组数：2, 325, 9375, 28178, 450775, 9780504, 1795265022。
