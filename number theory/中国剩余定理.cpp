@@ -3,8 +3,8 @@ part 1
 中国剩余定理CRT（Chinese remainder theorem)
 时间复杂度O(nlog n)
 求解如下形式的一元线性同余方程组（其中ni两两互质）：
-x=a1(mod n1)
-x=a2(mod n2)
+x≡a1(mod n1)
+x≡a2(mod n2)
 .
 .
 .
