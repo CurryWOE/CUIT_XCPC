@@ -2,12 +2,7 @@
 part 1
 欧几里得算法（又名辗转相除法）
 时间复杂度(log n)
-空间复杂度(log n)
-gcd:
-最大公因数Greatest Common Divisor(简称gcd)
-1：求最大公约数
-最小公倍数=两整数的乘积÷最大公约数
-2：判断是否互质(gcd=1)
+___?___:___;   是三目运算符，和ifelse等效，更简洁
 */
 //手写
 int gcd(int a,int b)

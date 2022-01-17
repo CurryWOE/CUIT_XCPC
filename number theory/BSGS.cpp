@@ -68,7 +68,7 @@ ll EXbsgs(ll base,ll remain,ll mod)
 		if(remain==a)
             return k;
 	}
-    init();
+    clear();
 	ll m=ceil(sqrt(1.0*mod));
 	for(int i=1;i<=m;++i)
     {

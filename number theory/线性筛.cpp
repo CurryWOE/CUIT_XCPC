@@ -1,11 +1,31 @@
 /*
 part 1
+埃氏筛
+时间复杂度O(nln(ln n))
+bitset优化空间
+全局变量默认赋值为0，false，'\0'等
+v[i]为false表示i是素数，为true表示i不是素数
+i*i开始是为了减少重复筛
+*/
+const long long N=1e7+3;
+bitset<N> v;
+void Eratosthenes_seive()
+{
+	for(int i=2;i<N;++i)
+	{
+		if(v[i])
+			continue;
+		for(int j=i*i;j<N;j+=i)
+			v[j]=true;
+	}
+}
+/*
 线性筛（又名欧拉筛）
-快速查询某数是否素数，查找出范围内所有素数
 时间复杂度O(n)
-v[i]为0表示i是素数，为1表示i是合数
+>>是按位右移，由于计算机底层是二进制，>>1表示/2，>>2表示/4，此举为了优化空间
+cnt是素数个数
 p存放素数
-i%p[j]==0 break;减少重复筛
+if(i%p[j]==0) break;减少重复筛
 */
 const long long N=1e7+3;
 bitset<N> v;
@@ -25,28 +45,12 @@ void Euler_seive()
 		}
 	}
 }
+
 /*
 part 2
-可以用线性筛求一些积性函数
-数论函数（又称算术函数）：
-在数论上，指定义域为正整数、陪域为复数的函数
-陪域：
-在映射f：X→Y 中，X称为定义域，Y称为陪域。
-对于某个映射来说，它的值域一定为陪域的子集
-积性函数：
-数论函数中
-若p,q互质，满足f[p*q]=f[p]*f[q]
-则f为积性函数
-如约数，欧拉，莫比乌斯
-若任意p,q,满足f[p*q]=f[p]*f[q]
-则f为完全积性函数
-如1函数，即f[x]=1
-
-积性函数性质可知，f[1]=1
-*/
-/*
 欧拉函数φ
-1-n,和n互质的数的个数
+1到n,和n互质的数的个数
+与素数互质的数有n-1个
 */
 const long long N=1e7+3; 
 int v[N],p[N>>2],phi[N];
@@ -106,12 +110,7 @@ void getmu()
 		}
 	}
 }
-/*
-part 3
-约数：
-约数有两种，分别是求约数个数，求约数和
-https://blog.csdn.net/controlbear/article/details/77527115
-*/
+//part 3
 //约数个数
 //dn:divisor number,mpdn:minimum prime divisor number
 const long long N=1e7+3;

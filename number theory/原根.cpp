@@ -8,7 +8,7 @@ https://www.luogu.com.cn/problem/solution/P6091
 则a为模p下的一个原根
 
 原根存在充要条件：
-p能表示为下列形式之一：1,2,4,k^n,2*k^n，其中 k 为奇素数。
+p能表示为下列形式之一：2,4,k^n,2*k^n，其中 k 为奇素数。
 a^φ(p)≡1 (mod p)或者gcd(a,p)=1(欧拉定理)
 
 原根数量：

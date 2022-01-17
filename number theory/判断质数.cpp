@@ -1,15 +1,19 @@
 /*
 part 1
 试除法：
-判断素数
 时间复杂度O(sqrt(n))
+&是按位与，a&b表示a和b的二进制每一位进行与运算
+3=011，5=101，3&5=001
+位运算会比%快一点
+偶数除了2都不是素数，0和1不是素数
+k+=2比k++好，因为一个奇数不可能有偶数因子
 */
 int isprime(int i)
 {
     if((i&1)==0 && i!=2 || i<2)
         return 0;
-    int sq=sqrt(i),k;
-    for(k=3;k<=sq;k+=2)
+    int sq=sqrt(i);
+    for(int k=3;k<=sq;k+=2)
     {
         if(i%k==0)
             return 0;
@@ -18,8 +22,8 @@ int isprime(int i)
 }
 /*
 part 2
-米勒-拉宾素性检验（Miller–Rabin primality test）:
-原理见
+米勒-拉宾素性检验:
+原理
 https://zhuanlan.zhihu.com/p/220203643
 这是一种概率算法，
 但是，Jim Sinclair发现了一组数：2, 325, 9375, 28178, 450775, 9780504, 1795265022。
