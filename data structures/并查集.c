@@ -1,17 +1,4 @@
-//路径压缩，时间差
-inline void init(int n)
-{
-    memset(fa,-1,sizeof(int)*(n+1));
-}
-int find(int x)
-{
-    return fa[x] == -1 ? x : (fa[x] = find(fa[x]));
-}
-inline void merge(int i, int j)
-{
-    fa[find(i)] = find(j);
-}
-//按秩合并，空间差
+//按秩合并+路径压缩
 inline void init(int n)
 {
     memset(fa,-1,sizeof(int)*(n+1));

@@ -15,10 +15,6 @@ void getNext(char *p,int *next)
             j=next[j];
     }
 }
-      0  1  2  3
-next -1  0  0  1
-i  0  1  2  3
-j -1  0 -1  0  1
 int KMP(char *t,char *p)
 {
     int i=0,j=0,t_len=strlen(t),p_len=strlen(p);
