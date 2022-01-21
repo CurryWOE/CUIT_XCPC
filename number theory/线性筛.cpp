@@ -45,7 +45,6 @@ void Euler_seive()
 		}
 	}
 }
-
 /*
 part 2
 欧拉函数φ
