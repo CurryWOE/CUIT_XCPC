@@ -54,7 +54,7 @@ void Floyd()
         {
             for(j = 1; j <= n; j++)
             {
-                if(Floyd[i][k] < inf && Floyd[k][j] < inf && Floyd[i][j] > Floyd[i][k] + Floyd[k][j])
+                if(Floyd[i][j] > Floyd[i][k] + Floyd[k][j])
                     Floyd[i][j] = Floyd[i][k] + Floyd[k][j];
             }
         }
