@@ -211,7 +211,12 @@ $gcd$是基础数论中非常重要的概念，求解$gcd$一般采用欧几里�
 
 而求$lcm$通过$lcm(a, b) = ab / gcd(a, b)$求解  
 
-$gcd$有1个性质：$gcd(a,b)=gcd(b,a\%b)$  
+## $gcd$性质
+$gcd(a,b)=gcd(a-b,b)$
+
+$gcd(a,b)=gcd(a,a-b)$
+
+$gcd(a,b)=gcd(b,a\%b)$
 
 为了求解，人为规定$gcd(a,0)=a$  
 
@@ -251,6 +256,19 @@ $gcd$有1个性质：$gcd(a,b)=gcd(b,a\%b)$
 
 性质 $3$：$gcd(a,b)=1$，$φ(a)*φ(b)=φ(ab)$  
 
+拓展：小于等于$n$且与$n$互素的正整数的和
+
+$\sum\limits_{i=1}^{n} i*(gcd(i,n)==1)=n*φ(n)/2$
+
+特例：$n=1,result=1$
+
+证明：
+
+因为$gcd(i,n)=gcd(n-i,n)$
+
+所以每个和 $n$ 互质的数都有一个互补的数，和 $n$ 互质的数总共有 $φ(n)$ 个，所以总和为 $n*φ(n)/2$
+
+---
 质因数分解，$x=\prod\limits_{i=1}^sp_i^{k_i}$  
 
 根据性质 $1$和性质 $3$，可得  
@@ -267,7 +285,7 @@ $=x*\prod\limits_{i=1}^s (p_i-1)/p_i$
 >>数论函数(又称算术函数):在数论上，指定义域为正整数、陪域为复数的函数
 >>>陪域：在映射$f：X→Y$ 中，X称为定义域，Y称为陪域。对于某个映射来说，它的值域一定为陪域的子集
 
-如约数，欧拉，莫比乌斯都是积性函数  
+如约数个数，约数和，欧拉，莫比乌斯都是积性函数  
 若任意$p$,$q$，满足$f(pq)=f(p)*f(q)$，则f为完全积性函数  
 如$1$函数，即$f(x)=1$
 
@@ -405,7 +423,7 @@ k=0时为因数个数函数$σ_0(n)$
 ## 狄利克雷卷积性质
 若$f$,$g$是积性函数，则$f*g$也是积性函数  
 交换律，结合律  
-下面涉及到群论的一些知识，请移步combinatorial math的burnside引理&polya定理.cpp的第一个分割线以前的内容  
+下面涉及到群论的一些知识，请移步combinatorial math的polya定理.cpp的群论  
 
 对函数加法的分配律，即  
 $(f*(g+h))(n)=(f*g)(n)+(f*h)(n)$  
@@ -436,5 +454,85 @@ $g=f*1 ⇔ f=g*u$
 $g(n)=\sum\limits_{n\mid N} f(N) ⇔ f(n)=\sum\limits_{n\mid N} g(N)*μ(N/n)$  
 //第一种是因数形式
 
-在竞赛中，莫比乌斯反演常常涉及到两个小技巧：提取公因数，整除分块
-待更新...
+## 数论分块
+快速计算一些含有除法向下取整的式子，形如
+
+$\sum_{i=1}^nf(i)g(\left\lfloor\dfrac ni\right\rfloor)$
+
+当可以 $O(1)$ 计算 $\sum\limits_{i=l}^r f(i)$，数论分块就可以 $O(\sqrt n)$ 计算上述式子的值
+
+### 原理
+前缀和求$\sum\limits_{i=l}^r f(i)$
+
+$\left\lfloor\dfrac ni\right\rfloor$ 的值成一个块状分布（就是同样的值都聚集在连续的块中）
+
+值 $\left\lfloor\dfrac ni\right\rfloor$ 所在的块的右端点为 $\left\lfloor\dfrac n{\lfloor\frac ni\rfloor}\right\rfloor$
+
+原式计算就可以转化为以下代码
+```c++
+int block(int n)
+{
+    int res=0;
+    for(int l=1,r;l<=n;l=r+1)
+    {
+        r=n/(n/l);
+        res+=(f[r]-f[l-1])*g[n/l];
+    }
+    return res;
+}
+```
+### 例题
+求$\sum\limits_{i=1}^n \lfloor\frac ni\rfloor$
+### 多维数论分块
+求含有 $\left\lfloor\dfrac {a_1}i\right\rfloor$、$\left\lfloor\dfrac {a_2}i\right\rfloor\cdots\left\lfloor\dfrac {a_n}i\right\rfloor$ 的式子时，数论分块右端点的表达式从一维的 $\left\lfloor\dfrac n{\lfloor\frac ni\rfloor}\right\rfloor$ 变为 $\min\limits_{j=1}^n{\left\lfloor\dfrac {a_j}{\left\lfloor\dfrac {a_j}i\right\rfloor}\right\rfloor}$，即对于每一个块的右端点取最小的那个作为整体的右端点
+
+## 提取gcd
+求 $\sum\limits_{i=1}^n \sum\limits_{j=1}^m \sum\limits_{d\mid gcd(i,j)} f(d,i,j)$
+
+改变求和顺序，先枚举 $d$ ，$d$ 的约束条件 $1\le d \le \min(n,m)$，$d\mid i$，$d\mid j$
+
+令 $x=i/d,y=j/d$，则 $1\le x \le \lfloor\frac nd\rfloor$，$1\le y \le \lfloor\frac md\rfloor$
+
+原式 $=\sum\limits_{d=1}^{\min(n,m)} \sum\limits_{x=1}^{\lfloor\frac nd\rfloor} \sum\limits_{y=1}^{\lfloor\frac md\rfloor} f(d,xd,yd)$
+
+更多求和号的情况留作思考
+
+## 例题
+求 $\sum\limits_{i=1}^n \sum\limits_{j=1}^m gcd(i,j)==1$
+
+值只有1和0的式子考虑用单位函数替代
+
+$gcd(i,j)==1 = ε(gcd(i,j))$
+
+原式 $=\sum\limits_{i=1}^n \sum\limits_{j=1}^m ε(gcd(i,j))$
+
+根据 $μ*1=ε$ 
+
+原式 $=\sum\limits_{i=1}^n \sum\limits_{j=1}^m \sum\limits_{d\mid gcd(i,j)} μ(d)$
+
+提取gcd
+
+原式 $=\sum\limits_{d=1}^{\min(n,m)} μ(d)\sum\limits_{x=1}^{\lfloor\frac nd\rfloor} \sum\limits_{y=1}^{\lfloor\frac md\rfloor} 1=\sum\limits_{d=1}^{\min(n,m)} μ(d)\lfloor\frac nd\rfloor\lfloor\frac md\rfloor$
+
+最后这个式子可以数论分块算
+
+---
+变形：求 $\sum\limits_{i=1}^n \sum\limits_{j=1}^m gcd(i,j)==k$
+
+枚举倍数,即$i=ki$，$j=kj$，并改变求和上限
+
+原式 $=\sum\limits_{i=1}^{\lfloor\frac nk \rfloor} \sum\limits_{j=1}^{\lfloor\frac mk \rfloor} ε(gcd(i,j))$
+
+---
+求 $\sum\limits_{i=1}^n \sum\limits_{j=1}^m gcd(i,j)$
+
+所需知识前面都写了的，留作思考
+
+原式 $=\sum\limits_{d=1}^{\min(n,m)} φ(d) \lfloor\frac nd \rfloor\lfloor\frac md \rfloor$
+
+---
+求 $\sum\limits_{i=a}^n \sum\limits_{j=b}^m gcd(i,j)==k$
+
+容斥原理
+
+---
