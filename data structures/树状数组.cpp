@@ -9,7 +9,7 @@ inline int lowbit(int x)
 } 
 void updata(int i,int k)//在i位置加上k
 {    
-    for(;i <= n;i+=lowbit(i));
+    for(;i <= n;i+=lowbit(i))
         c[i] += k;
 } 
 int getsum(int i)//求A[1 - i]的和

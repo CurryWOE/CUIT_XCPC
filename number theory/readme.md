@@ -403,6 +403,20 @@ k=0时为常数函数$1(n)$
 除数函数$σ_k(n)=\sum\limits_{d\mid n} d^k$  
 k=1时为因数和函数$σ(n)$  
 k=0时为因数个数函数$σ_0(n)$  
+$$σ_0(ij)=\sum_{x|i} \sum_{y|j} ε(gcd(x,y))$$
+$$=\sum\limits_{d\mid \gcd(i,j)}μ(d)σ_0(i/d)σ_0(j/d)$$
+将每一种质因子分开考虑，设 $i,j$ 分别含有 $a,b$ 个质因子 $p$
+
+显然乘积 $ij$ 会含有 $a+b$ 个 $p$，
+
+在等式左边，选质因子 $p$ 的不同选法有 $a+b+1$ 种，
+
+在等式右边，选质因子 $p$ 的不同选法也有$a+b+1$种，即从$x$中选$(1-a)$个，$y$中选$0$个；从$x$中选$0$个，$y$中选$(1-b)$个；$x$和$y$中各选$0$个
+
+因此，对于$i=p^a$和$j=p^b$, 上式成立。
+
+又因为质因子之间互相独立，所以对于$x$和$y$可以分拆成多个质因子的情况，上式依然成立。
+
 符号是希腊字母$sigma$  
 
 欧拉函数$φ(n)$  
@@ -454,6 +468,7 @@ $g=f*1 ⇔ f=g*u$
 $g(n)=\sum\limits_{n\mid N} f(N) ⇔ f(n)=\sum\limits_{n\mid N} g(N)*μ(N/n)$  
 //第一种是因数形式
 
+PS:要会用线性筛筛一些你自己定义的一些函数[例子](https://blog.csdn.net/acdreamers/article/details/8542292)
 ## 数论分块
 快速计算一些含有除法向下取整的式子，形如
 
@@ -498,8 +513,11 @@ int block(int n)
 更多求和号的情况留作思考
 
 ## 例题
+PS：莫反主要是推式子，式子不唯一，只要复杂度够低就行
+
 求 $\sum\limits_{i=1}^n \sum\limits_{j=1}^m gcd(i,j)==1$
 
+### 方法1（迪利克雷卷积）
 值只有1和0的式子考虑用单位函数替代
 
 $gcd(i,j)==1 = ε(gcd(i,j))$
@@ -516,23 +534,114 @@ $gcd(i,j)==1 = ε(gcd(i,j))$
 
 最后这个式子可以数论分块算
 
+### 方法2（莫比乌斯反演）
+设 $F(n,m,d)=\sum\limits_{i=1}^n \sum\limits_{j=1}^m d\mid gcd(i,j)$
+
+$i,j$枚举$d$的倍数，得 $F(n,m,d)=\lfloor\frac nd\rfloor * \lfloor\frac md\rfloor$
+
+设 $f(n,m,d)=\sum\limits_{i=1}^n \sum\limits_{j=1}^m gcd(i,j)==d$
+
+显然 $F(n,m,d)=\sum\limits_{d\mid D}^{\min(n,m)} f(n,m,D)$
+
+套用倍数形式莫比乌斯反演公式，得
+
+$f(n,m,d)=\sum\limits_{d\mid D}^{\min(n,m)} F(n,m,D)*μ(D/d)=\sum\limits_{d\mid D}^{\min(n,m)} \lfloor\frac nD\rfloor  \lfloor\frac mD\rfloor*μ(D/d)$
+
+最后这个式子可以数论分块算
+
 ---
 变形：求 $\sum\limits_{i=1}^n \sum\limits_{j=1}^m gcd(i,j)==k$
 
-枚举倍数,即$i=ki$，$j=kj$，并改变求和上限
+卷积 $i,j$枚举$k$的倍数，注意改变求和上限
 
-原式 $=\sum\limits_{i=1}^{\lfloor\frac nk \rfloor} \sum\limits_{j=1}^{\lfloor\frac mk \rfloor} ε(gcd(i,j))$
+原式 $=\sum\limits_{i=1}^{\lfloor\frac nk \rfloor} \sum\limits_{j=1}^{\lfloor\frac mk \rfloor} ε(gcd(i,j))=\sum\limits_{d=1}^{\min(\lfloor\frac nk\rfloor,\lfloor\frac mk\rfloor)} μ(d)\lfloor\frac n{kd}\rfloor\lfloor\frac m{kd}\rfloor$
+
+或者莫反
+
+---
+
+变形：求 $\sum\limits_{i=a}^n \sum\limits_{j=b}^m gcd(i,j)==k$
+
+容斥原理即可，类似二维前缀和
+
+---
+变形：求 $\sum\limits_{p∈prime}\sum\limits_{i=1}^n \sum\limits_{j=1}^m gcd(i,j)==p$
+
+原式 $=\sum\limits_{p∈prime}\sum\limits_{d=1}^{\min(\lfloor\frac np\rfloor,\lfloor\frac mp\rfloor)} μ(d)\lfloor\frac n{pd}\rfloor\lfloor\frac m{pd}\rfloor$
+
+设 $T=pd$，
+
+原式 $=\sum\limits_{p∈prime}\sum\limits_{d=1}^{\min(\lfloor\frac np\rfloor,\lfloor\frac mp\rfloor)} μ(T/p)\lfloor\frac n{T}\rfloor\lfloor\frac m{T}\rfloor$
+
+枚举 $T$
+
+原式 $=\sum\limits_{T=1}^{\min(n,m)}\sum\limits_{p∈prime,p\mid T} μ(T/p)\lfloor\frac n{T}\rfloor\lfloor\frac m{T}\rfloor$
+
+设 $f(x)=\sum\limits_{p∈prime,p\mid x} μ(x/p)$
+
+可以线性筛处理出 $f(x)$，思考方向类似线性筛处理欧拉函数
+
+$f(x=i*p)=\begin{cases}1&x∈prime\\μ(i)&i\mod p=0\\μ(i)-f(i)&i\mod p\neq 0\end{cases}$
+
+处理 $f(x)$的前缀和，就可以数论分块了
 
 ---
 求 $\sum\limits_{i=1}^n \sum\limits_{j=1}^m gcd(i,j)$
 
-所需知识前面都写了的，留作思考
+卷积处理，留作思考
 
-原式 $=\sum\limits_{d=1}^{\min(n,m)} φ(d) \lfloor\frac nd \rfloor\lfloor\frac md \rfloor$
-
----
-求 $\sum\limits_{i=a}^n \sum\limits_{j=b}^m gcd(i,j)==k$
-
-容斥原理
+参考答案 $=\sum\limits_{d=1}^{\min(n,m)} φ(d) \lfloor\frac nd \rfloor\lfloor\frac md \rfloor$
 
 ---
+
+变形：求 $\sum\limits_{i=1}^n \sum\limits_{j=1}^m ij*gcd(i,j)$
+
+卷积处理，留作思考
+
+参考答案 $=\sum\limits_{d=1}^{\min(n,m)} φ(d)*d^2*g(\lfloor\frac nd\rfloor)*g(\lfloor\frac md\rfloor)$
+
+$g(x)=(1+x)*x/2$
+
+---
+求 $\sum\limits_{i=1}^n \sum\limits_{j=1}^m σ_0(ij)$
+
+先自行尝试把常用数论函数里给出的性质化成下面那个式子
+
+再带回本题
+
+原式 $=\sum\limits_{i=1}^n\sum\limits_{j=1}^m\sum\limits_{p \mid \gcd(i,j)}\mu(p)σ_0\left(\frac{i}{p}\right)σ_0\left(\frac{j}{p}\right)$
+
+枚举 $p$
+
+$=\sum\limits_{p=1}^{min(n,m)} \sum_{i=1}^n\sum_{j=1}^m [p \mid \gcd(i,j)]\cdot\mu(p)σ_0\left(\frac{i}{p}\right)σ_0\left(\frac{j}{p}\right)$
+
+$i,j$ 枚举 $p$ 的倍数
+
+$=\sum\limits_{p=1}^{min(n,m)} \sum\limits_{i=1}^{\left\lfloor\frac{n}{p}\right\rfloor}\sum\limits_{j=1}^{\left\lfloor\frac{m}{p}\right\rfloor} \mu(p)σ_0(i)σ_0(j)$
+
+$μ(p)$ 和 $i,j$ 无关，提到前面去，$σ_0(i)$ 同理
+
+$=\sum\limits_{p=1}^{min(n,m)}\mu(p) \sum\limits_{i=1}^{\left\lfloor\frac{n}{p}\right\rfloor}σ_0(i) \sum\limits_{j=1}^{\left\lfloor\frac{m}{p}\right\rfloor}σ_0(j)$
+
+简化形式
+
+$=\sum\limits_{p=1}^{min(n,m)}\mu(p)*S\left(\left\lfloor\frac{n}{p}\right\rfloor\right)*S\left(\left\lfloor\frac{m}{p}\right\rfloor\right)$
+
+$S(n)=\sum\limits_{i=1}^{n} σ_0(i)$
+
+$σ_0(n)$ 可以线性筛处理，线性筛.md里有讲
+
+---
+求 $\sum\limits_{i=1}^n \sum\limits_{j=1}^m lcm(i,j)$
+
+很好的练习题
+
+参考答案 $=\sum\limits_{d=1}^{min(n,m)} d*sum(\lfloor\frac nd\rfloor,\lfloor\frac md\rfloor)$
+
+$sum(n,m)=\sum\limits_{d=1}^{min(n,m)} μ(d)*d^2*g(\lfloor\frac nd\rfloor,\lfloor\frac md\rfloor)$
+
+$g(n,m)=[(n+1)n/2]*[(m+1)*m/2]$
+
+---
+
+莫反题目暂时先写这么多
