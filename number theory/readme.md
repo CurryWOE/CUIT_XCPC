@@ -504,7 +504,7 @@ int block(int n)
 ## 提取gcd
 求 $\sum\limits_{i=1}^n \sum\limits_{j=1}^m \sum\limits_{d\mid gcd(i,j)} f(d,i,j)$
 
-改变求和顺序，先枚举 $d$ ，$d$ 的约束条件 $1\le d \le \min(n,m)$，$d\mid i$，$d\mid j$
+改变求和顺序，优先枚举 $d$ ，$d$ 的约束条件 $1\le d \le \min(n,m)$，$d\mid i$，$d\mid j$
 
 令 $x=i/d,y=j/d$，则 $1\le x \le \lfloor\frac nd\rfloor$，$1\le y \le \lfloor\frac md\rfloor$
 
