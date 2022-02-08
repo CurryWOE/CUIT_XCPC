@@ -384,6 +384,8 @@ $\color{red}从以下开始全部非人均$
 # BSGS
 请学习$\color{powderblue}bsgs\&exbsgs.cpp$ $part$ $1,2$
 
+>下面四个大知识点一起用的，请全部学习后再开始写题
+
 # 狄利克雷卷积
 
 ## 狄利克雷卷积  
@@ -393,16 +395,19 @@ $\color{red}从以下开始全部非人均$
     $(f*g)(n)=\sum\limits_{d\mid n} f(d)*g(n/d)$
 
 ## 常用数论函数
-单位函数$ε(n)=\begin{cases}1&n=1\\0&otherwise\end{cases}$   
+单位函数 $ε(n)=\begin{cases}1&n=1\\0&otherwise\end{cases}$   
 符号是希腊字母$epsilon$  
 
-幂函数$Id_k(n)=n^k$.  
-k=1时为恒等函数$Id(n)$  
-k=0时为常数函数$1(n)$  
+---
+幂函数 $Id_k(n)=n^k$.  
+k=1时为恒等函数 $Id(n)$  
+k=0时为常数函数 $1(n)$  
 
-除数函数$σ_k(n)=\sum\limits_{d\mid n} d^k$  
-k=1时为因数和函数$σ(n)$  
-k=0时为因数个数函数$σ_0(n)$  
+---
+除数函数 $σ_k(n)=\sum\limits_{d\mid n} d^k$  
+k=1时为因数和函数 $σ(n)$  
+k=0时为因数个数函数 $σ_0(n)$  
+$σ_0(n)$ 的一个性质：
 $$σ_0(ij)=\sum_{x|i} \sum_{y|j} ε(gcd(x,y))$$
 $$=\sum\limits_{d\mid \gcd(i,j)}μ(d)σ_0(i/d)σ_0(j/d)$$
 将每一种质因子分开考虑，设 $i,j$ 分别含有 $a,b$ 个质因子 $p$
@@ -419,9 +424,12 @@ $$=\sum\limits_{d\mid \gcd(i,j)}μ(d)σ_0(i/d)σ_0(j/d)$$
 
 符号是希腊字母$sigma$  
 
-欧拉函数$φ(n)$  
+---
+
+欧拉函数 $φ(n)$  
 符号是希腊字母$phi$  
 
+---
 这些函数都是积性函数，前二者还是完全积性函数  
 
 ## 常用数论函数联系
@@ -435,17 +443,22 @@ $$=\sum\limits_{d\mid \gcd(i,j)}μ(d)σ_0(i/d)σ_0(j/d)$$
 注意：$1$此时是常数函数  
 
 ## 狄利克雷卷积性质
-若$f$,$g$是积性函数，则$f*g$也是积性函数  
-交换律，结合律  
+$*$ 均表示卷积
+1. 函数间交换律，即 $f*g=g*f$
+2. 函数间结合律，即 $(f*g)*h=f*(g*h)$
+3. 函数间乘法分配律，即  
+$(f*(g+h))(n)=(f*g)(n)+(f*h)(n)$  
+4. 若$f$,$g$是积性函数，则$f*g$也是积性函数  
+5. 函数常数间结合律，即 $(xf)*g=x(f*g)$  
+
 下面涉及到群论的一些知识，请移步combinatorial math的polya定理.cpp的群论  
 
-对函数加法的分配律，即  
-$(f*(g+h))(n)=(f*g)(n)+(f*h)(n)$  
-单位元是单位函数$ε$  
-狄利克雷逆存在必要条件是$f(1)\ne 0$  
+6. 单位元是单位函数$ε$  
+7. 狄利克雷逆存在必要条件是$f(1)\ne 0$，，没有在网上找到充分条件
+  
 英文是Dirichlet inverse，但是已有乘法逆元Multiplicative inverse modulo，所以翻译成这样
 
-积性函数必然存在狄利克雷逆，且狄利克雷逆仍是积性函数。
+8. 积性函数必然存在狄利克雷逆，且狄利克雷逆仍是积性函数。
 
 # 莫比乌斯反演
 ## 莫比乌斯函数
@@ -461,187 +474,45 @@ $μ(n)=\begin{cases}1&n=1\\
 筛出莫比乌斯函数见$\color{powderblue}线性筛.cpp$ $part$ $2$
 
 ## 莫比乌斯反演公式  
+因数形式：  
 $g(n)=\sum\limits_{d\mid n} f(d) ⇔ f(n)=\sum\limits_{d\mid n} μ(d)*g(n/d)$  
-狄利克雷卷积写法：  
+狄利克雷卷积形式：  
 $g=f*1 ⇔ f=g*u$  
 倍数形式：  
 $g(n)=\sum\limits_{n\mid N} f(N) ⇔ f(n)=\sum\limits_{n\mid N} g(N)*μ(N/n)$  
-//第一种是因数形式
 
-PS:要会用线性筛筛一些你自己定义的一些函数[例子](https://blog.csdn.net/acdreamers/article/details/8542292)
-## 数论分块
-快速计算一些含有除法向下取整的式子，形如
+>要会用线性筛筛一些你自己定义的一些函数（请4个大知识点看完后再来看这个[例子](https://blog.csdn.net/acdreamers/article/details/8542292)）
+# 数论分块
+请学习$\color{powderblue}数论分块.md$
 
-$\sum_{i=1}^nf(i)g(\left\lfloor\dfrac ni\right\rfloor)$
+# 常用优化技巧
 
-当可以 $O(1)$ 计算 $\sum\limits_{i=l}^r f(i)$，数论分块就可以 $O(\sqrt n)$ 计算上述式子的值
+>为了描述方便，$[n]$ 表示条件 $n$ 为真时为1，否则为0  
+>一个常识：$d\mid i,d\mid j⇔d\mid gcd(i,j)$
 
-### 原理
-前缀和求$\sum\limits_{i=l}^r f(i)$
+1. $\sum\limits_{i=1}^n \sum\limits_{j=1}^m [d\mid gcd(i,j)]$
 
-$\left\lfloor\dfrac ni\right\rfloor$ 的值成一个块状分布（就是同样的值都聚集在连续的块中）
+$i,j$ 枚举 $d$ 的倍数
 
-值 $\left\lfloor\dfrac ni\right\rfloor$ 所在的块的右端点为 $\left\lfloor\dfrac n{\lfloor\frac ni\rfloor}\right\rfloor$
+原式=$\sum\limits_{i=1}^{\lfloor\frac nd\rfloor} \sum\limits_{j=1}^{\lfloor\frac md\rfloor} 1=\lfloor\frac nd\rfloor\lfloor\frac md\rfloor$
 
-原式计算就可以转化为以下代码
-```c++
-int block(int n)
-{
-    int res=0;
-    for(int l=1,r;l<=n;l=r+1)
-    {
-        r=n/(n/l);
-        res+=(f[r]-f[l-1])*g[n/l];
-    }
-    return res;
-}
-```
-### 例题
-求$\sum\limits_{i=1}^n \lfloor\frac ni\rfloor$
-### 多维数论分块
-求含有 $\left\lfloor\dfrac {a_1}i\right\rfloor$、$\left\lfloor\dfrac {a_2}i\right\rfloor\cdots\left\lfloor\dfrac {a_n}i\right\rfloor$ 的式子时，数论分块右端点的表达式从一维的 $\left\lfloor\dfrac n{\lfloor\frac ni\rfloor}\right\rfloor$ 变为 $\min\limits_{j=1}^n{\left\lfloor\dfrac {a_j}{\left\lfloor\dfrac {a_j}i\right\rfloor}\right\rfloor}$，即对于每一个块的右端点取最小的那个作为整体的右端点
+2. $\sum\limits_{i=1}^n \sum\limits_{j=1}^m [gcd(i,j)=d]$
 
-## 提取gcd
-求 $\sum\limits_{i=1}^n \sum\limits_{j=1}^m \sum\limits_{d\mid gcd(i,j)} f(d,i,j)$
+$i,j$ 枚举 $d$ 的倍数
 
-改变求和顺序，优先枚举 $d$ ，$d$ 的约束条件 $1\le d \le \min(n,m)$，$d\mid i$，$d\mid j$
+原式=$\sum\limits_{i=1}^{\lfloor\frac nd\rfloor} \sum\limits_{j=1}^{\lfloor\frac md\rfloor} [gcd(i,j)=1]$
 
-令 $x=i/d,y=j/d$，则 $1\le x \le \lfloor\frac nd\rfloor$，$1\le y \le \lfloor\frac md\rfloor$
+3. $\sum\limits_{i=1}^n\sum\limits_{j=1}^m gcd(i,j)$
 
-原式 $=\sum\limits_{d=1}^{\min(n,m)} \sum\limits_{x=1}^{\lfloor\frac nd\rfloor} \sum\limits_{y=1}^{\lfloor\frac md\rfloor} f(d,xd,yd)$
+枚举gcd，设字母为 $d$
 
-更多求和号的情况留作思考
+$d$ 的约束条件 $1\le d \le \min(n,m)$，$d=gcd(i,j)$
 
-## 例题
-PS：莫反主要是推式子，式子不唯一，只要复杂度够低就行
+$\sum\limits_{d=1}^{\min(n,m)} d\sum\limits_{i=1}^n \sum\limits_{j=1}^m [gcd(i,j)=d]$
 
-求 $\sum\limits_{i=1}^n \sum\limits_{j=1}^m gcd(i,j)==1$
+再套用技巧2
 
-### 方法1（迪利克雷卷积）
-值只有1和0的式子考虑用单位函数替代
 
-$gcd(i,j)==1 = ε(gcd(i,j))$
 
-原式 $=\sum\limits_{i=1}^n \sum\limits_{j=1}^m ε(gcd(i,j))$
-
-根据 $μ*1=ε$ 
-
-原式 $=\sum\limits_{i=1}^n \sum\limits_{j=1}^m \sum\limits_{d\mid gcd(i,j)} μ(d)$
-
-提取gcd
-
-原式 $=\sum\limits_{d=1}^{\min(n,m)} μ(d)\sum\limits_{x=1}^{\lfloor\frac nd\rfloor} \sum\limits_{y=1}^{\lfloor\frac md\rfloor} 1=\sum\limits_{d=1}^{\min(n,m)} μ(d)\lfloor\frac nd\rfloor\lfloor\frac md\rfloor$
-
-最后这个式子可以数论分块算
-
-### 方法2（莫比乌斯反演）
-设 $F(n,m,d)=\sum\limits_{i=1}^n \sum\limits_{j=1}^m d\mid gcd(i,j)$
-
-$i,j$枚举$d$的倍数，得 $F(n,m,d)=\lfloor\frac nd\rfloor * \lfloor\frac md\rfloor$
-
-设 $f(n,m,d)=\sum\limits_{i=1}^n \sum\limits_{j=1}^m gcd(i,j)==d$
-
-显然 $F(n,m,d)=\sum\limits_{d\mid D}^{\min(n,m)} f(n,m,D)$
-
-套用倍数形式莫比乌斯反演公式，得
-
-$f(n,m,d)=\sum\limits_{d\mid D}^{\min(n,m)} F(n,m,D)*μ(D/d)=\sum\limits_{d\mid D}^{\min(n,m)} \lfloor\frac nD\rfloor  \lfloor\frac mD\rfloor*μ(D/d)$
-
-最后这个式子可以数论分块算
-
----
-变形：求 $\sum\limits_{i=1}^n \sum\limits_{j=1}^m gcd(i,j)==k$
-
-卷积 $i,j$枚举$k$的倍数，注意改变求和上限
-
-原式 $=\sum\limits_{i=1}^{\lfloor\frac nk \rfloor} \sum\limits_{j=1}^{\lfloor\frac mk \rfloor} ε(gcd(i,j))=\sum\limits_{d=1}^{\min(\lfloor\frac nk\rfloor,\lfloor\frac mk\rfloor)} μ(d)\lfloor\frac n{kd}\rfloor\lfloor\frac m{kd}\rfloor$
-
-或者莫反
-
----
-
-变形：求 $\sum\limits_{i=a}^n \sum\limits_{j=b}^m gcd(i,j)==k$
-
-容斥原理即可，类似二维前缀和
-
----
-变形：求 $\sum\limits_{p∈prime}\sum\limits_{i=1}^n \sum\limits_{j=1}^m gcd(i,j)==p$
-
-原式 $=\sum\limits_{p∈prime}\sum\limits_{d=1}^{\min(\lfloor\frac np\rfloor,\lfloor\frac mp\rfloor)} μ(d)\lfloor\frac n{pd}\rfloor\lfloor\frac m{pd}\rfloor$
-
-设 $T=pd$，
-
-原式 $=\sum\limits_{p∈prime}\sum\limits_{d=1}^{\min(\lfloor\frac np\rfloor,\lfloor\frac mp\rfloor)} μ(T/p)\lfloor\frac n{T}\rfloor\lfloor\frac m{T}\rfloor$
-
-枚举 $T$
-
-原式 $=\sum\limits_{T=1}^{\min(n,m)}\sum\limits_{p∈prime,p\mid T} μ(T/p)\lfloor\frac n{T}\rfloor\lfloor\frac m{T}\rfloor$
-
-设 $f(x)=\sum\limits_{p∈prime,p\mid x} μ(x/p)$
-
-可以线性筛处理出 $f(x)$，思考方向类似线性筛处理欧拉函数
-
-$f(x=i*p)=\begin{cases}1&x∈prime\\μ(i)&i\mod p=0\\μ(i)-f(i)&i\mod p\neq 0\end{cases}$
-
-处理 $f(x)$的前缀和，就可以数论分块了
-
----
-求 $\sum\limits_{i=1}^n \sum\limits_{j=1}^m gcd(i,j)$
-
-卷积处理，留作思考
-
-参考答案 $=\sum\limits_{d=1}^{\min(n,m)} φ(d) \lfloor\frac nd \rfloor\lfloor\frac md \rfloor$
-
----
-
-变形：求 $\sum\limits_{i=1}^n \sum\limits_{j=1}^m ij*gcd(i,j)$
-
-卷积处理，留作思考
-
-参考答案 $=\sum\limits_{d=1}^{\min(n,m)} φ(d)*d^2*g(\lfloor\frac nd\rfloor)*g(\lfloor\frac md\rfloor)$
-
-$g(x)=(1+x)*x/2$
-
----
-求 $\sum\limits_{i=1}^n \sum\limits_{j=1}^m σ_0(ij)$
-
-先自行尝试把常用数论函数里给出的性质化成下面那个式子
-
-再带回本题
-
-原式 $=\sum\limits_{i=1}^n\sum\limits_{j=1}^m\sum\limits_{p \mid \gcd(i,j)}\mu(p)σ_0\left(\frac{i}{p}\right)σ_0\left(\frac{j}{p}\right)$
-
-枚举 $p$
-
-$=\sum\limits_{p=1}^{min(n,m)} \sum_{i=1}^n\sum_{j=1}^m [p \mid \gcd(i,j)]\cdot\mu(p)σ_0\left(\frac{i}{p}\right)σ_0\left(\frac{j}{p}\right)$
-
-$i,j$ 枚举 $p$ 的倍数
-
-$=\sum\limits_{p=1}^{min(n,m)} \sum\limits_{i=1}^{\left\lfloor\frac{n}{p}\right\rfloor}\sum\limits_{j=1}^{\left\lfloor\frac{m}{p}\right\rfloor} \mu(p)σ_0(i)σ_0(j)$
-
-$μ(p)$ 和 $i,j$ 无关，提到前面去，$σ_0(i)$ 同理
-
-$=\sum\limits_{p=1}^{min(n,m)}\mu(p) \sum\limits_{i=1}^{\left\lfloor\frac{n}{p}\right\rfloor}σ_0(i) \sum\limits_{j=1}^{\left\lfloor\frac{m}{p}\right\rfloor}σ_0(j)$
-
-简化形式
-
-$=\sum\limits_{p=1}^{min(n,m)}\mu(p)*S\left(\left\lfloor\frac{n}{p}\right\rfloor\right)*S\left(\left\lfloor\frac{m}{p}\right\rfloor\right)$
-
-$S(n)=\sum\limits_{i=1}^{n} σ_0(i)$
-
-$σ_0(n)$ 可以线性筛处理，线性筛.md里有讲
-
----
-求 $\sum\limits_{i=1}^n \sum\limits_{j=1}^m lcm(i,j)$
-
-很好的练习题
-
-参考答案 $=\sum\limits_{d=1}^{min(n,m)} d*sum(\lfloor\frac nd\rfloor,\lfloor\frac md\rfloor)$
-
-$sum(n,m)=\sum\limits_{d=1}^{min(n,m)} μ(d)*d^2*g(\lfloor\frac nd\rfloor,\lfloor\frac md\rfloor)$
-
-$g(n,m)=[(n+1)n/2]*[(m+1)*m/2]$
-
----
-
-莫反题目暂时先写这么多
+# 卷积&莫反例题
+可选学习$\color{powderblue}卷积\&莫反例题.md$
