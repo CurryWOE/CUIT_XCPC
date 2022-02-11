@@ -390,9 +390,11 @@ $\color{red}从以下开始全部非人均$
 
 ## 狄利克雷卷积  
 定义在数论函数间一种二元运算，可这样定义：  
-    $(f*g)(n)=\sum\limits_{xy=n} f(x)*g(y)$  
+    $(f*g)(n)=\sum\limits_{xy=n} f(x)\times g(y)$  
 也常常等价地写作：  
-    $(f*g)(n)=\sum\limits_{d\mid n} f(d)*g(n/d)$
+    $(f*g)(n)=\sum\limits_{d\mid n} f(d)\times g(n/d)$
+
+>此节 $*$ 均表示卷积
 
 ## 常用数论函数
 单位函数 $ε(n)=\begin{cases}1&n=1\\0&otherwise\end{cases}$   
@@ -445,7 +447,7 @@ $$=\sum\limits_{d\mid \gcd(i,j)}μ(d)σ_0(i/d)σ_0(j/d)$$
 注意：$1$此时是常数函数  
 
 ## 狄利克雷卷积性质
-$*$ 均表示卷积
+
 1. 函数间交换律，即 $f*g=g*f$
 2. 函数间结合律，即 $(f*g)*h=f*(g*h)$
 3. 函数间乘法分配律，即  
@@ -462,6 +464,13 @@ $(f*(g+h))(n)=(f*g)(n)+(f*h)(n)$
 
 8. 积性函数必然存在狄利克雷逆，且狄利克雷逆仍是积性函数。
 
+## 狄利克雷逆求法
+因为 $f*g=ε$，所以
+
+$g(n)=\frac 1{f(1)}(ε(n)-\sum\limits_{i\mid n,i\ne 1} f(i)g(\frac ni))$
+
+
+
 # 莫比乌斯反演
 ## 莫比乌斯函数
 常数函数 $1$ 的狄利克雷逆，称之为莫比乌斯函数 $μ$  
@@ -477,44 +486,16 @@ $μ(n)=\begin{cases}1&n=1\\
 
 ## 莫比乌斯反演公式  
 因数形式：  
-$g(n)=\sum\limits_{d\mid n} f(d) ⇔ f(n)=\sum\limits_{d\mid n} μ(d)*g(n/d)$  
+$g(n)=\sum\limits_{d\mid n} f(d) ⇔ f(n)=\sum\limits_{d\mid n} μ(d)\times g(n/d)$  
 狄利克雷卷积形式：  
 $g=f*1 ⇔ f=g*u$  
 倍数形式：  
-$g(n)=\sum\limits_{n\mid N} f(N) ⇔ f(n)=\sum\limits_{n\mid N} g(N)*μ(N/n)$  
+$g(n)=\sum\limits_{n\mid N} f(N) ⇔ f(n)=\sum\limits_{n\mid N} g(N)\times μ(N/n)$  
 
->要会用线性筛筛一些你自己定义的一些函数（请4个大知识点看完后再来看这个[例子](https://blog.csdn.net/acdreamers/article/details/8542292)）
 # 数论分块
 请学习$\color{powderblue}数论分块.md$
 
-# 常用优化技巧
-
->为了描述方便，$[n]$ 表示条件 $n$ 为真时为1，否则为0  
+# 卷积&莫反例题
 >一个常识：$d\mid i,d\mid j⇔d\mid gcd(i,j)$
 
-1. $\sum\limits_{i=1}^n \sum\limits_{j=1}^m [d\mid gcd(i,j)]$
-
-$i,j$ 枚举 $d$ 的倍数
-
-原式=$\sum\limits_{i=1}^{\lfloor\frac nd\rfloor} \sum\limits_{j=1}^{\lfloor\frac md\rfloor} 1=\lfloor\frac nd\rfloor\lfloor\frac md\rfloor$
-
-2. $\sum\limits_{i=1}^n \sum\limits_{j=1}^m [gcd(i,j)=d]$
-
-$i,j$ 枚举 $d$ 的倍数
-
-原式=$\sum\limits_{i=1}^{\lfloor\frac nd\rfloor} \sum\limits_{j=1}^{\lfloor\frac md\rfloor} [gcd(i,j)=1]$
-
-3. $\sum\limits_{i=1}^n\sum\limits_{j=1}^m gcd(i,j)$
-
-枚举gcd，设字母为 $d$
-
-$d$ 的约束条件 $1\le d \le \min(n,m)$，$d=gcd(i,j)$
-
-$\sum\limits_{d=1}^{\min(n,m)} d\sum\limits_{i=1}^n \sum\limits_{j=1}^m [gcd(i,j)=d]$
-
-再套用技巧2
-
-
-
-# 卷积&莫反例题
-可选学习$\color{powderblue}卷积\&莫反例题.md$
+请学习$\color{powderblue}卷积\&莫反例题.md$
