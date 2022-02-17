@@ -2,7 +2,7 @@
 
 ### 定义
 
-当模 $m$ 有原根是，设 $l$ 为模 $m$ 的一个原根，则当 $x\equiv l^k \pmod m$ 时，$Ind_lx\equiv k \pmod {φ(m)}$
+当模 $m$ 有原根时，设 $l$ 为模 $m$ 的一个原根，则当 $x\equiv l^k \pmod m$ 时，$Ind_lx\equiv k \pmod {φ(m)}$
 
 这里的 $Ind_lx$ 为 $x$ 以 $l$ 为底，模 $φ(m)$ 时的离散对数值
 
@@ -24,7 +24,7 @@ $Ind_lx^y\equiv yInd_lx \pmod {φ(m)}$
 
 ### 前提条件
 
-$gcd(base,modulus)=1$
+$gcd(base,mod)=1$
 
 ### 原理
 
@@ -58,7 +58,7 @@ $y^{am} ≡ z*y^b  \pmod p$
 
 ### 时间复杂度
 
-$O(\sqrt {modulus})$
+$O(\sqrt {mod})$
 
 ### 算法流程
 

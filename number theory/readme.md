@@ -64,7 +64,7 @@ $x$，$y$，$z$均为整数，若$11\mid (7x+2y-5z)$，求证：$11\mid(3x-7y+12
 
 所以时间复杂度降为$O( \sqrt n )$
 
-请根据此小节学习 $\color{powderblue}判断质数.cpp$ $part$ $1$   
+请根据此小节学习 $\color{powderblue}判断质数.md$ $part$ $1$   
 并自行在不看资料的情况下实现，如果不能，说明没有理解
 
 3. 如果$n$是合数，那么它必然有一个小于等于$\sqrt n$的素因子，
@@ -79,7 +79,7 @@ $x$，$y$，$z$均为整数，若$11\mid (7x+2y-5z)$，求证：$11\mid(3x-7y+12
 前置知识：二次剩余，费马小定理  
 据杜老师所说只要留板子  
 该算法原理和以上算法原理不同，[原理](https://zhuanlan.zhihu.com/p/220203643)  
-请根据此小节学习 $\color{powderblue}判断质数.cpp$ $part$ $2$
+请根据此小节学习 $\color{powderblue}判断质数.md$ $part$ $2$
 
 ## 素数分布定理
 当$x$很大时，小于$x$的素数的个数近似等于$x/ln(x)$  
@@ -90,13 +90,13 @@ $x$，$y$，$z$均为整数，若$11\mid (7x+2y-5z)$，求证：$11\mid(3x-7y+12
 如果前面没标记当前数是合数，那么这个数就是素数  
 埃氏筛的缺陷是会重复筛一些数，比如$20=2*10=5*4$  
 线性筛在埃氏筛上更进一步，让每个合数只被它的最小质因子筛选一次，减少了重复  
-单纯求素数用线性筛  
-埃氏筛的思想会用到计算贡献上
+单纯筛素数用线性筛  
+埃氏筛常用来计算贡献，筛卷积函数等
 
 例如[洛谷p3601](https://www.luogu.com.cn/problem/P3601)
 >贡献：某个变量对答案的增益   
 
-请根据此小节学习 $\color{powderblue}线性筛.cpp$ $part$ $1$   
+请根据此小节学习 $\color{powderblue}线性筛.md$ $part$ $1$   
 并自行在不看资料的情况下实现，如果不能，说明没有理解
 
 # 因数分解
@@ -151,7 +151,7 @@ $
 原理不难，暂时没遇到改变算法内部结构的题，可以当黑盒用  
 [原理博客](https://blog.csdn.net/controlbear/article/details/77527115)  
 
-学习$\color{powderblue}线性筛.cpp$ $part$ $3$
+学习$\color{powderblue}线性筛.md$ $part$ $3$
 
 ## 因子和（非人均）
 1. 把求所有因数小节下的$A,B$改写成  
@@ -193,7 +193,7 @@ $
 前置知识：积性函数  
 原理不难，暂时没遇到改变算法内部结构的题，可以当黑盒用  
 [原理博客](https://blog.csdn.net/controlbear/article/details/77527115)  
-学习$\color{powderblue}线性筛.cpp$ $part$ $3$
+学习$\color{powderblue}线性筛.md$ $part$ $3$
 
 # 最大公约数和最小公倍数 
 
@@ -220,7 +220,7 @@ $gcd(a,b)=gcd(b,a\%b)$
 
 为了求解，人为规定$gcd(a,0)=a$  
 
-请学习$\color{powderblue}gcd\&wxgcd.cpp$ $part$ $1$
+请学习$\color{powderblue}gcd\&wxgcd.md$ $part$ $1$
 
 
 ### 例题
@@ -277,7 +277,7 @@ $φ(x)=\prod\limits_{i=1}^s p_i^{k_i-1}*(p_i-1)$
 
 $=x*\prod\limits_{i=1}^s (p_i-1)/p_i$  
 
-单次求法见$\color{powderblue}欧拉函数.cpp$  
+单次求法见$\color{powderblue}欧拉函数.md$  
 
 可以用线性筛求一些积性函数  
 
@@ -290,7 +290,7 @@ $=x*\prod\limits_{i=1}^s (p_i-1)/p_i$
 如$1$函数，即$f(x)=1$
 
 积性函数性质可知，$f(1)=1$  
-欧拉函数筛法见$\color{powderblue}线性筛.cpp$ $part$ $2$  
+欧拉函数筛法见$\color{powderblue}线性筛.md$ $part$ $2$  
 欧拉函数与后面许多内容都联系紧密  
 
 # 快速幂
@@ -309,8 +309,8 @@ $
 $5=101,3^5=3^{2^0+2^2}=3^{2^0} * 3^{2^2}$  
 通过上式可以发现，只有指数当前位为1，才对答案有贡献  
 通常用二进制加速版快速幂  
-请学习other文件夹下$\color{powderblue}快速幂.cpp$  
-矩阵快速幂涉及线性代数-矩阵乘法，理解快速幂后可以学习linear algebra文件夹下$\color{powderblue}矩阵快速幂.cpp$
+请学习other文件夹下$\color{powderblue}快速幂.md$  
+矩阵快速幂涉及线性代数-矩阵乘法，理解快速幂后可以学习linear algebra文件夹下$\color{powderblue}矩阵快速幂.md$
 
 # 同余  
 ## 模运算
@@ -366,23 +366,23 @@ $(10000a + b) \% 7 = (10000\%7*a + b\%7) \% 7$
 但是x和y的取值为整数，所以这个方程的解是一些排列成直线的点集。
 
 可以用拓欧求解  
-请学习$\color{powderblue}gcd\&exgcd.cpp$ $part$ $2$
+请学习$\color{powderblue}gcd\&exgcd.md$ $part$ $2$
 
 # 逆元
 
-请学习$\color{powderblue}逆元.cpp$
+请学习$\color{powderblue}逆元.md$
 
 ***
 $\color{red}从以下开始全部非人均$
 ***
 # 线性同余方程组
-请学习$\color{powderblue}crt\&excrt.cpp$
+请学习$\color{powderblue}crt\&excrt.md$
 
 # 原根
-请学习$\color{powderblue}原根.cpp$
+请学习$\color{powderblue}原根.md$
 
 # BSGS
-请学习$\color{powderblue}bsgs\&exbsgs.cpp$ $part$ $1,2$
+请学习$\color{powderblue}bsgs\&exbsgs.md$ $part$ $1,2$
 
 >下面四个大知识点一起用的，请全部学习后再开始写题
 
@@ -482,7 +482,7 @@ $μ(n)=\begin{cases}1&n=1\\
 其中$p_1，p_2，…，p_m$是各不相同的质数，
 所以当$n$存在一个质因数次数$\ge2$，$μ(n)=0$
 
-筛出莫比乌斯函数见$\color{powderblue}线性筛.cpp$ $part$ $2$
+筛出莫比乌斯函数见$\color{powderblue}线性筛.md$ $part$ $2$
 
 ## 莫比乌斯反演公式  
 因数形式：  
