@@ -73,12 +73,12 @@
 
 Blog of my classmates is here:
 
-zm：https://www.crotes.top/
+[zm](https://www.crotes.top/)
 
-hjk：https://blog.csdn.net/qq_52466006
+[hjk](https://blog.csdn.net/qq_52466006)
 
-ycs：https://www.cnblogs.com/xdaniel/
+[ycs](https://www.cnblogs.com/xdaniel/)
 
-lzj：https://blog.csdn.net/qq_37073764
+[lzj](https://blog.csdn.net/qq_37073764)
 
-hjb：https://hujunbo.top/
+[hjb](https://hujunbo.top/)
