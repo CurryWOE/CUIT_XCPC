@@ -1,6 +1,6 @@
 这是导读
 
-定理证明省略，因为基本用不到
+定理证明一般省略，因为基本用不到
 
 本导读尽量不让人去搜索除给出的网址外的东西，如果不懂，说明笔者写的不好，请发个issue或者qq联系
 
@@ -56,9 +56,7 @@ $$(a+b)^n=\sum\limits_{i=0}^n \displaystyle\binom{n}{i} a^ib^{n-i}$$
 
 从 $S$ 中选择 $r$ 个元素排列
 
-$$
-\frac{n!}{\prod_{i=1}^k(n_i!)}
-$$
+$$\frac{n!}{\prod_{i=1}^k(n_i!)}$$
 
 相当于把相同元素的排列数除掉了
 
@@ -68,9 +66,7 @@ $$
 
 这个问题等价于 $x_1+x_2+\cdots+x_k=r$ 的非负整数解的数目，可以用插板法解决，答案为
 
-$$
-\binom{r+k-1}{k-1}
-$$
+$$\binom{r+k-1}{k-1}$$
 
 # 不相邻的排列
 
@@ -81,15 +77,11 @@ $1 \sim n$ 这 $n$ 个自然数中选 $k$ 个，这 $k$ 个数中任何两个数
 $n$ 个人全部来围成一圈，所有的排列数记为 $\mathrm Q_n^n$。考虑其中已经排好的一圈，从不同位置断开，又变成不同的队列。
 所以有
 
-$$
-\mathrm Q_n^n \times n = \mathrm A_n^n \Longrightarrow \mathrm Q_n = \frac{\mathrm A_n^n}{n} = (n-1)!
-$$
+$$\mathrm Q_n^n \times n = \mathrm A_n^n \Longrightarrow \mathrm Q_n = \frac{\mathrm A_n^n}{n} = (n-1)!$$
 
 由此可知部分圆排列的公式：
 
-$$
-\mathrm Q_n^r = \frac{\mathrm A_n^r}{r} = \frac{n!}{r \times (n-r)!}
-$$
+$$\mathrm Q_n^r = \frac{\mathrm A_n^r}{r} = \frac{n!}{r \times (n-r)!}$$
 
 # 组合数性质
 
@@ -97,70 +89,117 @@ $$\binom{n}{m}=\binom{n}{n-m}\tag{1}$$
 
 相当于将选出的集合对全集取补集，故数值不变。（对称性）
 
-$$
-\binom{n}{k} = \frac{n}{k} \binom{n-1}{k-1}\tag{2}
-$$
+$$\binom{n}{k} = \frac{n}{k} \binom{n-1}{k-1}\tag{2}$$
 
 由定义导出的递推式。
 
-$$
-\binom{n}{m}=\binom{n-1}{m}+\binom{n-1}{m-1}\tag{3}
-$$
+$$\binom{n}{m}=\binom{n-1}{m}+\binom{n-1}{m-1}\tag{3}$$
 
 组合数的递推式（杨辉三角的公式表达）
 
-$$
-\binom{n}{0}+\binom{n}{1}+\cdots+\binom{n}{n}=\sum_{i=0}^n\binom{n}{i}=2^n\tag{4}
-$$
+$$\binom{n}{0}+\binom{n}{1}+\cdots+\binom{n}{n}=\sum_{i=0}^n\binom{n}{i}=2^n\tag{4}$$
 
 这是二项式定理的特殊情况。取 $a=b=1$ 就得到上式。
 
-$$
-\sum_{i=0}^m \binom{n}{i}\binom{m}{m-i} = \binom{m+n}{m}\ \ \ (n \geq m)\tag{5}
-$$
+$$\sum_{i=0}^m \binom{n}{i}\binom{m}{m-i} = \binom{m+n}{m}\ \ \ (n \geq m)\tag{5}$$
 
 拆组合数的式子，在处理某些数据结构题时会用到。
 
-$$
-\sum_{i=0}^n\binom{n}{i}^2=\binom{2n}{n}\tag{6}
-$$
+$$\sum_{i=0}^n\binom{n}{i}^2=\binom{2n}{n}\tag{6}$$
 
 这是 $(5)$ 的特殊情况，取 $n=m$ 即可。
 
-$$
-\sum_{i=0}^ni\binom{n}{i}=n2^{n-1}\tag{7}
-$$
+$$\sum_{i=0}^ni\binom{n}{i}=n2^{n-1}\tag{7}$$
 
 带权和的一个式子，通过对 $(3)$ 对应的多项式函数求导可以得证。
 
-$$
-\sum_{i=0}^ni^2\binom{n}{i}=n(n+1)2^{n-2}\tag{8}
-$$
+$$\sum_{i=0}^ni^2\binom{n}{i}=n(n+1)2^{n-2}\tag{8}$$
 
 与上式类似，可以通过对多项式函数求导证明。
 
-$$
-\sum_{l=0}^n\binom{l}{k} = \binom{n+1}{k+1}\tag{9}
-$$
+$$\sum_{l=0}^n\binom{l}{k} = \binom{n+1}{k+1}\tag{9}$$
 
 在恒等式证明中较常用。
 
-$$
-\binom{n}{r}\binom{r}{k} = \binom{n}{k}\binom{n-k}{r-k}\tag{10}
-$$
+$$\binom{n}{r}\binom{r}{k} = \binom{n}{k}\binom{n-k}{r-k}\tag{10}$$
 
 通过定义可以证明。
 
-$$
-\sum_{i=0}^n\binom{n-i}{i}=F_{n+1}\tag{11}
-$$
+$$\sum_{i=0}^n\binom{n-i}{i}=F_{n+1}\tag{11}$$
 
 其中 $F$ 是斐波那契数列。
 
 # 概率论
-## 期望的线性性
-$E(X+Y)=E(X)+E(Y)$
+期望是各事件的加权平均数
 
+例如全校平均分=全校分数总和/全校人数
+
+=每班平均分的加权平均数
+## 期望的"线性"性质
+随机变量 $X,Y$，常量 $a,b$
+
+$E(aX+bY)=aE(X)+bE(Y)$
+## 期望递推公式
+可用于期望DP
+
+$E(Y)=\sum [E(X)+W(X\rightarrow Y)P(X)]P(Y|X)$
+
+$P(A|B)$ 表示 B 发生后，发生 A 的概率
+### 证明
+定义得
+$$E(Y)=\sum\limits_{i=1} P_iW_i$$
+把$P_i,W_i$展开，式子就是加权平均数的定义式
+$$=\sum\limits_{i=1} [P(X_i)P(Y|X_i)\times (E(X_i)+W(X_i\rightarrow Y))]/P(Y)$$
+发现 $P(X_i)\times E(X_i)/P(Y)$ 这个部分，当我们推出X之后再推Y，两个P可以抵消
+$$=\sum\limits_{i=1} [E(X_i)+P(X_i)\times W(X_i\rightarrow Y)]P(Y|X_i)$$
+怎么理解见下面代码
+```c++
+//这是第2步式子的实现，先看循环里再看循环外
+dis[u]/=P[u];//之前的Y变成X之后才知道P(Y)
+for(int i=head[u];i;i=e[i].next)
+{
+    v=e[i].v;
+    P[v]+=P[u]*PP[u][v];
+    dis[v]+=P[u]*PP[u][v]*(dis[u]+e[i].w);
+}
+//这是第3步式子的实现，对着下面解释看代码
+P[u]*=PP[u][v];
+dis[u]*=PP[u][v];
+for(int i=head[u];i;i=e[i].next)
+{
+    v=e[i].v;
+    P[v]+=P[u];
+    dis[v]+=dis[u]+e[i].w*P[u];
+}
+/*
+乘法分配律，可得
+dis[v]+=P[u]*PP[u][v]*dis[u]+P[u]*PP[u][v]*e[i].w;
+把dis[u]/=P[u];放进循环里，可得
+dis[v]+=PP[u][v]*dis[u]+P[u]*PP[u][v]*e[i].w;
+再把PP[u][v]和P[u]提到循环外面
+dis[v]+=dis[u]+e[i].w*P[u];
+*/
+```
+## 期望和概率的一个性质
+全集有 n 种数，手上有 i 种数，全集中随机选数
+
+获得新数的概率是 $\frac {n-i}n$
+
+取得新数要取的次数的期望为 $\frac 1p=\frac n{n-i}$
+
+那么获得全集的次数为 $\sum\limits_{i=0}^{n-1} \frac n{n-i}=\sum\limits_{i=1}^{n-1} \frac ni$
+
+Q:为什么期望是概率分之一
+
+A:如果你平均取 n 个球才会出现 1 个红球，也就是说期望是 n，那又可以说成是平均每 n 个球中出现 1 个红球，所以概率是 $\frac{1}{n}$
+
+也可以用DP解释
+
+设 $f_i$ 表示已取到 i 种数，还需要取的次数的期望
+
+可得 $f_{i}=f_{i+1}\times \frac {n-i}n+f_{i}\times \frac {i}n+1$
+
+可得 $f_{i}=f_{i+1}+\frac n{n-i}$
 # 容斥原理
 ## min-max容斥
 ## 二项式反演
