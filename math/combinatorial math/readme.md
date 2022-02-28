@@ -139,47 +139,41 @@ $$\sum_{i=0}^n\binom{n-i}{i}=F_{n+1}\tag{11}$$
 随机变量 $X,Y$，常量 $a,b$
 
 $E(aX+bY)=aE(X)+bE(Y)$
+
+理解：发生a次X，b次Y的期望=发生a次X的期望+发生b次Y的期望
 ## 期望递推公式
-可用于期望DP
+用于期望DP
 
-$E(Y)=\sum [E(X)+W(X\rightarrow Y)P(X)]P(Y|X)$
+一个图，求起点 $S$ 到终点 $T$ 的期望距离，点 $u$ 有 $P(u,v)$ 的概率通向点 $v$
 
-$P(A|B)$ 表示 B 发生后，发生 A 的概率
+$P(X)$ 表示
+
+1. 起点到 $X$ 的概率
+2. $X$ 到终点的概率
+
+$P(X)$ 哪个好写用哪个
+
+两个公式，本质一样
+
+1用统计进来的
+$$E(Y)=\sum [E(X)+W(X\rightarrow Y)P(X)]P(X,Y)$$
+
+2用统计出去的（建反图逆序处理）
+$$E(Y)=\sum [E(X)+W(Y\rightarrow X)P(Y)]P(Y,X)$$
 ### 证明
+设 $x_i$ 为路径长度，$p_i$ 为走该路径的概率
+
+有一条 $Y$ 到 $X$ 的边,边权为 $w$
+
 定义得
-$$E(Y)=\sum\limits_{i=1} P_iW_i$$
-把$P_i,W_i$展开，式子就是加权平均数的定义式
-$$=\sum\limits_{i=1} [P(X_i)P(Y|X_i)\times (E(X_i)+W(X_i\rightarrow Y))]/P(Y)$$
-发现 $P(X_i)\times E(X_i)/P(Y)$ 这个部分，当我们推出X之后再推Y，两个P可以抵消
-$$=\sum\limits_{i=1} [E(X_i)+P(X_i)\times W(X_i\rightarrow Y)]P(Y|X_i)$$
-怎么理解见下面代码
-```c++
-//这是第2步式子的实现，先看循环里再看循环外
-dis[u]/=P[u];//之前的Y变成X之后才知道P(Y)
-for(int i=head[u];i;i=e[i].next)
-{
-    v=e[i].v;
-    P[v]+=P[u]*PP[u][v];
-    dis[v]+=P[u]*PP[u][v]*(dis[u]+e[i].w);
-}
-//这是第3步式子的实现，对着下面解释看代码
-P[u]*=PP[u][v];
-dis[u]*=PP[u][v];
-for(int i=head[u];i;i=e[i].next)
-{
-    v=e[i].v;
-    P[v]+=P[u];
-    dis[v]+=dis[u]+e[i].w*P[u];
-}
-/*
-乘法分配律，可得
-dis[v]+=P[u]*PP[u][v]*dis[u]+P[u]*PP[u][v]*e[i].w;
-把dis[u]/=P[u];放进循环里，可得
-dis[v]+=PP[u][v]*dis[u]+P[u]*PP[u][v]*e[i].w;
-再把PP[u][v]和P[u]提到循环外面
-dis[v]+=dis[u]+e[i].w*P[u];
-*/
-```
+$$E(Y)=\sum x_ip_i$$
+$$E(X)=\sum (x_i+w)p_iP(Y,X)$$
+$P(Y,X)$ 提到前面去，$p_i$ 乘法分配律
+$$E(X)=P(Y,X)\sum x_ip_i+wp_i$$
+求和号可以拆成两个，前面一个就是 $E(Y)$，$w$ 提到前面去
+$$E(X)=P(Y,X)[E(Y)+w\sum p_i]$$
+显然后面一个就是 $P(Y)$
+$$E(X)=P(Y,X)[E(Y)+wP(Y)]$$
 ## 期望和概率的一个性质
 全集有 n 种数，手上有 i 种数，全集中随机选数
 
