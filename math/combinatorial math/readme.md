@@ -195,6 +195,16 @@ A:如果你平均取 n 个球才会出现 1 个红球，也就是说期望是 n�
 
 可得 $f_{i}=f_{i+1}+\frac n{n-i}$
 # 容斥原理
+求集合的并
+
+设 U 中元素有 n 种不同的属性，而第 i 种属性称为 $P_i$，拥有属性 $P_i$ 的元素构成集合 $S_i$，那么
+
+$$\left|\bigcup_{i=1}^{n}S_i\right|=\sum_{m=1}^n(-1)^{m-1}\sum_{a_i<a_{i+1} }\left|\bigcap_{i=1}^mS_{a_i}\right|$$
+
+例如
+$$|A\cup B\cup C|=|A|+|B|+|C|-|A\cap B|-|B\cap C|-|C\cap A|+|A\cap B\cap C|$$
+
+请学习$\color{powderblue}容斥原理.md$
 ## min-max容斥
 ## 二项式反演
 $f(n)=\sum\limits_{k=0}^n \dbinom nk g(k)$
