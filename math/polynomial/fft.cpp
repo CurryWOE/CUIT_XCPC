@@ -6,9 +6,9 @@
 稍微复杂点作用：快速求出两个多项式相乘的结果
 1个1元二次和一个1元3次相乘，最多有6项，空间复杂度里的t=3
 应用：
-1.从题目中抽象出多项式（难点）
-2.求出答案和多项式之间联系（难点）
-3.用fft求解多项式相乘（fft本体，但没啥好变化的，看懂原理就好了）
+1.从题目中抽象出多项式
+2.求出答案和多项式之间联系
+3.用fft求解多项式相乘（fft本体，学到后面会要求对fft本质优化，所以原理要看懂）
 4.输出答案
 
 fft原理讲解见
@@ -16,8 +16,6 @@ https://www.zhihu.com/zvideo/1440666041495621632
 下面是洛谷p3803模板题
 只写了一点注解，题解里有更详细的
 */
-#include<bits/stdc++.h>
-using namespace std;
 const int MAXN = 1e7 + 10;
 const double Pi = acos(-1.0);
 struct comp//c++complex头文件的complex类运行速度很慢，所以自己定义复数结构体
@@ -57,14 +55,6 @@ void fft(comp *A, int type)
             a[i].x=(double)((int)(a[i].x / limit + 0.5));//四舍五入取整
     }
 }
-void input()
-{
-    cin>>N>>M;
-    for (int i = 0; i <= N; i++)
-        cin>>a[i].x;
-    for (int i = 0; i <= M; i++)
-        cin>>b[i].x;
-}
 void init(int x)//x表示2个多项式相乘最多有几个单项式
 {
     limit=1;
@@ -74,23 +64,14 @@ void init(int x)//x表示2个多项式相乘最多有几个单项式
     for (int i = 0; i < limit; i++)
         r[i] = ( r[i >> 1] >> 1 ) | ( (i & 1) << l );
 }
-void output()
-{
-    for (int i = 0; i <= N + M; i++)
-        cout<<(int)a[i].x<<" ";
-}
-int main()
-{
-    std::ios::sync_with_stdio(false);
-    std::cin.tie(0);
-    std::cout.tie(0);
-    input();
-    init(N+M+1);
-    fft(a, 1);
-    fft(b, 1);
-    for (int i = 0; i < limit; i++)
-        a[i] = a[i] * b[i];
-    fft(a, -1);
-    output();
-    return 0;
-}
+init(N+M+1);
+fft(a, 1);
+fft(b, 1);
+for (int i = 0; i < limit; i++)
+    a[i] = a[i] * b[i];
+fft(a, -1);
+/*
+三次变两次优化：
+(a+bi)^2=a^2-b^2+2abi
+所以把b放在虚部，答案是虚部/2，注意把fft除limit改成虚部
+*/

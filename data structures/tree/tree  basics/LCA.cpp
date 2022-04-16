@@ -1,102 +1,159 @@
 //最近公共祖先
-#include <cstdio>
-#include <cstring>
-#include <iostream>
-#include <vector>
-#define MXN 50007
-using namespace std;
-std::vector<int> v[MXN];
-std::vector<int> w[MXN];
-struct edge
+const int N=5e5+3;
+const int M=20;
+struct EDGE
 {
-    int v,w;
+    int to,nxt;
 };
-vector<edge> e[MAXN];
-//别人用v，w，我用结构体
-//下标表示起点，v表示终点，w表示边权
-//e[i][j]表示起点i的第j条边，终点是e[i][j].v,边权是e[i][j].w
-int fa[MXN][31], cost[MXN][31], dep[MXN];
-//fa[i][j]表示i节点的第2^j的祖先节点的编号,第1个祖先是爸爸，第2个祖先是爷爷，第4个祖先是爷爷的爸爸
-//cost[i][j]表示i节点到它的第2^j的祖先节点的花费
-//deepth[i]表示i节点的深度
-int n, m;
-int a, b, c;
-
-// dfs，用来为 lca 算法做准备。接受两个参数：dfs 起始节点和它的父亲节点。
-void dfs(int root, int fno) 
+struct LCA
 {
-  // 初始化：第 2^0 = 1 个祖先就是它的父亲节点，dep 也比父亲节点多 1。
-  fa[root][0] = fno;
-  dep[root] = dep[fa[root][0]] + 1;
-  // 初始化：其他的祖先节点：第 2^i 的祖先节点是第 2^(i-1) 的祖先节点的第
-  // 2^(i-1) 的祖先节点。
-  for (int i = 1; i < 31; ++i) 
-  {
-    fa[root][i] = fa[fa[root][i - 1]][i - 1];
-    cost[root][i] = cost[fa[root][i - 1]][i - 1] + cost[root][i - 1];
-  }
-  // 遍历子节点来进行 dfs。
-  int sz = v[root].size();
-  for (int i = 0; i < sz; ++i) 
-  {
-    if (v[root][i] == fno) continue;
-    cost[v[root][i]][0] = w[root][i];
-    dfs(v[root][i], root);
-  }
-}
-
-// lca。用倍增算法算取 x 和 y 的 lca 节点。
-int lca(int x, int y) 
-{
-  // 令 y 比 x 深。
-  if (dep[x] > dep[y]) 
-  swap(x, y);
-  // 令 y 和 x 在一个深度。
-  int tmp = dep[y] - dep[x], ans = 0;
-  for (int j = 0; tmp; ++j, tmp >>= 1)
-    if (tmp & 1) 
-    ans += cost[y][j], y = fa[y][j];
-  // 如果这个时候 y = x，那么 x，y 就都是它们自己的祖先。
-  if (y == x) 
-  return ans;
-  // 不然的话，找到第一个不是它们祖先的两个点。
-  for (int j = 30; j >= 0 && y != x; --j) 
-  {
-    if (fa[x][j] != fa[y][j]) 
+    EDGE e[N<<1];
+    int fa[N][M],dep[N],head[N],lg[N];
+    int tot;
+    queue<int> q;
+    void init(int n)
     {
-      ans += cost[x][j] + cost[y][j];
-      x = fa[x][j];
-      y = fa[y][j];
+        tot=0;
+        for(int i=1;i<n;++i)
+            lg[i]=lg[i-1]+(1<<lg[i-1]==i);
     }
-  }
-  // 返回结果。
-  ans += cost[x][0] + cost[y][0];
-  return ans;
-}
-
-int main() {
-  // 初始化表示祖先的数组 fa，代价 cost 和深度 dep。
-  memset(fa, 0, sizeof(fa));
-  memset(cost, 0, sizeof(cost));
-  memset(dep, 0, sizeof(dep));
-  // 读入树：节点数一共有 n 个。
-  scanf("%d", &n);
-  for (int i = 1; i < n; ++i) {
-    scanf("%d %d %d", &a, &b, &c);
-    ++a, ++b;
-    v[a].push_back(b);
-    v[b].push_back(a);
-    w[a].push_back(c);
-    w[b].push_back(c);
-  }
-  // 为了计算 lca 而使用 dfs。
-  dfs(1, 0);
-  // 查询 m 次，每一次查找两个节点的 lca 点。
-  scanf("%d", &m);
-  for (int i = 0; i < m; ++i) {
-    scanf("%d %d", &a, &b);
-    ++a, ++b;
-    printf("%d\n", lca(a, b));
-  }
-  return 0;
-}
+    void AddEdge(int u,int v)
+    {
+        e[++tot]={u,head[v]};
+        head[v]=tot;
+        e[++tot]={v,head[u]};
+        head[u]=tot;
+    }
+    void bfs(int root)
+    {
+        q.push(root);
+        dep[root]=1;
+        int u,v,DEP;
+        while(!q.empty())
+        {
+            u=q.front();
+            q.pop();
+            for(int i=head[u];i;i=e[i].nxt)
+            {
+                v=e[i].to;
+                if(dep[v])
+                    continue;
+                q.push(v);
+                dep[v]=dep[u]+1;
+                fa[v][0]=u;
+                DEP=lg[dep[u]];
+                for(int j=1;j<=DEP;++j)
+                {
+                    fa[v][j]=fa[fa[v][j-1]][j-1];
+                }
+            }
+        }
+    }
+    int lca(int x,int y)
+    {
+        if(dep[x]>dep[y])
+            swap(x,y);
+        for(int i=0,dif=dep[y]-dep[x];dif;++i,dif>>=1)
+        {
+            if(dif&1)
+                y=fa[y][i];
+        }
+        if(x==y)
+            return x;
+        for(int i=lg[dep[x]];i>=0;--i)
+        {
+            if(fa[x][i]==fa[y][i])
+                continue;
+            x=fa[x][i];
+            y=fa[y][i];
+        }
+        return fa[x][0];
+    }
+};
+typedef long long ll;
+const int N=4e4+3;
+const int M=20;
+struct EDGE
+{
+    int to,nxt;
+    ll w;
+};
+struct LCA
+{
+    EDGE e[N<<1];
+    int fa[N][M],dep[N],head[N],lg[N];
+    ll cost[N][M];
+    int tot;
+    queue<int> q;
+    void init0()
+    {
+        lg[0]=0;
+        for(int i=1;i<N;++i)
+            lg[i]=lg[i-1]+(1<<(lg[i-1])==i);
+    }
+    void init(int n)
+    {
+        tot=0;
+        memset(head,0,sizeof(int)*(n+1));
+        memset(dep,0,sizeof(int)*(n+1));
+    }
+    void AddEdge(int u,int v,ll w)
+    {
+        e[++tot]={u,head[v],w};
+        head[v]=tot;
+        e[++tot]={v,head[u],w};
+        head[u]=tot;
+    }
+    void bfs(int root)
+    {
+        q.push(root);
+        dep[root]=1;
+        int u,v,DEP;
+        while(!q.empty())
+        {
+            u=q.front();
+            q.pop();
+            for(int i=head[u];i;i=e[i].nxt)
+            {
+                v=e[i].to;
+                if(dep[v])
+                    continue;
+                q.push(v);
+                dep[v]=dep[u]+1;
+                fa[v][0]=u;
+                cost[v][0]=e[i].w;
+                DEP=lg[dep[u]];
+                for(int j=1;j<=DEP;++j)
+                {
+                    fa[v][j]=fa[fa[v][j-1]][j-1];
+                    cost[v][j]=cost[fa[v][j-1]][j-1]+cost[v][j-1];
+                }
+            }
+        }
+    }
+    int lca(int x,int y)
+    {
+        if(dep[x]>dep[y])
+            swap(x,y);
+        ll ans=0;
+        for(int i=0,dif=dep[y]-dep[x];dif;++i,dif>>=1)
+        {
+            if(dif&1)
+            {
+                ans+=cost[y][i];
+                y=fa[y][i];
+            }
+        }
+        if(x==y)
+            return ans;
+        for(int i=lg[dep[x]];i>=0;--i)
+        {
+            if(fa[x][i]==fa[y][i])
+                continue;
+            ans+=cost[x][i]+cost[y][i];
+            x=fa[x][i];
+            y=fa[y][i];
+        }
+        return ans+cost[x][0]+cost[y][0];
+    }
+};
