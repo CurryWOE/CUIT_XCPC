@@ -75,3 +75,24 @@ fft(a, -1);
 (a+bi)^2=a^2-b^2+2abi
 所以把b放在虚部，答案是虚部/2，注意把fft除limit改成虚部
 */
+分治fft
+void solve(int l,int r,int logn)
+{
+    if(logn<=0) return;
+    if(l>=n) return;
+    int mid=(l+r)>>1,i;
+    ll t=inv(r-l);
+    solve(l,mid,logn-1); // 计算左区间
+    calcrev(logn);
+    memset(a+(r-l)/2,0,sizeof(ll)*(r-l)/2); // 拷贝左区间
+    memcpy(a,f+l,sizeof(ll)*(r-l)/2); // 填充0
+    memcpy(b,g,sizeof(ll)*(r-l)); // 拷贝g
+    FFT(a,logn,0),FFT(b,logn,0); // 卷积
+    for(i=0;i<r-l;i++) a[i]=a[i]*b[i]%kcz;
+    FFT(a,logn,1);
+    for(i=0;i<r-l;i++) a[i]=a[i]*t%kcz;
+    for(i=(r-l)/2;i<r-l;i++)
+        f[l+i]=(f[l+i]+a[i])%kcz; // 把卷积后的右半段的数加到f数组后半段
+    // 可能你会注意到，这个卷积是(r-l)/2的长度卷一个r-l的长度，而我卷积时最终结果当作r-l的长度来存，这会不会有影响？注意到超出部分是(r-l)/2左右，根据fft的实现，超出部分是会重新从0开始填的，所以只会影响结果的前半段，与后半段无关
+    solve(mid,r,logn-1); // 计算右区间
+}
