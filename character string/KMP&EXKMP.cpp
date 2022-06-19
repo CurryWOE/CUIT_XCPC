@@ -1,38 +1,34 @@
-int next[MAXN];//P[0]~P[x-1] 这一段字符串，使得k-前缀恰等于k-后缀的最大的k
+int next[MAXN];//P[0]~P[x-1] 这一段字符串，使得前缀等于后缀的最长长度
+//字符串都从1开始
 void getNext(char *p,int *next)
 {
-    next[0]=-1;
-    int i=0,j=-1,p_len=strlen(p);
-    while(i<p_len)
-    {
-        if(j==-1 || p[i]==p[j])
-        {
-            ++i;
-            ++j;
-            next[i]=j;
-        }
-        else
+    int i=2,j=0,len=strlen(p+1);
+	for(;i<=len;++i)
+	{
+		while(j && p[i]!=p[j+1])
             j=next[j];
-    }
+		if(p[i] == p[j+1])
+            ++j;
+		next[i] = j; 
+	}
 }
-int KMP(char *t,char *p)
+void KMP(char *t,char *p)
 {
-    int i=0,j=0,t_len=strlen(t),p_len=strlen(p);
-    while(i<t_len && j<p_len)
-    {
-        if(j==-1 || t[i]==p[j])
-        {
-            ++i;
-            ++j;
-        }
-        else
+    int i=1,j=0,t_len=strlen(t+1),p_len=strlen(p+1);
+    for(;i<=t_len;++i)
+	{
+		while(j && a[i]!=b[j+1])
             j=next[j];
-    }
-    if(j==p_len)
-        return i-j;
-    return -1;
+		if(a[i] == b[j+1])
+            ++j;
+		if(j == p_len-1) 
+		{
+			j=next[j];
+			printf("%d\n",i-p_len+2);
+		}
+	}
 }
-//返回第一次出现的下标，如果没出现，返回-1
+//打印出现的下标
 //EXKMP
 #define MAXN 100
 char s1[MAXN],s2[MAXN];

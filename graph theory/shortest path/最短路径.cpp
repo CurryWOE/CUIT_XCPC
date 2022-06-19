@@ -103,8 +103,11 @@ int dij(int begin,int end)
         for(int i=head[u];~i;i=e[i].next)
         {
             int v=e[i].to;
-            dis[v]=min(dis[v],dis[u]+e[i].w);
-            q.push({dis[v],v});
+            if(dis[v]>dis[u]+e[i].w)
+            {
+                dis[v]=dis[u]+e[i].w;
+                q.push({dis[v],v});
+            }
         }
     }
     return dis[end];
