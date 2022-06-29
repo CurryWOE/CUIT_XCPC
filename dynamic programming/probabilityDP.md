@@ -58,14 +58,6 @@ $E(X)$ 是对所有 $ω∈Ω$ ，$X(ω)$ 取值全体的加权平均；
 45就是糖果定价
 
 ---
-## 好题推荐
-[绿豆蛙的归宿](https://www.luogu.com.cn/problem/P4316)
-
-[换教室](https://www.luogu.com.cn/problem/P1850)
-
-[收集邮票](https://www.luogu.com.cn/problem/P4550)
-
-[OSU!](https://www.luogu.com.cn/problem/P4316)
 
 ## luogu p4316题解（经典期望DP）
 
