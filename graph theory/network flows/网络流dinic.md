@@ -1,9 +1,9 @@
 ```c++
-const int N=2e2+3;
-const int M=1e5+3;
+const int N=2e2+5;
+const int M=1e6+3;
 struct Edge
 {
-    int v,nxt;//next是stl函数，所以用nxt
+    int v,nxt;
     ll cap;
 };
 struct Dinic
@@ -18,6 +18,7 @@ struct Dinic
         this->s=s;
         this->t=t;
         memset(head,0,sizeof(int)*(n+1));
+        head[s]=head[t]=0;
         tot=1;
     }
     void addEdge(int x,int y,ll cap)
@@ -30,11 +31,10 @@ struct Dinic
     bool level()
     {
         memset(dep,0,sizeof(int)*(n+1));
-        while(!q.empty())
-            q.pop();
+        dep[t]=0;
+        dep[s]=1;
         int u,v;
         q.push(s);
-        dep[s]=1;
         while(!q.empty())
         {
             u=q.front();
@@ -80,8 +80,8 @@ struct Dinic
             res+=findpath(s,1e18);
         return res;
     }
-}ans;
-ans.init(n,s,t);
-ans.addEdge(u,v,w);
-ans.dinic()
+}di;
+di.init(n,s,t);
+di.addEdge(u,v,w);
+di.dinic();
 ```

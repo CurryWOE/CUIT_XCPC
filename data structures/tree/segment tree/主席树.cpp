@@ -2,7 +2,7 @@
 #include<algorithm>
 using namespace std;
 #define MAXN 100005
-int node_cnt,n,m;//现有节点数（动态开点），给定数列长度，询问次数
+int node_cnt;//现有节点数（动态开点）
 int root[MAXN],a[MAXN],b[MAXN];//每个历史版本的根，原数列，离散后的数列
 struct Node
 {
@@ -36,6 +36,7 @@ int query(int u,int v,int l,int r,int k)//旧树的下标，新树的下标，�
 int main()
 {
     int l,r,k,q,ans;//查询的区间上下限、k,离散后还有多少数字，答案的下标
+    int n,m;
     scanf("%d %d",&n,&m);
     for(register int i=1;i<=n;++i)
     {
@@ -44,7 +45,7 @@ int main()
     }
     sort(b+1,b+n+1);
     q=unique(b+1,b+n+1)-b-1;//离散
-    for(register int i=1;i<=n;++i)
+    for(int i=1;i<=n;++i)
         root[i]=modify(root[i-1],1,q,lower_bound(b+1,b+q+1,a[i])-b);//插入数据并建新树
     while(m--)
     {

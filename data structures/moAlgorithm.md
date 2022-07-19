@@ -21,6 +21,8 @@ while (r > Q[i].r)
     del(r--);
 ```
 
+add和del由具体题目决定
+
 # 排序
 bel[i]表示下标为i的数据在哪一块，$\sqrt n$为一块
 
@@ -48,7 +50,10 @@ for (int i = 0; i < q; ++i)
     cin>>Q[i].l>>Q[i].r;
     Q[i].id = i;
 }
+sq=sqrt(n);
 sort(Q, Q + q);
+l=1;
+r=0;
 for (int i = 0; i < q; ++i)
 {
     while (l > Q[i].l)
