@@ -70,7 +70,6 @@ struct LCA
         return fa[x][0];
     }
 };
-typedef long long ll;
 const int N=4e4+3;
 const int M=20;
 struct EDGE
