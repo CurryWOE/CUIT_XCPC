@@ -1,3 +1,4 @@
+#! https://zhuanlan.zhihu.com/p/557880991
 # 概率DP
 解决概率问题与期望问题
 

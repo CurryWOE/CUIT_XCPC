@@ -1,3 +1,4 @@
+#! https://zhuanlan.zhihu.com/p/557860454
 part 1
 # gcd
 欧几里得算法（又名辗转相除法）

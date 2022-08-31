@@ -1,6 +1,8 @@
+# 网络流DINIC
 ```c++
 const int N=2e2+5;
 const int M=1e6+3;
+const ll INF=1e18;
 struct Edge
 {
     int v,nxt;
@@ -12,11 +14,11 @@ struct Dinic
     int head[N],dep[N];
     Edge e[M];
     queue<int> q;
-    void init(int n,int s,int t)
+    void init(int nn,int ss,int tt)
     {
-        this->n=n;
-        this->s=s;
-        this->t=t;
+        n=nn;
+        s=ss;
+        t=tt;
         memset(head,0,sizeof(int)*(n+1));
         head[s]=head[t]=0;
         tot=1;
@@ -77,7 +79,7 @@ struct Dinic
     {
         ll res=0;
         while(level())
-            res+=findpath(s,1e18);
+            res+=findpath(s,INF);
         return res;
     }
 }di;

@@ -1,3 +1,4 @@
+#! https://zhuanlan.zhihu.com/p/557861268
 ## 离散对数
 
 ### 定义
