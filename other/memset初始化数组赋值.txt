@@ -1,8 +1,0 @@
-int:
-0 0
--1 -1
-INF 0x3f,0x7f
-double:
-0 1
-min 0xfe
-max 0x7f

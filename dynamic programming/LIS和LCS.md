@@ -1,8 +1,13 @@
 #! https://zhuanlan.zhihu.com/p/557880407
+
 # LIS\&LCS
-# 最长上升子序列LIS
+
+# 最长上升子序列 LIS
+
 ## 时间复杂度
+
 $O(nlogn)$
+
 ```cpp
 int arr[N],dp[N];
 int lis(int n)
@@ -18,14 +23,18 @@ int lis(int n)
     }
     return k;
 }
-// k是答案
-//如果比最后一个元素大，那么就添加再最后末尾处
-//如果比最后一个元素小，那么就替换该序列第一个比他大的数
 ```
-# 最长公共子序列LCS
-转化为f数组的LIS复杂度更低
+
+dp[i] 表示长度 $i$ 的 LIS 的末尾最小元素
+
+# 最长公共子序列 LCS
+
+转化为 f 数组的 LIS 复杂度更低
+
 ## 时间复杂度
+
 $O(nlogn)$
+
 ```cpp
 unordered_map<int, vector<int>> d;
 vector<int> f;

@@ -1,3 +1,5 @@
+# trie
+
 ```c++
 const int N=1e5+3;
 const int STR=26;
@@ -17,7 +19,7 @@ struct TRIE
     }
     void insert(char *str)
     {
-        int root = 0,id;
+        int id,root = 0;
         for (char s:str)
         {
             id= s - 'a';
@@ -41,6 +43,7 @@ struct TRIE
     }
 };
 ```
+
 ```c++
 const int N=1e5+3;
 const int STR=2;

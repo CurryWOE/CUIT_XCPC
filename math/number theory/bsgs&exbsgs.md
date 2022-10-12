@@ -1,4 +1,5 @@
 #! https://zhuanlan.zhihu.com/p/557861268
+
 ## 离散对数
 
 ### 定义
@@ -39,7 +40,7 @@ $a^b=a^{b\%φ(n)} \pmod n$
 
 但是如果 $n$ 是质数，那暴力枚举时间复杂度就是 $O(n)$
 
-bsgs时间复杂度更优
+bsgs 时间复杂度更优
 
 $y^x \equiv z \pmod p$
 
@@ -47,7 +48,7 @@ $y^x \equiv z \pmod p$
 
 设$x=am-b$，$m=\left\lceil \sqrt p\right\rceil$，$a\in[1,m],b\in[1,m]$
 
->$\left\lceil x\right\rceil$是向上取整
+> $\left\lceil x\right\rceil$是向上取整
 
 $a$,$b$的值域保证$x$取遍$[0,p]$
 
@@ -65,13 +66,14 @@ $O(\sqrt {mod})$
 
 右边的$b$枚举$[1,m]$，算出$z∗y^b \pmod p$，哈希存起来
 
-PS：map也可以过一些题，但是如果卡常就不行，所以最好用哈希表
+PS：map 也可以过一些题，但是如果卡常就不行，所以最好用哈希表
 
 左边$a$枚举$[1,m]$，算出$(y^m)^a \pmod p$查表就行了
 
-如果$p\mid base^m$，那么remain只能是0，否则无解
+如果$p\mid base^m$，那么 remain 只能是 0，否则无解
 
 ### 代码
+
 ```c++
 long long bsgs(long long base,long long remain,long long p)
 {
@@ -111,7 +113,7 @@ $y^x \equiv z \pmod p$
 
 发现此时的$z$必须要是$g$的倍数，否则无解。
 
-因此，除掉g
+因此，除掉 g
 
 <font size=4>$\frac{y}{g} * y^{x-1} \equiv \frac{z}{g} \pmod {\frac{p}{g}}$</font>
 
@@ -121,7 +123,7 @@ $y^x \equiv z \pmod p$
 
 <font size=6>$\frac{y^k}{\prod\limits_{i=1}^k g_i} *y^{x-k} = \frac{z}{\prod\limits_{i=1}^k g_i} \pmod {\frac{p}{\prod\limits_{i=1}^k g_i}}$</font>
 
-互质之后就可以套用bsgs了
+互质之后就可以套用 bsgs 了
 
 ```c++
 ll EXbsgs(ll base,ll remain,ll mod)
@@ -163,8 +165,11 @@ ll EXbsgs(ll base,ll remain,ll mod)
 }
 //返回值要求余mod,但不能在子函数里，因为mod变了
 ```
+
 ## 哈希表
+
 链地址法解决冲突
+
 ```c++
 typedef long long ll;
 const int MAXN=1e7+1;
@@ -175,7 +180,7 @@ struct hash
 }e[MAXN];
 int head[MAXN];
 int tot;
-inline ll hashfunc(ll x) 
+inline ll hashfunc(ll x)
 {
     return x%MAXN;
 }
@@ -199,6 +204,3 @@ void clear()
         head[hashfunc(e[tot].value)]=0;
 }
 ```
-
-## pohlig-hellman
-待更新
