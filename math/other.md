@@ -12,8 +12,7 @@ $A=\frac{\sum\limits_{i=1}^n x_iy_i-n\overline{x} \overline{y}}{\sum\limits_{i=1
 
 $B=\overline{y}-A\overline{x}$
 
-# 自然数前 n 项 p 次方求和
-
+# 自然数幂和
 $\sum\limits_{i=1}^n i=n(n+1)/2$
 
 $\sum\limits_{i=1}^n i^2=n(n+1)(2n+1)/6$
@@ -37,7 +36,94 @@ $(m+1)^p-1=C_p^1f_m^{p-1}+C_p^2f_m^{p-2}+...+m$
 $f_m^{p-1}=((m+1)^p-1-(C_p^2f_m^{p-2}+...+m))/C_p^1$
 
 $f_m^{p}=((m+1)^{p+1}-1-(C_{p+1}^2f_m^{p-1}+...+m))/(p+1)$
+## 求法
+### 拉格朗日插值
+如果有取模，那么模数必须质数
 
+自然数k次幂和是k+1次函数，求前k+2个点的点值，插就完了
+```cpp
+const int N=1e6+3;
+const ll mod=1e9+7;
+long long fac[N],inv[N];
+long long fast_power(long long base, long long exponent)
+{
+    long long result = 1;
+    for (; exponent > 0; exponent >>= 1)
+    {
+        if (exponent & 1)
+            result = result * base % mod;
+        base = base * base % mod;
+    }
+    return result;
+}
+void getC()
+{
+    fac[0]=1;
+    for(int i=1;i<N;++i)
+        fac[i]=fac[i-1]*i%mod;
+    inv[N-1]=fast_power(fac[N-1],mod-2);
+    for(int i=N-1;i;--i)
+        inv[i-1]=inv[i]*i%mod;
+}
+struct lagrange
+{
+    ll y[N],pre[N],suf[N];
+    ll lag(ll m,int k)//g(m)，k个点
+    {
+        if(m<=k)
+            return y[m];
+        pre[0]=suf[k+1]=1;
+        for(int i=1;i<k;++i)
+            pre[i]=pre[i-1]*(m-i)%mod;
+        for(int i=k;i>1;--i)
+            suf[i]=suf[i+1]*(m-i)%mod;
+        ll ans=0;
+        for(int i=1;i<=k;++i)
+            ans=(ans+y[i]*inv[i-1]%mod*inv[k-i]%mod*pre[i-1]%mod*suf[i+1]%mod*((k-i)&1?-1:1))%mod;
+        return (ans+mod)%mod;
+    }
+}la;
+getC();
+for(int i=1;i<=k+2;++i)
+    la.y[i]=(la.y[i-1]+fast_power(i,k))%mod;
+cout<<la.lag(n,k+2);
+```
+### 第2类斯特林数
+不需要逆元
+
+$\sum\limits_{i=1}^ni^k=\sum\limits_{j=0}^{k}S_2(k,j)\frac{(n+1)^{\underline{j+1}}}{j+1}$
+```cpp
+struct powersum
+{
+    int k;
+    ll s[K][K];
+    void init(int kk)
+    {
+        k=kk;
+	    s[0][0]=1;
+	    for(int i=1;i<=k;++i)
+		    for(ll j=1;j<=i;++j)
+			    s[i][j]=s[i-1][j-1]+j*s[i-1][j];
+    }
+    ll cal(ll n)
+    {
+        ll res,ans=0;
+        for(ll i=0;i<=k;++i)
+        {
+            res=s[k][i];
+            for(ll j=0;j<=i;++j)
+            {
+                if((n+1-j)%(i+1))
+                    res=res*(n+1-j);
+                else
+                    res=res*((n+1-j)/(i+1));
+            }
+            ans=ans+res;
+        }
+        return ans;
+    }
+};
+```
 # 调和级数近似公式
 
 n 很大时
