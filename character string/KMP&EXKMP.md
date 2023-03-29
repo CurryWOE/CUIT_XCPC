@@ -1,32 +1,36 @@
 # kmp
 ```cpp
-char txt[N],str[N];//字符串都从1开始
-int nxt[N];//P[0]~P[x-1] 这一段字符串，使得前缀等于后缀的最长长度
+char txt[N],str[N];//0-Index
+int pmt[N];//P[0]~P[i] 这一段字符串，使得真前缀等于真后缀的最长长度
 void getNext()
 {
-    int i=2,j=0,len=strlen(str+1);
-	for(;i<=len;++i)
+    int len=strlen(str);
+    pmt[0]=0;
+	for(int i=1,j=0;i<len;++i)
 	{
-		while(j && str[i]!=str[j+1])
-            j=nxt[j];
-		if(str[i] == str[j+1])
+		while(j && str[i]!=str[j])
+            j=pmt[j-1];
+		if(str[i] == str[j])
             ++j;
-		nxt[i] = j; 
+		pmt[i] = j;
 	}
 }
 void KMP()
 {
-    int i=1,j=0,len1=strlen(txt+1),len2=strlen(str+1);
-    for(;i<=len1;++i)
+    int len1=strlen(txt),len2=strlen(str);
+    for(int i=0,j=0;i<len1;++i)
 	{
-		while(j && txt[i]!=str[j+1])
-            j=nxt[j];
-		if(txt[i] == str[j+1])
+		while(j && txt[i]!=str[j])
+            j=pmt[j-1];
+		if(txt[i] == str[j])
             ++j;
-		if(j == len2-1)
+		if(j == len2)
 		{
-			j=nxt[j];
-			cout<<i-len2+2<<"\n";
+            //允许重复匹配
+			j=pmt[j-1];
+            //不允许重复匹配
+            j=0;
+			cout<<i-len2+1<<"\n";
 		}
 	}
 }

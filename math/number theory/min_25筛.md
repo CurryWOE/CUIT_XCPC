@@ -9,7 +9,7 @@
 $f(p)$ 是一个最高次数低，关于 $p$ 的多项式，即 $f(p)=\sum\limits_{j=0}^{\infty}coe_jp^j$
 
 $f(p^k)$ 可以快速计算
-# 第1部分
+## 第1部分
 自己设一个完全积性函数 $f'$，要求 $f'(p)=f(p)$
 
 >以下$p_j$表示第 $j$ 个质数，$p_1=2$，特别地，$p_0=1$  
@@ -46,14 +46,14 @@ $g(n,j)=\begin{cases}g(n,j-1)&p_j^2>n\\g(n,j-1)-f'(p_j)(g(\frac n{p_j},j-1)-\sum
 由上式知，需要所有的 $g(\frac n{p_j},j-1)$，而且还需要递归处理子问题
 
 但是有一个重要结论 $\lfloor\frac{\lfloor\frac na\rfloor}{b}\rfloor=\lfloor\frac n{ab}\rfloor$，所以子问题个数是 $O(\sqrt n)$的
-## 证明
+### 证明
 $\lfloor\frac nx\rfloor$最多 $2\sqrt n$个
 
 当 $x\le \sqrt n$ ，因为 $x$ 最多 $\sqrt n$ 个，所以$\lfloor\frac nx\rfloor$最多 $\sqrt n$个
 
 当 $x> \sqrt n$ ，因为 $\lfloor\frac nx\rfloor\le\sqrt n$，所以$\lfloor\frac nx\rfloor$最多 $\sqrt n$个
 
-# 第2部分
+## 第2部分
 min25又想了一个关于 $f$ 的函数 $S(n,j)=\sum\limits_{i=1}^n[p_j<minp(i)]f(i)$
 
 把 $i$ 分成质数和合数讨论（1的贡献最后加上）
@@ -94,7 +94,7 @@ $k>j$ 是因为 $minp(x)>p_j$
 
 ---
 $\sum\limits_{i=1}^nf(i)=S(n,0)+1$
-# 实现
+## 实现
 把 $f(p)$ 的多项式拆成单项式 $f_1(p),f_2(p),...$，有几个单项式就有几个要预处理的数组
 
 线性筛预处理 $\lfloor\sqrt n\rfloor$ 内的质数，预处理 $sum_j=\sum\limits_{i=1}^{p_i\le\lfloor\sqrt n\rfloor}f_j(p_i)$
@@ -225,17 +225,17 @@ seive();
 m2.init();
 m2.cal();
 ```
-# 拆常数
+## 拆常数
 对于 $f(p)$ 的单项式去掉常数是完全积性函数，可以取去掉常数的单项式作为 $f'(p)$，计算完 $g(n,+\infty)$ 和 $sum$ 之后，给这两个再乘上常数（因为只计算质数的贡献），例如 $f(p)=3$，取 $f'(p)=1$，这样就凑出完全积性函数常数函数了
 
 >一定要记得两个乘回去
 
-# 拆条件
+## 拆条件
 对于 $f(x)=[条件]F(x)$，$F(x)$ 是积性函数的，可以取去掉条件的单项式作为 $f'(p)$，在计算第2部分的时候，对于质数的贡献，质数幂的贡献乘上条件，即
 
 $S(n,j)=[条件]\left(g(n,+\infty)-\sum\limits_{i=1}^jf(p_i)\right)+\sum\limits_{k>j}^{+\infty}\sum\limits_{i=1}^{\lfloor log_{p_k}n\rfloor}f(p_k^i)(S(\frac n{p_k^i},k)+[条件][i>1])$
 
-# 例题选讲
+## 例题选讲
 [n以内素数个数](https://vjudge.net/problem/LibreOJ-6235)
 
 [洛谷的同一题目](https://www.luogu.com.cn/problem/P1835)

@@ -226,13 +226,3 @@ $C_1=1,C_n=C_{n-1}\times\frac{4n-2}{n+1}$
 $C_n=\begin{cases}1&n=0,1\\\sum\limits_{i=1}^n C_{i-1}*C_{n-i}&2\le n\end{cases}$
 
 $C_n=\dbinom {2n}{n}-\dbinom {2n}{n+1}$
-
-# 杂
-
-球盒问题大部分比较简单，第二类斯特林数稍难理解
-
-组合数取模里的 exlucas 需要数论的一些知识，如果不知道先去学数论
-
-polya 是一个非常后期的定理，currywoe 由于指导老师的原因先学了
-
-由于缺少很多前置知识，使得这个定理出来之前要先学 100+行东西

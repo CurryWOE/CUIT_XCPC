@@ -15,29 +15,24 @@ $O(nlogn)$
 # 板子
 ```cpp
 const int N = 5e4 + 3;
-const int M = log2(N) + 1;
-struct SparseTable
+const int M = __lg(N) + 1;
+namespace SparseTable
 {
-    int st[N][M];
-    int merge(int x, int y)
-    {
-        return min(x, y);
-    }
+    int st[M][N];
     void init(int n)
     {
-        int m=log2(n)+1;
-        for (int i = 1; i <= n; ++i)
-            st[i][0] = a[i];
-        for (int i = 1; i < m; ++i)
+        int m=__lg(n);
+        memcpy(st[0],a,sizeof(int)*(n+1));
+        for (int i = 1; i <=m; ++i)
         {
             for (int j = 1; j + (1 << i) - 1 <= n; ++j)
-                st[j][i] = merge(st[j][i - 1], st[j + (1 << (i - 1))][i - 1]);
+                st[i][j] = min(st[i-1][j], st[i-1][j + (1 << (i - 1))]);
         }
     }
     int query(int l, int r)
     {
         int s = __lg(r - l + 1);
-        return merge(st[l][s], st[r - (1 << s) + 1][s]);
+        return min(st[s][l], st[s][r - (1 << s) + 1]);
     }
-}st;
+};
 ```

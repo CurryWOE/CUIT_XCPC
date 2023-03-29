@@ -9,12 +9,9 @@ struct TRIE
     bool exist[N];
     void init()
     {
+        memset(exist,0,sizeof(bool)*(tot+1));
         for(;tot>=0;--tot)
-        {
-            exist[tot]=0;
-            for(int j=0;j<STR;++j)
-                trie[tot][j]=0;
-        }
+            memset(trie[tot],0,sizeof(trie[tot]));
         tot=0;
     }
     void insert(char *str)
@@ -46,17 +43,16 @@ struct TRIE
 
 ```c++
 const int N=1e5+3;
-const int STR=2;
 struct TRIE
 {
-    int trie[N][STR],tot;
+    int trie[N][2],tot;
     bool exist[N];
     void init()
     {
         for(;tot>=0;--tot)
         {
             exist[tot]=0;
-            for(int j=0;j<STR;++j)
+            for(int j=0;j<2;++j)
                 trie[tot][j]=0;
         }
         tot=0;

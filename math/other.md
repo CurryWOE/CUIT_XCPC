@@ -133,50 +133,54 @@ $f_n\approx \ln n+0.5772156649+\frac 1{2n}$
 ```cpp
 log(n)+0.5772156649+1.0/(2*n)
 ```
+# 狄利克雷前后缀
+$O(n\log\log n)$
 
-# 广义斐波那契数列求循环节
+原缀已知 $a$，求 $b$
 
-$f_n=af_{n-1}+bf_{n-2}$
+逆缀已知 $b$，求 $a$
 
-## $f_n\pmod p$的最小循环节长度
-
-1. 分解$p$为素因子幂的形式，即$p=\prod p_i^{a_i}$
-2. 计算数列模$p_i^{a_i}$的循环节长度，设长度为$x_i$
-
-$x_i=G(p_i)*p^{a_i-1}$
-
-$G(p)$ 表示模$p$的最小循环节长度
-
-求$G(p)$,设$c=a^2+4b$
-
-$p=2$要特判（具体怎么判待研究）
-
-## 欧拉准则
-
-若 p 是奇质数且$p\nmid d$，
-
-d 是模 p 的二次剩余当且仅当：
-
-$d^{(p-1)/2}=1 \pmod p$
-
-否则，d 是模 p 的二次非剩余
+答案保存在原数组上
+## 狄利克雷前缀
+$b_n=\sum\limits_{d|n}a_d$
+```cpp
+for(int i=1;i<=cnt && primes[i]<=n;++i)
+{
+    for(int j=1;j*primes[i]<=n;++j)
+        a[j*primes[i]]+=a[j];
+}
+```
+## 狄利克雷后缀
+$b_d=\sum\limits_{d|n}a_n$
+```cpp
+for(int i=1;i<=cnt && primes[i]<=n;++i)
+{
+    for(int j=n/primes[i];j;--j)
+        a[j]+=a[j*primes[i]];
+}
+```
+## 逆狄利克雷前缀
+$b_n=\sum\limits_{d|n}a_d$
+```cpp
+for(int i=cnt;i;--i)
+{
+    for(int j=n/primes[i];j;--j)
+        a[j*primes[i]]-=a[j];
+}
+```
+## 逆狄利克雷后缀
+$b_d=\sum\limits_{d|n}a_n$
+```cpp
+for(int i=cnt;i;--i)
+{
+    for(int j=1;j*primes[i]<=n;++j)
+        a[j]-=a[j*primes[i]];
+}
+```
 
 ---
-
-若$c$是$p$的二次剩余,枚举$p-1$的因子
-
-若$c$是$p$的二次非剩余,枚举$(p-1)(p+1)$的因子
-
-找到$G(p)$满足
-
-$\begin{bmatrix}a&b\\1&0\end{bmatrix}^{G(p)} =\begin{bmatrix}1&0\\0&1\end{bmatrix} \pmod {p}$
-
-3. 循环节长度$L=lcm(x_i)$
-
-## 求较小循环节
-
-注意到 $G(p)$一定是$(p-1)(p+1)$的因子
-
-所以$x_i$一定是$(p_i-1)(p_i+1)*p_i^{a_i-1}$的因子
-
-循环节长度$L=\prod (p_i-1)(p_i+1)*p_i^{a_i-1} \pmod p$
+```cpp
+const long long N=1e18+1;
+const long long N=1e18+(long double)1;
+```
+上面这个会丢精度，需要改成下面那个

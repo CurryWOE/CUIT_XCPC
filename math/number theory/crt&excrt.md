@@ -1,6 +1,6 @@
 #! https://zhuanlan.zhihu.com/p/557860810
 # CRT
-中国剩余定理（Chinese remainder theorem)
+中国剩余定理(Chinese remainder theorem)
 
 ## 时间复杂度
 $O(nlog n)$
@@ -72,8 +72,6 @@ $x=n_1*p+a_1=n_2*q+a_2$
 
 >裴蜀定理：设 $a,b$ 是不全为零的整数，则存在整数 $x,y$, 使得 $ax+by=gcd(a,b)$.
 
-
-
 其他情况下，可以通过扩展欧几里得算法解出来一组可行解$(p,q)$
 
 则原来的两方程组成的模方程组的解为
@@ -82,26 +80,33 @@ $x=n_1*p+a_1 \pmod {lcm(m1,m2)}$
 
 多个方程,用上面的方法两两合并即可
 
+特解是sum，通解是sum+k*lcm，区间解的个数需先规整
+
+```cpp
+long long L=(l-sum)/lcm*lcm+sum;
+if(L<l)
+    L+=lcm;
+long long R=(r-sum)/lcm*lcm+sum;
+if(R>r)
+    R-=lcm;
+long long ans=max(0ll,(R-L)/lcm+1);
+```
+
 ```c++
 long long CRT(int number,long long* remainder,long long* modulus)
 {
     long long lcm = modulus[1],sum = remainder[1],x,y,gcd;
-    int fail = 0;
     for(int i = 2;i <= number;++i)
     {
         remainder[i] = ((remainder[i] - sum) % modulus[i] + modulus[i]) % modulus[i];
         gcd = exgcd(lcm,modulus[i],x,y);
-        if(remainder[i] % gcd == 0)
-            x = x * (remainder[i] / gcd) % modulus[i];
-        else
-        {
-            fail = 1;
-            break;
-        }
+        if(remainder[i] % gcd != 0)
+            return -1;
+        x = x * (remainder[i] / gcd) % modulus[i];
         sum += x * lcm;
         lcm = lcm / gcd * modulus[i];
         sum = (sum % lcm + lcm) % lcm;
     }
-    return fail ? -1 : sum;
+    return sum;
 }
 ```
