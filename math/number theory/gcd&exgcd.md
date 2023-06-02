@@ -1,5 +1,4 @@
 #! https://zhuanlan.zhihu.com/p/557860454
-part 1
 # gcd
 欧几里得算法（又名辗转相除法）
 ## 时间复杂度
@@ -14,8 +13,6 @@ int gcd(int a,int b)
 //库函数,最好用这个
 <algorithm> 里的__gcd
 ```
-
-part 2
 # exgcd
 
 解线性同余方程，其形式如下

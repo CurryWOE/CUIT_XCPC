@@ -1,70 +1,28 @@
-设点 $A(x_1,y_1),B(x_2,y_2)$
-# 曼哈顿距离
-$dis=|x_1-x_2|+|y_1-y_2|$
-
-u和v的k维曼哈顿距离可以用 $a$ 序列表示，其中 $a_i\in\{0,1\}$，因此 $a$ 总共有 $2^k$ 个。而曼哈顿距离一定是其中最大值，因为曼哈顿距离是绝对值相加
-
-$$dis_{u,v}=\max\limits_{\forall a}\{\sum\limits_{i=1}^k(-1)^{a_i}(u_i-v_i)\}$$
-
-设 $f(a,u)=\sum\limits_{i=1}^k(-1)^{a_i}u_i$，则距离为 $\max\{f(a,u)-f(a,v)\}$
-
-记 $\overline a$ 表示 $a$ 的每位取反，则距离为 $\max\{f(a,u)+f(\overline a,v)\}$
-
-因此空间中最远两点距离是，预处理 $g(a)=\max\limits_{\forall u}\{f(a,u)\}$
-
-$ans=\max\limits_{\forall a}\{g(a)+g(\overline a)\}$
-# 切比雪夫距离
-$dis=max(|x_1-x_2|,|y_1-y_2|)$
-# 曼哈顿距离与切比雪夫距离的相互转化
-点 $(x,y)$ 转化为 $(x+y,x-y)$，新坐标系的切比雪夫距离就是原坐标系的曼哈顿距离
-
-点 $(x,y)$ 转化为 $(\frac{x+y}2,\frac{x-y}2)$，新坐标系的曼哈顿距离就是原坐标系的切比雪夫距离
-# 判一堆点是否在两条线上
-若点数小于4，则可以
-
-若前3点共线，则前3点确定一条直线，然后扫描确定另一条直线
-
-若不共线，前3点任意两点确定一条直线，然后扫描确定另一条直线
-# 求线段整点
-ans=gcd(横坐标差值，纵坐标差值)+1
-# 正多边形相邻对角线夹角相等
-做一个正多边形的外接圆，每个夹角都是正多边形的一条边为弦对应的圆周角
-
-圆周角定理：等圆中，等弧或等弦所对的圆周角都等于弧所对的圆心角的一半
-
-因为是正多边形，所以等弦，因为上述定理，所以等角
-# 点积
-向量点积，几何意义是$|a||b|cos(a,b)$，结果表示夹角情况，正锐角，0直角，负钝角
-# 叉积
-向量叉积，几何意义是$|a||b|sin(a,b)$，结果表示向量共起点时，只考虑180以内的夹角，b在a的什么方向，正逆时针，0共线，负顺时针
-# 极坐标系
-在平面上取一定点 $O$，从 $O$ 引一条水平射线 $Ox$，规定方向自左至右，再选定一个长度单位并规定角旋转的正方向为逆时针方向，这样就构成了一个极坐标系
-
-点O叫作极点（类似笛卡尔坐标系的原点）
-
-射线叫作极轴（类似笛卡尔坐标系的x正半轴）
-
-极坐标系中的点 $A$ 用 $(r,\theta)$ 表示，极径$r=|OA|$，极角$\theta=\angle AOx$
-# 极角序
-选定极点，其他点按照极角排序，如果在坐标系的上下两边，上边大于下边，如果同边按叉积升序
-# 零散结论
-多边形外角和360
-
-凸包周长，涉及圆弧的，只在圆弧处转弯的，圆弧拼起来一点是360，感性理解是从起点再回到起点，由于只在圆弧转弯，一定是360
+#! https://zhuanlan.zhihu.com/p/625081715
+# dls的计算几何板子
+板子由dls在namomo Camp解释，笔者对这份板子添加注释
 ```cpp
 typedef double db;
-const db EPS = 1e-9;//可以取更小
+const db EPS = 1e-9;
+//由于硬件限制，浮点数运算有误差，eps用来消除误差
 inline int sign(db a) { return a < -EPS ? -1 : a > EPS; }
+//判断数符号，负数返回-1，0返回0，正数返回1
 inline int cmp(db a, db b) { return sign(a - b); }
+//比较两数大小
+//点类，向量类
+//因为有许多操作相似，所以并在一起
 struct P
 {
     db x, y;
+    //点表示坐标，向量表示向量
     P() {}
     P(db _x, db _y) : x(_x), y(_y) {}
+    //构造函数
     P operator+(P p) { return {x + p.x, y + p.y}; }
     P operator-(P p) { return {x - p.x, y - p.y}; }
     P operator*(db d) { return {x * d, y * d}; }
     P operator/(db d) { return {x / d, y / d}; }
+    //向量加减乘除
     bool operator<(P p) const
     {
         int c = cmp(x, p.x);
@@ -76,11 +34,13 @@ struct P
     {
         return cmp(x, o.x) == 0 && cmp(y, o.y) == 0;
     }
+    //比较字典序
     db dot(P p) { return x * p.x + y * p.y; }
     //点积
     db det(P p) { return x * p.y - y * p.x; }
     //叉积
     db distTo(P p) { return (*this - p).abs(); }
+    //点距离
     db alpha() { return atan2(y, x); }
     void read() { cin >> x >> y; }
     void write() { cout << "(" << x << "," << y << ")" << endl; }
@@ -89,10 +49,13 @@ struct P
     P rot90() { return P(-y, x); }
     P unit() { return *this / abs(); }
     int quad() const { return sign(y) == 1 || (sign(y) == 0 && sign(x) >= 0); }
+    //判断点在极角坐标系上半边还是下半边，极点和极轴也算上半边
     P rot(db an) { return {x * cos(an) - y * sin(an), x * sin(an) + y * cos(an)}; }
+    //向量旋转
 };
-struct L// ps[0] -> ps[1]
-{ 
+//线类，半平面类
+struct L
+{ // ps[0] -> ps[1]
     P ps[2];
     P &operator[](int i) { return ps[i]; }
     P dir() { return ps[1] - ps[0]; }
@@ -109,14 +72,16 @@ struct L// ps[0] -> ps[1]
         return {ps[0] + delta, ps[1] + delta};
     }
 };
+
 #define cross(p1, p2, p3) ((p2.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (p2.y - p1.y))
 #define crossOp(p1, p2, p3) sign(cross(p1, p2, p3))
 //叉积
-bool chkLL(P p1, P p2, P q1, P q2)//判断向量平行
+bool chkLL(P p1, P p2, P q1, P q2)
 {
     db a1 = cross(q1, q2, p1), a2 = -cross(q1, q2, p2);
     return sign(a1 + a2) != 0;
 }
+//判断向量平行
 P isLL(P p1, P p2, P q1, P q2)
 {
     db a1 = cross(q1, q2, p1), a2 = -cross(q1, q2, p2);
@@ -137,6 +102,7 @@ bool isSS(P p1, P p2, P q1, P q2)
     return intersect(p1.x, p2.x, q1.x, q2.x) && intersect(p1.y, p2.y, q1.y, q2.y) &&
            crossOp(p1, p2, q1) * crossOp(p1, p2, q2) <= 0 && crossOp(q1, q2, p1) * crossOp(q1, q2, p2) <= 0;
 }
+
 bool isSS_strict(P p1, P p2, P q1, P q2)
 {
     return crossOp(p1, p2, q1) * crossOp(p1, p2, q2) < 0 && crossOp(q1, q2, p1) * crossOp(q1, q2, p2) < 0;
@@ -190,6 +156,7 @@ db rad(P p1, P p2)
 {
     return atan2l(p1.det(p2), p1.dot(p2));
 }
+
 db incircle(P p1, P p2, P p3)
 {
     db A = p1.distTo(p2);
@@ -197,6 +164,7 @@ db incircle(P p1, P p2, P p3)
     db C = p3.distTo(p1);
     return sqrtl(A * B * C / (A + B + C));
 }
+
 // polygon
 //简单多边形的问题只有判断点在多边形内，和多边形面积简单，其他只做凸多边形
 db area(vector<P> ps)
@@ -260,6 +228,7 @@ vector<P> convexHullNonStrict(vector<P> ps)
     return qs;
 }
 //凸包
+
 db convexDiameter(vector<P> ps)
 {
     int n = ps.size();
@@ -333,6 +302,7 @@ int type(P o1, db r1, P o2, db r2)
         return 1;
     return 0;
 }
+
 vector<P> isCL(P o, db r, P p1, P p2)
 {
     if (cmp(abs((o - p1).det(p2 - p1) / p1.distTo(p2)), r) > 0)
@@ -342,6 +312,7 @@ vector<P> isCL(P o, db r, P p1, P p2)
     P m = p1 - (p2 - p1) * (x / y), dr = (p2 - p1) * (sqrt(d) / y);
     return {m - dr, m + dr}; // along dir: p1->p2
 }
+
 vector<P> isCC(P o1, db r1, P o2, db r2)
 { // need to check whether two circles are the same
     db d = o1.distTo(o2);
@@ -355,6 +326,7 @@ vector<P> isCC(P o1, db r1, P o2, db r2)
     P q1 = o1 + dr * y, q2 = dr.rot90() * x;
     return {q1 - q2, q1 + q2}; // along circle 1
 }
+
 vector<P> tanCP(P o, db r, P p)
 {
     db x = (p - o).abs2(), d = x - r * r;
@@ -364,6 +336,7 @@ vector<P> tanCP(P o, db r, P p)
     P q2 = (p - o).rot90() * (r * sqrt(d) / x);
     return {q1 - q2, q1 + q2}; // counter clock-wise
 }
+
 vector<L> extanCC(P o1, db r1, P o2, db r2)
 {
     vector<L> ret;
@@ -380,6 +353,7 @@ vector<L> extanCC(P o1, db r1, P o2, db r2)
     }
     return ret;
 }
+
 vector<L> intanCC(P o1, db r1, P o2, db r2)
 {
     vector<L> ret;
@@ -388,6 +362,7 @@ vector<L> intanCC(P o1, db r1, P o2, db r2)
     rep(i, 0, min(ps.size(), qs.size())) ret.pb(L(ps[i], qs[i])); // c1 counter-clock wise
     return ret;
 }
+
 db areaCT(db r, P p1, P p2)
 {
     vector<P> is = isCL(P(0, 0), r, p1, p2);
@@ -408,6 +383,7 @@ db areaCT(db r, P p1, P p2)
         return (p1.det(is[1]) + r * r * rad(is[1], p2)) / 2;
     return p1.det(p2) / 2;
 }
+
 bool parallel(L l0, L l1) { return sign(l0.dir().det(l1.dir())) == 0; }
 bool cmp(P a, P b)
 {
@@ -484,3 +460,4 @@ P orthoCenter(P a, P b, P c)
     return {x0, y0};
 }
 //垂心，垂线的交点
+```

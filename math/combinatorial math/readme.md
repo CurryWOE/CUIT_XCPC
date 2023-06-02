@@ -148,6 +148,11 @@ $$|A\cup B\cup C|=|A|+|B|+|C|-|A\cap B|-|B\cap C|-|C\cap A|+|A\cap B\cap C|$$
 
 $f(n)=\begin{cases}0&n=0\\1&n=1\\f(n-1)+f(n-2)&n\ge 2\end{cases}$
 
+$gcd(F_n,F_m)=F_{gcd(n,m)}$
+
+$\sum\limits_{i=0}^n F_i=F_{n+2}-1$
+
+模m意义下，循环节长度小于等于6m
 ## 错排问题
 
 我们把错位排列问题具体化，考虑这样一个问题：
