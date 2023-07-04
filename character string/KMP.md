@@ -1,8 +1,8 @@
 #! https://zhuanlan.zhihu.com/p/625075884
 # kmp
-border：一个字符串的border是其真子串中，既是前缀又是后缀，而且长度最长的那个子串
+border：一个字符串的border是其真子串中，既是前缀又是后缀
 
-部分匹配表PMT：字符串前缀的border长度
+部分匹配表PMT：字符串前缀的最长border长度
 
 文本串text string：查找的文本范围
 
@@ -11,7 +11,7 @@ border：一个字符串的border是其真子串中，既是前缀又是后缀�
 字符串最小循环节长度=len-PMT[len-1]
 ```cpp
 char txt[N],str[N];//0-Index
-int pmt[N];//P[0]~P[i] 这一段字符串，border长度
+int pmt[N];//P[0]~P[i] 这一段字符串，最长border长度
 void getpmt()
 {
     int len=strlen(str);
