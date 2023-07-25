@@ -75,7 +75,7 @@ struct L
 
 #define cross(p1, p2, p3) ((p2.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (p2.y - p1.y))
 #define crossOp(p1, p2, p3) sign(cross(p1, p2, p3))
-//叉积
+//叉积，可以用来求三角形面积（输入参数是三个点）
 bool chkLL(P p1, P p2, P q1, P q2)
 {
     db a1 = cross(q1, q2, p1), a2 = -cross(q1, q2, p2);
