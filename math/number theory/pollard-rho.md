@@ -93,7 +93,7 @@ void allfactor(ll n)
         return;
     }
     ll t = pollardRho(n);
-    maxfactor(t);
-    maxfactor(n / t);
+    allfactor(t);
+    allfactor(n / t);
 }
 ```

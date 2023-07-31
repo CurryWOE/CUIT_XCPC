@@ -1,6 +1,6 @@
 #! https://zhuanlan.zhihu.com/p/625097784
 # 网络流DINIC
-$O(V^2E)$，如果用在二分图，是 $O(V\sqrt E)$
+$O(V^2E)$，如果用在二分图，是 $O(E\sqrt V)$
 
 最大流：假设源点流量够多，求汇点最大流量
 
@@ -13,13 +13,13 @@ $O(V^2E)$，如果用在二分图，是 $O(V\sqrt E)$
 const int N=2e2+5;
 const int M=1e6+3;
 const ll INF=1e18;
-struct Edge
+namespace Dinic
 {
-    int v,nxt;
-    ll cap;
-};
-struct Dinic
-{
+    struct Edge
+    {
+        int v,nxt;
+        ll cap;
+    };
     int n,s,t,tot;
     int head[N],dep[N];
     Edge e[M];
@@ -92,8 +92,8 @@ struct Dinic
             res+=findpath(s,INF);
         return res;
     }
-}di;
-di.init(n,s,t);
-di.addEdge(u,v,w);//边的顺序一定是源点-中间点-汇点
-di.dinic();
+};
+Dinic::init(n,s,t);
+Dinic::addEdge(u,v,w);//边的顺序一定是源点-中间点-汇点
+Dinic::dinic();
 ```
