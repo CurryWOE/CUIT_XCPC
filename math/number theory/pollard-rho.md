@@ -58,38 +58,12 @@ bool millerRabin(ll x)
     }
     return true;
 }
-ll ans=2;
-void maxfactor(ll n)
-{
-    if (n<ans)
-        return;
-    if (millerRabin(n))
-    {
-        ans=n;
-        return;
-    }
-    ll t = pollardRho(n);
-    maxfactor(t);
-    maxfactor(n / t);
-}
-ll ans=INF;
-void minfactor(ll n)
-{
-    if (millerRabin(n))
-    {
-        ans=min(ans,n);
-        return;
-    }
-    ll t = pollardRho(n);
-    maxfactor(t);
-    maxfactor(n / t);
-}
-vector<ll> factor;
+vector<ll> Primefactor;
 void allfactor(ll n)
 {
     if (millerRabin(n))
     {
-        factor.push_back(n);
+        Primefactor.push_back(n);
         return;
     }
     ll t = pollardRho(n);
