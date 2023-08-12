@@ -1,6 +1,8 @@
 #! https://zhuanlan.zhihu.com/p/625081715
 # dls的计算几何板子
 板子由dls在namomo Camp解释，笔者对这份板子添加注释
+
+求点到线段距离的相关函数常数较大
 ```cpp
 typedef double db;
 const db EPS = 1e-9;

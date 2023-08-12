@@ -1,24 +1,20 @@
 #! https://zhuanlan.zhihu.com/p/579077838
 # 判断质数
 # 试除法
-
-## 时间复杂度
-$O(\sqrt n)$
 ```c++
-int isprime(int i)
+bool isprime(int i)
 {
-    if(i<2 || (i&1)==0 && i!=2)
+    if(i<2 || i%2==0 && i!=2)
         return 0;
     int sq=sqrt(i);
     for(int k=3;k<=sq;k+=2)
     {
         if(i%k==0)
-            return 0;
+            return false;
     }
-    return 1;
+    return true;
 }
 ```
-
 # 米勒-拉宾素性检验
 [原理](https://zhuanlan.zhihu.com/p/220203643)
 
@@ -29,13 +25,10 @@ $2^{32}$ 以内，$2,7,61$
 $2^{64}$ 以内，$2,325,9375,28178,450775,9780504,1795265022$
 
 $2^{78}$ 以内，$2,3,5,7,11,13,17,19,23,29,31,37$
-
 ## 时间复杂度
-
 $O(klog n)$
 
 但因为我们使用了固定的一组数，所以 $k=7$
-
 ```c++
 typedef unsigned long long ll;
 ll fastPower(ll a, ll n, ll p)

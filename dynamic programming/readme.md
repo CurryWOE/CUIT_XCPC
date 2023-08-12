@@ -1,6 +1,6 @@
-DP是记忆化搜索，是递推
-
-DP优化：
+#! https://zhuanlan.zhihu.com/p/648828118
+# DP导读
+记忆化搜索
 
 合并同类项
 

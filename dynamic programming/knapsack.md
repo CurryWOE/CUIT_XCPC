@@ -1,5 +1,6 @@
 #! https://zhuanlan.zhihu.com/p/625095842
 # 背包问题
+a,b互质，不能表示的最大体积是ab-a-b
 # 01背包
 ```cpp
 struct obj
