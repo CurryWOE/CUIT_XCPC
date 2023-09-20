@@ -1,10 +1,8 @@
 #! https://zhuanlan.zhihu.com/p/563153071
-# 输入输出
->输入输出(input/output)，以下简写为IO
-
+# 输入输出(input/output)
 # C的IO
 >这里只讲scanf和printf  
->getchar,putchar,puts等，可以自己查Cpp Reference
+>getchar,putchar,puts等，可以自己查[Cpp Reference](https://zh.cppreference.com/w/%E9%A6%96%E9%A1%B5)
 
 scanf，格式化输入并赋值给变量，其格式如下
 ```cpp
@@ -24,11 +22,9 @@ double|lf|
 
 一些零散的知识：
 
-%d会跳过非数字的字符，%s会跳过空格
+%c会输入所有的字符，而其他类型会跳过[space],[enter],[tab]
 
 %3d可以控制数字输入位数为3位，多于这个位数的不会读入
-
-%c会输入所有的字符，包括空格和换行
 
 ---
 printf，格式化输出，其格式如下
@@ -56,10 +52,11 @@ cin，输入，其格式如下
 ```cpp
 cin>>a;
 cin>>a>>b;
+char s[10];
+cin>>(s+1);//cpp17及以前
+cin.get(s+1,x)//cpp20及以后，读入至多x个字符
 ```
-不同于C，没有控制符，但是有C的一些特性
-
-输入整数会跳过非数字的字符，输入字符串会跳过空格
+不同于C，没有控制符
 
 ---
 cout，输出，其格式如下
@@ -80,8 +77,8 @@ endl表示清空缓冲区，同时起到换行的作用，不同于printf，cout
 为了加快C++的IO，需要在int main里，最前面加上
 ```cpp
 ios::sync_with_stdio(false);
-cin.tie(0);
-cout.tie(0);
+cin.tie(nullptr);
+cout.tie(nullptr);
 ```
 注意，上面代码加上后，不能再使用C的IO
 
@@ -103,7 +100,6 @@ cout<<a<<'\n';
 改为下面这种格式
 ```cpp
 cout<<a<<endl;
-fflush(stdout);
 ```
 # 输入到文件末尾
 C
