@@ -1,5 +1,4 @@
 # trie
-
 ```c++
 const int N=1e5+3;
 const int STR=26;
@@ -14,7 +13,7 @@ struct TRIE
             memset(trie[tot],0,sizeof(trie[tot]));
         tot=0;
     }
-    void insert(char *str)
+    void insert(string& str)
     {
         int id,root = 0;
         for (char s:str)
