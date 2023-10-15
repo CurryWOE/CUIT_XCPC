@@ -1,9 +1,6 @@
 #! https://zhuanlan.zhihu.com/p/557860454
-# gcd
-欧几里得算法（又名辗转相除法）
-
-辗转相减可以用来推式子：
-
+# gcd(欧几里得算法,又名辗转相除法)
+## 辗转相减例题：证明 $\gcd(2^i-1,2^j-1)=2^{\gcd(i,j)}-1$
 设 $j>i$
 
 $gcd(2^i-1,2^j-1)=gcd(2^i-1,2^j-2^i)=gcd(2^i-1,2^i(2^{j-i}-1))$
@@ -17,7 +14,6 @@ $gcd(2^i-1,2^j-1)=gcd(2^i-1,2^j-2^i)=gcd(2^i-1,2^i(2^{j-i}-1))$
 $gcd(2^i-1,2^j-1)=2^{gcd(i,j)}-1$
 ## 时间复杂度
 $O(log n)$
-## 代码
 ```c++
 //手写
 int gcd(int a,int b)
@@ -28,42 +24,31 @@ int gcd(int a,int b)
 <algorithm> 里的__gcd
 ```
 # exgcd
+解二元一次方程，多元一次方程可以拆解为多个二元一次方程
 
-解线性同余方程，其形式如下
+$Ax+By+Cz\equiv d\rightarrow\begin{cases}Ax+By=k\gcd(A,B)\\k\gcd(A,B)+Cz=d\end{cases}$
 
-$Ax\equiv C \pmod B$
-，其中$A$、$B$、$C$都为常量，$x$是未知数
+下面以二元一次方程为例： $Ax+By=C$
 
-可以转化为$Ax+By=C$.  
+设 $d=gcd(A,B)$
 
-$A$、$B$、$C$是整数,求$x$和$y$的整数解
+若 $C \% d\ne 0$,则方程无解
 
-设$d=gcd(A,B)$
+例如 $2x+4y=1$ 没有整数解，因为 $gcd=2$，$1\%2\ne 0$
 
-若$C \% d!=0$,则方程无解
+exgcd解出最大公约数 $d$，特解$x_0,y_0$
 
-例如$2*x+4*y=1$没有整数解，因为gcd=2，$1\%2=1$
-
-exgcd解出特解$x_0,y_0$
-
-通解：
-
-$x=C/d*x_0+B/d*k$，$y=C/d*y_0-A/d*k$。
-
-exgcd函数返回值是最大公约数
-
-## 代码
+通解： $x=\frac Cdx_0+\frac Bdk$，$y=\frac Cdy_0-\frac Adk$
 ```c++
 int exgcd(int a,int b,int &x,int &y)
 {
 	if(!b)
 	{
-		x=1;
-		y=0;
+		x=1,y=0;
 		return a;
 	}
 	int r=exgcd(b,a%b,y,x);
-	y-=x*(a/b);
+	y-=a/b*x;
 	return r;
 }
 ```
