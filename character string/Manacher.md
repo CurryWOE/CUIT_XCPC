@@ -1,3 +1,4 @@
+#! https://zhuanlan.zhihu.com/p/557796398
 # Manacher
 计算以位置i为中心的最长回文串半径，半径为i到回文串最右端包含的字符数
 ```cpp
