@@ -1,5 +1,6 @@
 #! https://zhuanlan.zhihu.com/p/557878869
 # 倍增LCA
+倍增与其他求LCA的方法相比，优点是可以维护动态加叶子的树，缺点是不能修改
 ```cpp
 const int N = 5e5 + 3;
 const int M = 20;
