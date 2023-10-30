@@ -1,5 +1,7 @@
-#! https://zhuanlan.zhihu.com/p/557860454
-# gcd(欧几里得算法,又名辗转相除法)
+#! https://zhuanlan.zhihu.com/p/662653668
+# gcd&EXgcd
+# gcd
+欧几里得算法,又名辗转相除法
 ## 辗转相减例题：证明 $\gcd(2^i-1,2^j-1)=2^{\gcd(i,j)}-1$
 设 $j>i$
 
