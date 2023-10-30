@@ -3,7 +3,11 @@
 # 数论杂
 
 # 线性回归
+## 一维
+已知 $a_i$ ，求 $x$ 使得 $\sum\limits_{i=1}^n|a_i-x|$ 最小
 
+若 $n$ 是奇数，则 $x$ 是 $a_i$ 中位数，否则 $x$ 是 $a_i$ 中位数之间都可以（包含两个中位数）
+## 二维
 一堆点 $(x_i,y_i)$ ，求一条直线 $F(x):y=Ax+B$ ，使得 $\sum\limits_{i=1}^n (y_i-F(x_i))^2$ 最小
 
 设 $\overline{x}=\frac{\sum\limits_{i=1}^n x_i}n$ ， $\overline{y}=\frac{\sum\limits_{i=1}^n y_i}n$
