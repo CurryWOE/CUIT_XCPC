@@ -212,6 +212,23 @@ $inv()$表示逆元，之后学习
 模运算满足结合律、交换律和分配律。  
 
 >特别地，当n是mod的倍数，n*inv(n)，如果处处取模会被算成0，但实际上式子结果是1，所以要么全程int128，要么找其他方法解决，总之不能直接取模
+
+>(mod-x)+x=mod，当mod是奇数，x和-x在模意义下一定一奇一偶。当 $|x|\%mod=x\%mod$ ，x是正数，否则是负数
+## 快速取模(Barrett 模乘)
+取模比加减慢很多，如需卡常，使用此算法
+```cpp
+typedef unsigned long long ull;
+typedef __uint128_t L;
+struct FastMod {
+    ull b, m;
+    FastMod(ull b) : b(b), m(ull((L(1) << 64) / b)) {}
+    ull reduce(ull a) {
+        ull q = (ull)((L(m) * a) >> 64);
+        ull r = a - q * b;
+        return r >= b ? r - b : r;
+    }
+};
+```
 ## 同余
 $a\equiv b \pmod n$ 表示$a$和$b$模$n$同余，即$a$和$b$除以$n$的余数相等。  
 $\equiv$ 是恒等于符号，表示绝对成立，无论变量取什么值  
