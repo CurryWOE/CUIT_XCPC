@@ -22,12 +22,13 @@ for(int i=0;i<n;++i)
 }
 ```
 # 多重背包
+## 二进制优化
 ```cpp
 struct originalObj
 {
     int w,v,num;
 }a[N];
-vector<obj> b;
+vector<obj> b;//对b做01背包
 for(int i=0;i<n;++i)
 {
     for(int j=1;a[i].num>j;j*=2)
@@ -37,7 +38,28 @@ for(int i=0;i<n;++i)
     }
     b.push_back({a[i].w*a[i].num,a[i].v*a[i].num});
 }
-//对b做01背包
+```
+## 单调队列优化
+$dp[j]$ 由 $dp[j-k*v[i]],v\in cnt[i]$ 转移而来。尝试将 j 改变一，看看它决策集合的变化。发现和原来决策集合没有交集，仅仅是平移了一位。所以模 $v[i]$ 余数相同的 j 才会影响转移，不同的不会。
+```cpp
+for (int i = 1; i <= n; ++i)
+{
+    memcpy(g,f,sizeof(f));
+    for (int rem = 0; rem < v[i]; ++rem)
+    {
+        deque<int> q;
+        for (int j = rem; j <= W; j += v[i])
+        {
+            if (!q.empty() && q.front() < j - cnt[i] * v[i])
+                q.pop_front();
+            if(!q.empty())
+                f[j]=max(g[j],g[q.front()]+(j-q.front())/v[i]*w[i]);
+            while (!q.empty() && g[q.back()] +(j- q.back()) / v[i] * w[i] <= g[j])
+                q.pop_back();
+            q.push_back(j);
+        }
+    }
+}
 ```
 # 混合背包
 ```cpp

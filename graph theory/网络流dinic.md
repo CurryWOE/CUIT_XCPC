@@ -40,9 +40,8 @@ namespace Dinic
         if(u==t)
             return in;
         ll out=0;
-        for(int i=cur[u];i && in;i=e[i].nxt)
+        for(int &i=cur[u];i && in;i=e[i].nxt)
         {
-            cur[u]=i;
             int v=e[i].v;
             if(!e[i].cap || dep[v]!=dep[u]+1)
                 continue;

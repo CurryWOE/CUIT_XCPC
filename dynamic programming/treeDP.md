@@ -20,6 +20,7 @@ $f(u,i,j)=\max_{k\le j,k\le v_{size}}f(u,i-1,j-k)+f(v,v_{son-num},k)$
 
 第二维倒序滚掉
 
+sz优化使得复杂度为 $O(n^2)$
 ```cpp
 void dfs(int u,int fa)
 {
