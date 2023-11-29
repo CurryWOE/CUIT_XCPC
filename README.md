@@ -1,3 +1,4 @@
+2023.11.29停止更新，codeforces max rating1918，区域赛5铁1铜
 # XCPC
 这个仓库为了cuit学子学习xcpc相关知识而创建
 
