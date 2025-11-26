@@ -1,13 +1,13 @@
 ```cpp
+#include <bit>
 struct zkwSegmentTree
 {
     int sum[N<<2];
     int N;
     void Build(int n)
     {
-        N=1;
-        while(N<n+2)
-            N<<=1;
+        //+2是查询需要为左右各预留一个点
+        N=bit_ceil(n+2);//bit_ceil找到大于或等于 target 的最小 2 的幂次
         for(int i=1;i<=n;++i)
             sum[N+i]=A[i];
         for(int i=N-1;i;--i)
