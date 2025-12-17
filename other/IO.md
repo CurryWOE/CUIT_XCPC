@@ -61,6 +61,7 @@ cin.get(s+1,x)//cpp20及以后，读入至多x个字符
 ---
 cout，输出，其格式如下
 ```cpp
+#include <iomanip>
 cout<<a;
 cout<<a<<" "<<b;
 cout<<fixed<<setprecision(3)<<c;
