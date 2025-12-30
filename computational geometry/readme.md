@@ -1,5 +1,29 @@
 #! https://zhuanlan.zhihu.com/p/563140295
 # 计算几何导读
+# 正弦定理
+$\frac{a}{\sin A}=\frac{b}{\sin B}=\frac{c}{sin C}=2r$
+
+r为外接圆半径
+# 余弦定理
+$\cos A=\frac{b^2+c^2-a^2}{2bc}$
+
+$\cos B=\frac{a^2+c^2-b^2}{2ac}$
+
+$\cos C=\frac{a^2+b^2-c^2}{2ab}$
+# 浮点数最大公约数
+fmod,<cmath>,计算除法操作 x / y 的浮点余数,返回值的符号与 x 相同
+
+EPS应该略小于根据题目数据范围所能得到的最小gcd
+```cpp
+double fgcd(double x,double y)
+{
+    if(fabs(x)<EPS)
+        return y;
+    if(fabs(y)<EPS)
+        return x;
+    return fgcd(y,fmod(x,y));
+}
+```
 # 点积
 向量点积，几何意义是$|a||b|cos(a,b)$，结果表示夹角情况，正锐角，0直角，负钝角
 # 叉积
