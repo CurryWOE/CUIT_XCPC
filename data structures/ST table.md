@@ -14,14 +14,14 @@ $O(nlogn)$
 
 # 板子
 ```cpp
-const int N = 5e4 + 3;
-const int M = __lg(N) + 1;
+const unsigned int N = 5e4 + 3;
+const int M = bit_width(N);//<bit>,cpp20,函数参数是无符号整数才能编译
 namespace SparseTable
 {
     int st[M][N];
-    void init(int n)
+    void init(unsigned int n)
     {
-        int m=__lg(n);
+        int m=bit_width(n)-1;
         memcpy(st[0],a,sizeof(int)*(n+1));
         for (int i = 1; i <=m; ++i)
         {
@@ -29,9 +29,9 @@ namespace SparseTable
                 st[i][j] = min(st[i-1][j], st[i-1][j + (1 << (i - 1))]);
         }
     }
-    int query(int l, int r)
+    int query(unsigned int l, unsigned int r)
     {
-        int s = __lg(r - l + 1);
+        int s = bit_width(r - l + 1)-1;
         return min(st[s][l], st[s][r - (1 << s) + 1]);
     }
 };

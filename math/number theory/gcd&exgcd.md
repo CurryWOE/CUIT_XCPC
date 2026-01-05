@@ -23,7 +23,7 @@ int gcd(int a,int b)
 	return b ? gcd(b,a%b) : a;
 }
 //库函数,最好用这个
-<algorithm> 里的__gcd
+<numeric>,cpp17,std::gcd(m,n)
 ```
 # exgcd
 解二元一次方程，多元一次方程可以拆解为多个二元一次方程
