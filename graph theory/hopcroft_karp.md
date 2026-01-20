@@ -1,6 +1,6 @@
 #! https://zhuanlan.zhihu.com/p/648828661
 # Hopcroft-Karp
-求二分图最大匹配的最快算法
+求二分图最大匹配的最快算法， $O(\sqrt V E)$
 ```cpp
 struct HopcroftKarp
 {
