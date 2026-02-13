@@ -61,7 +61,7 @@ struct TRIE
         int root = 0,id;
         for(int i=30;i>=0;--i)
         {
-            id= (x>>i)&1;
+            id=(x>>i)&1;
             if(!trie[root][id])
                 trie[root][id] = ++tot;
             root = trie[root][id];
