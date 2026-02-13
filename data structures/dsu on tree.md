@@ -19,15 +19,14 @@ $O(nlog n)$
 vector<int> e[N];
 int siz[N],hson[N];
 int ans[N];
-void dfs(int u,int fa)
+void dfs(int u)
 {
     siz[u]=1;
     int mxsz=0;
     for(auto &v:e[u])
     {
-        if(v==fa)
-            continue;
-        dfs(v,u);
+        e[v].erase(remove(e[v].begin(),e[v].end(),u),e[v].end());
+        dfs(v);
         siz[u]+=siz[v];
         if(siz[v]>mxsz)
         {
@@ -44,42 +43,33 @@ void del(int u)
 {
 
 }
-void addsubtree(int u,int fa)
+void addsubtree(int u)
 {
     add(u);
     for(auto v:e[u])
-    {
-        if (v!=fa)
-            addsubtree(v,u);
-    }
+        addsubtree(v);
 }
-void delsubtree(int u,int fa)
+void delsubtree(int u)
 {
     del(u);
     for(auto v:e[u])
-    {
-        if(v!=fa)
-            delsubtree(v,u);
-    }
+        delsubtree(v);
 }
-void dsu(int u,int fa)
+void dsu(int u)
 {
     for(auto v:e[u])
-    {
-        if(v==fa || v==hson[u])
-            continue;
-        dsu(v,u);
-        delsubtree(v,u);
-        //重置有关答案的信息
-    }
+        if(v!=hson[u])
+        {
+            dsu(v);
+            delsubtree(v);
+            //重置有关答案的信息
+        }
     if(hson[u])
-        dsu(hson[u],u);
+        dsu(hson[u]);
     add(u);
     for(auto v:e[u])
-    {
-        if(v!=fa && v!=hson[u])
+        if(v!=hson[u])
             addsubtree(v,u);
-    }
     ans[u] = 114514;
 }
 ```
