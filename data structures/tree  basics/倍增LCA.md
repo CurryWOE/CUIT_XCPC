@@ -31,22 +31,22 @@ struct LCA
     {
         q.push(root);
         dep[root] = 1;
-        int u, v, DEP;
         while (!q.empty())
         {
-            u = q.front();
+            int u = q.front();
             q.pop();
+            int depth=bit_width((unsigned int)dep[u]);
+            
             for (int i = head[u]; i; i = e[i].nxt)
             {
-                v = e[i].to;
+                int v = e[i].to;
                 if (dep[v])
                     continue;
                 q.push(v);
                 dep[v] = dep[u] + 1;
                 fa[v][0] = u;
-                DEP = __lg(dep[u]);
-                for (int j = 1; j <= DEP; ++j)
-                    fa[v][j] = fa[fa[v][j - 1]][j - 1];
+                for(int j=1;j<depth;++j)
+                    fa[v][j]=fa[fa[v][j-1]][j-1];
             }
         }
     }
@@ -59,7 +59,7 @@ struct LCA
                 y = fa[y][i];
         if (x == y)
             return x;
-        for (int i = __lg(dep[x]); i >= 0; --i)
+        for (int i = bit_width((unsigned int)dep[u])-1; i >= 0; --i)
         {
             if (fa[x][i] == fa[y][i])
                 continue;
