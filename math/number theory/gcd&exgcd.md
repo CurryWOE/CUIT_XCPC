@@ -22,9 +22,21 @@ int gcd(int a,int b)
 {
 	return b ? gcd(b,a%b) : a;
 }
-//库函数,最好用这个
-<numeric>,cpp17,std::gcd(m,n)
+//标准库函数，语言版本>=CPP17
+<numeric>,std::gcd(m,n)
+//GCC内部拓展函数，无语言版本限制
+<algorithm>,__gcd(n,m)
 ```
+### 常数
+std::gcd最早使用欧几里得算法，在2020.9.3的GCC11.1，该函数实现从欧几里得算法替换为Stein算法
+
+__gcd一直使用欧几里得算法
+
+欧几里得算法复杂度更优，为 $O(\log\min(a,b))$ ，常数更大
+
+Stein算法复杂度更劣，为 $O(\log\max(a,b))$ ，常数更小
+
+对于不同输入，双方都有跑的更快的时候，因此在卡常数时可以换着来
 # exgcd
 解二元一次方程，多元一次方程可以拆解为多个二元一次方程
 
