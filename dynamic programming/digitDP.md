@@ -21,7 +21,7 @@ rem: int,表示高位取模的余数
 st: int,表示高位的一些信息（状态压缩）
 ```cpp
 ll dp[MAXD][...];
-ll dfs(int pos, ..., int limit)
+ll dfs(int pos, ..., bool limit)
 {
     if (!pos)
         return ...;
