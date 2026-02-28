@@ -148,6 +148,8 @@ $$|A\cup B\cup C|=|A|+|B|+|C|-|A\cap B|-|B\cap C|-|C\cap A|+|A\cap B\cap C|$$
 
 $f(n)=\begin{cases}0&n=0\\1&n=1\\f(n-1)+f(n-2)&n\ge 2\end{cases}$
 
+$\begin{pmatrix}F(n+1) \\ F(n)\end{pmatrix}=\begin{pmatrix}1 & 1 \\1 & 0\end{pmatrix}^n\begin{pmatrix}1 \\0\end{pmatrix}$
+
 $gcd(F_n,F_m)=F_{gcd(n,m)}$
 
 $\sum\limits_{i=0}^n F_i=F_{n+2}-1$
