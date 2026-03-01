@@ -1,5 +1,6 @@
 #! https://zhuanlan.zhihu.com/p/662653668
 # gcd&EXgcd
+x|by，如果gcd(x,b)==1，则x|y
 # gcd
 欧几里得算法,又名辗转相除法
 ## 辗转相减例题：证明 $\gcd(2^i-1,2^j-1)=2^{\gcd(i,j)}-1$
