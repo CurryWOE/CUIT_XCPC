@@ -47,7 +47,7 @@ $f_m^{p}=((m+1)^{p+1}-1-(C_{p+1}^2f_m^{p-1}+...+m))/(p+1)$
 自然数k次幂和是k+1次函数，求前k+2个点的点值，插就完了
 ```cpp
 const int N=1e6+3;
-const ll mod=1e9+7;
+const ull mod=1e9+7;
 long long fac[N],inv[N];
 long long fast_power(long long base, long long exponent)
 {
