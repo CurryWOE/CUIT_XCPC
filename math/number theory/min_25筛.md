@@ -113,7 +113,7 @@ $\sum\limits_{i=1}^nf(i)=S(n,0)+1$
 ```cpp
 const int N=1e5+3;//根号n
 const int M=1e4;//根号n以内质数个数
-const ll mod=1e9+7;
+const ull mod=1e9+7;
 const ll inv2=500000004;
 const ll inv6=166666668;
 bitset<N> v;
