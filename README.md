@@ -1,8 +1,8 @@
-2023.11.29停止更新，codeforces max rating1918，区域赛5铁1铜
+codeforces max rating1920，区域赛5铁1铜
 # XCPC
 这个仓库为了cuit学子学习xcpc相关知识而创建
 
-由CurryWOE(codeforces max rating 1918)编写
+由CurryWOE(codeforces max rating 1920)编写
 
 欢迎cuit学子提issue和pr
 
