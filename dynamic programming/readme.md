@@ -54,3 +54,5 @@ for(int i=0;i<n;++i)
     for(int j=0;j<i;++i)
         d[i]=min(d[i],d[j]);
 ```
+
+不要实时计算，就要提前计算并存储
