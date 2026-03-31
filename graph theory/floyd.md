@@ -26,7 +26,7 @@ namespace floyd
                 for(int j = 1; j <= n; ++j)
                     dis[i][j] = min(dis[i][j], dis[i][k] + dis[k][j]);
     }
-};
+}
 ```
 ## 无向图无负环找最小环
 考虑环上最大编号点k，与点k相邻的两点x，y，当更新到点k前，dix[x][y]+originalEdge[x][k]+originalEdge[k][y]等于环长度
@@ -70,7 +70,7 @@ namespace floyd
         }
         return ans;
     }
-};
+}
 ```
 ## 有向图已知任意两点是否有连边，判断任意两点是否连通
 如果x可以到达k，那么当k可以到达y，则x可以到达y

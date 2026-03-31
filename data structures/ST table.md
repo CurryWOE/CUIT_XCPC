@@ -34,5 +34,5 @@ namespace SparseTable
         int s = bit_width(r - l + 1)-1;
         return min(st[s][l], st[s][r - (1 << s) + 1]);
     }
-};
+}
 ```

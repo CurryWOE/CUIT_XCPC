@@ -70,5 +70,5 @@ namespace AhoCorasickAutomaton
         }
         tot = dfn = 0;
     }
-};
+}
 ```
