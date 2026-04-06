@@ -84,7 +84,7 @@ namespace Dinic
             res+=findpath(s,INF);
         }
     }
-};
+}
 Dinic::init(n);//源点为n+1，汇点为n+2
 Dinic::addEdge(u,v,w);//边的顺序一定是源点-中间点-汇点
 Dinic::dinic();
