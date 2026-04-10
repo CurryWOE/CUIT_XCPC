@@ -1,98 +1,224 @@
 #! https://zhuanlan.zhihu.com/p/563153071
 # 输入输出(input/output)
-# C的IO
->这里只讲scanf和printf  
->getchar,putchar,puts等，可以自己查[Cpp Reference](https://zh.cppreference.com/w/%E9%A6%96%E9%A1%B5)
-
-scanf，格式化输入并赋值给变量，其格式如下
+这里不写C的IO，因为C的IO相比于精细实现的CPP的IO，性能不行
+# 输入(cin)
 ```cpp
-scanf("%控制符",&变量名);
-scanf("%控制符%控制符",&变量名,&变量名);
-```
-需要记忆常见数据类型对应的控制符
-
-数据类型|控制符|
---|:--:|
-int|d|
-long long|lld|
-char|c|
-char*(字符串)|s|
-float|f|
-double|lf|
-
-一些零散的知识：
-
-%c会输入所有的字符，而其他类型会跳过[space],[enter],[tab]
-
-%3d可以控制数字输入位数为3位，多于这个位数的不会读入
-
----
-printf，格式化输出，其格式如下
-```cpp
-printf("%控制符",变量名);
-printf("%控制符 %控制符",变量名);
-```
-控制符和输入一样
-
-一些零散的知识：
-
-%-05d
-
-5表示输出位数至少为5位，如果实际位数少于5位，则补上一些字符，默认补空格
-
-0表示补0
-
--表示左对齐，默认右对齐
-
-\%.2f，控制输出浮点数小数位数为2位，如果实际位数多于2位，则5舍6入
-
----
-# C++的IO
-cin，输入，其格式如下
-```cpp
-cin>>a;
+#include<iostream>
 cin>>a>>b;
 char s[10];
 cin>>(s+1);//cpp17及以前
 cin.get(s+1,x)//cpp20及以后，读入至多x个字符
 ```
-不同于C，没有控制符
-
----
-cout，输出，其格式如下
+# 输出(cout)
 ```cpp
+#include <iostream>
 #include <iomanip>
-cout<<a;
-cout<<a<<" "<<b;
-cout<<fixed<<setprecision(3)<<c;
-cout<<endl;
+cout<<a<<" "<<b<<endl;
+//保留 n 位小数，小于 5 舍去，大于 5 进位，大部分数字不能精确等于5
+//只有分母为 $2^n$ 的小数（如 0.5, 0.125）能精准等于 5，如果保留位的最后一位是奇数，则进位；否则舍去
+cout << fixed << setprecision(3) << 3.1415; // 3.142
+//指定宽度(只对紧随其后的一个输出有效)
+cout << setw(5) << 12; // " 12"
+//左对齐(默认右对齐)
+cout << left << setw(5) << 12; // "12 "
+//补零
+cout << setfill('0') << setw(5) << 12; // 00012
+//进制转换(hex / oct / dec)
+cout << hex << 255; // ff
 ```
-一些零散的知识：
-
-<<fixed<<setprecision(3)表示控制浮点数小数位数为3位， 如果实际位数多于3位，则5舍6入
-
+# 最常用的两个优化
+## endl换成'\n'
 endl表示清空缓冲区，同时起到换行的作用，不同于printf，cout的结果不会马上看到，要么清空缓冲区才能看到，要么程序结束才能看到
 
 但是endl比较慢，如果不需要立即看到输出，那么换成'\n'
+## 取消与标准C输入输出的同步，取消CPP输入输出流的绑定
+在 main 开头加入
 
-为了加快C++的IO，需要在int main里，最前面加上
+开启后绝对不能混用 scanf/printf，否则会导致输出顺序混乱或程序崩溃
 ```cpp
 ios::sync_with_stdio(false);
 cin.tie(nullptr);
-cout.tie(nullptr);
+//cout.tie(nullptr);读者可能在某些地方见过它，但它实际上是多余的，cout 默认就没有绑定任何流
 ```
-注意，上面代码加上后，不能再使用C的IO
+# 各类输入输出的性能比较
+这里只讨论编译器优化开启O3的情况，不开全优化的性能比较没有意义
+## 输入整数
+| 方法 | 性能 (million numbers/second) |
+| :--- | :--- |
+| scanf | 12.3 |
+| cin | 15.9 |
+| cin + from_chars | 21.8 |
+| getchar | 28.3 |
+| int_unlocked | 35.3 |
+| fread + from_chars | 40.2 |
+| cin.read + from_chars | 40.6 |
+| fread + 手动解析 | 57.1 |
 
-## C和C++的IO性能比较
-在不开O2时，C快，开之后C++快
+性能取决于 IO 链路长度，fread/cin.read > getchar > cin > scanf
 
-因为C的scanf和printf在运行期解析字符串(因为涉及到类型转换)
+scanf 因运行期解析字符串格式最慢，cin 在 -O3 下内联了类型重载
+## 输入浮点数
+| 方法 | 性能 (million numbers/second) |
+| :--- | :--- |
+| cin | 4.8 |
+| scanf | 6.6 |
+| cin + from_chars | 20.4 |
+| cin.read + from_chars | 28.5 |
+| fread 快读 + from_chars | 33.3 |
 
-而C++的cin和cout在编译期就已经确定类型
+性能取决于 Locale (本地化) 检查，传统 scanf 和 cin 必须检查区域设置（如小数点符号）；from_chars 强制按标准格式解析且无 Locale 锁
+## 输出整数
+| 方法 | 性能 (million numbers/second) |
+| :--- | :--- |
+| printf | 20.0 |
+| cout | 26.5 |
+| to_chars + cout.write | 50.0 |
+| fwrite + 手动解析 | 54.0 |
+## 输出浮点数
+| 方法 | 性能 (million numbers/second) |
+| :--- | :--- |
+| printf | 3.2 |
+| cout(sync_off) | 4.0 |
+| to_chars + cout.write | 15.0 |
+# 不同场景的输入输出选择
+## 一般情况
+假定输入时间/输出时间不超过100ms视为一般情况，测试等于：
 
-但是C如果用快读快写，那可能比C++快（注意是可能，因为出题人可能卡快读快写）
+输入2e6个整数，4e5个浮点数
 
-2023.6.1 UPD:浮点数读写C风格快，其他都是Cpp风格快。大量浮点数读写差距明显。
+输出2.5e6个整数，3e5个浮点数
+
+那么直接使用cin/cout
+## IO为主要瓶颈
+这里主要考虑极致性能，不能手动输入数据，也不能动态观察输出，交互题不能用它
+```cpp
+#include <iostream>
+#include <cstdio>
+#include <cctype>
+#include <charconv>
+#include <type_traits>
+#include <system_error>
+class FastIO
+{
+private:
+    static const int BUF_SIZE=1<<20,FLOAT_PRECISION=6,FLOAT_BUF_MAX=128,INT_BUF_MAX=40,WRITE_MARGIN=512;
+    char in_buf[BUF_SIZE], out_buf[BUF_SIZE];
+    char *in_cursor = in_buf, *in_end = in_buf, *out_cursor = out_buf;
+    inline char fetch_char()
+    {
+        if (in_cursor == in_end)
+        {
+            in_end = (in_cursor = in_buf) + fread(in_buf, 1, BUF_SIZE, stdin);
+            if (in_cursor == in_end)
+                return EOF;
+        }
+        return *in_cursor++;
+    }
+    inline void flush()
+    {
+        if (out_cursor != out_buf)
+        {
+            fwrite(out_buf, 1, out_cursor - out_buf, stdout);
+            out_cursor = out_buf;
+        }
+    }
+    inline void push(char c)
+    {
+        if (out_cursor == out_buf + BUF_SIZE)
+            flush();
+        *out_cursor++ = c;
+    }
+public:
+    FastIO()
+    {
+        std::ios::sync_with_stdio(false);
+        std::cin.tie(nullptr);
+    }
+    ~FastIO()
+    {
+        flush();
+    }
+    template <typename T>
+    requires std::is_integral_v<T>
+    inline void read(T &x)
+    {
+        x = 0;
+        bool neg = false;
+        char ch = fetch_char();
+        for(;ch != EOF && !isdigit(ch);ch = fetch_char())
+            if (ch == '-')
+                neg = true;
+        if (neg)
+            for(;isdigit(ch);ch = fetch_char())
+                x = x * 10 - (ch - '0');
+        else
+            for(;isdigit(ch);ch = fetch_char())
+                x = x * 10 + (ch - '0');
+    }
+    template <typename T>
+    requires std::is_floating_point_v<T>
+    inline void read(T &x)
+    {
+        x = 0;
+        static char temp[FLOAT_BUF_MAX];
+        int len = 0;
+        char ch = fetch_char();
+        for(;ch != EOF && isspace(ch);ch = fetch_char()){}
+        for(;ch != EOF && !isspace(ch);ch = fetch_char())
+            if (len < FLOAT_BUF_MAX-1)
+                temp[len++] = ch;
+        temp[len] = '\0';
+        std::from_chars(temp, temp + len, x);
+    }
+    inline void read(char &c) { for(c = fetch_char();c != EOF && isspace(c);c = fetch_char()){} }
+    inline void read(char *s)
+    {
+        char ch = fetch_char();
+        for(;ch != EOF && isspace(ch);ch = fetch_char()){}
+        for(;ch != EOF && !isspace(ch);ch = fetch_char())
+            *s++ = ch;
+        *s = '\0';
+    }
+    inline void read(std::string &s,int len=0)
+    {
+        s.clear();
+        s.reserve(len);
+        char ch = fetch_char();
+        for(;ch != EOF && isspace(ch);ch = fetch_char()){}
+        for(;ch != EOF && !isspace(ch);ch = fetch_char())
+            s.push_back(ch);
+    }
+    template <typename T>
+    requires std::is_integral_v<T>
+    inline void write(T x)
+    {
+        if (x == 0)
+        {
+            push('0');
+            return;
+        }
+        if (x < 0)
+            push('-');
+        static char stack[INT_BUF_MAX]; 
+        int top = 0;
+        std::make_unsigned_t<T> abs_x = (x < 0) ? -static_cast<std::make_unsigned_t<T>>(x) : x;
+        for(;abs_x;abs_x/=10)
+            stack[++top] = (abs_x % 10) + '0';
+        for(;top;--top)
+            push(stack[top]);
+    }
+    template <typename T>
+    requires std::is_floating_point_v<T>
+    inline void write(T x)
+    {
+        if (out_cursor > out_buf + BUF_SIZE - WRITE_MARGIN)
+            flush();
+        out_cursor = std::to_chars(out_cursor, out_buf + BUF_SIZE, x, std::chars_format::fixed, FLOAT_PRECISION).ptr;
+    }
+    inline void write(char c) { push(c); }
+    inline void write(const char* s) { for(;*s;++s) push(*s); }
+} io;
+```
 # 交互题
 需要将原来输出格式
 ```cpp
@@ -103,149 +229,23 @@ cout<<a<<'\n';
 cout<<a<<endl;
 ```
 # 输入到文件末尾
-C
-```c
-while(scanf("%d",&a)!=EOF)
-{}
-```
-C++
 ```cpp
-while(cin>>n)
-{}
-```
-# 快读快写
-```cpp
-template <typename T>
-inline void read(T &x)
-{
-    T sum = 0, f = 1;
-    char c = getchar();
-    while (!isdigit(c))
-    {
-        if (c == '-')
-            f = -1;
-        c = getchar();
-    }
-    while (isdigit(c))
-    {
-        sum = sum * 10 + c - '0';
-        c = getchar();
-    }
-    x = sum * f;
-}
-inline void read(double &x)
-{
-    double z = 0, t = 0;
-    int s = 0, f = 1;
-    char c = getchar();
-    while (!isdigit(c))
-    {
-        if (c == '-')
-            f = -1;
-        if (c == '.')
-            goto readt;
-        c = getchar();
-    }
-    while (isdigit(c) && c != '.')
-    {
-        z = z * 10 + c - '0';
-        c = getchar();
-    }
-readt:
-    while (c == '.')
-        c = getchar();
-    while (isdigit(c))
-    {
-        t = t * 10 + c - '0';
-        ++s;
-        c = getchar();
-    }
-    x = (z + t / pow(10, s)) * f;
-}
-inline void read(string &x)
-{
-    x = "";
-    char ch = getchar();
-    while (ch == ' ' || ch == '\n' || ch == '\r')
-        ch = getchar();
-    while (ch != ' ' && ch != '\n' && ch != '\r')
-        x += ch, ch = getchar();
-}
-inline void readline(string &x)
-{
-    x = "";
-    char ch = getchar();
-    while (ch == ' ' || ch == '\n' || ch == '\r')
-        ch = getchar();
-    while (ch != '\n' && ch != '\r')
-        x += ch, ch = getchar();
-}
-template <typename T, typename... Args>
-inline void read(T &t, Args &...args)
-{
-    read(t);
-    read(args...);
-}
-template <typename T>
-inline void write(T x)
-{
-    if (x < 0)
-        putchar('-'), x = -x;
-    if (x > 9)
-        write(x / 10);
-    putchar(x % 10 + '0');
-}
-inline void write(double x, int k = 6)
-{
-    ll n = pow(10, k + 1);
-    if (x == 0)
-    {
-        putchar('0'), putchar('.');
-        for (int i = 1; i <= k; ++i)
-            putchar('0');
-        return;
-    }
-    if (x < 0)
-        putchar('-'), x = -x;
-    ll y = (ll)(x * n) % n;
-    x = (ll)x;
-    write((ll)x), putchar('.');
-    int bit[20], p = 0, i;
-    if (y % 10 >= 5)
-        y = y / 10 + 1;
-    else
-        y = y / 10;
-    for (; p < k; y /= 10)
-        bit[++p] = y % 10;
-    for (i = p; i > 0; i--)
-        putchar(bit[i] + 48);
-}
-inline void write(string x)
-{
-    for (int i = 0; x[i] != '\0'; i++)
-        putchar(x[i]);
-}
-template <typename T>
-inline void write(const char ch, T x)
-{
-    write(x);
-    putchar(ch);
-}
-template <typename T, typename... Args>
-inline void write(const char ch, T x, Args... args)
-{
-    write(ch, x);
-    write(ch, args...);
-}
+while(cin>>n){}
 ```
 # 读取一行数字，数字个数未知
 ```cpp
-string s;
-getline(cin, s);
-stringstream ss;
-ss << s;
-while (ss >> s)
+string line;
+getline(cin, line);
+char* p = line.data();
+char* end = p + line.size();
+while(p < end)
 {
-    auto res = stoi(s);
+    for(;p < end && *p <= ' ';++p){}
+    if (p >= end)
+        break;
+    int val;
+    auto [next_p, ec] = from_chars(p, end, val);
+    p = const_cast<char*>(next_p);
+    // 使用 val...
 }
 ```
