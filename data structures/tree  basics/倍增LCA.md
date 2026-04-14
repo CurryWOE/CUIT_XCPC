@@ -36,7 +36,6 @@ struct LCA
             int u = q.front();
             q.pop();
             int depth=bit_width((unsigned int)dep[u]);
-            
             for (int i = head[u]; i; i = e[i].nxt)
             {
                 int v = e[i].to;
@@ -54,12 +53,11 @@ struct LCA
     {
         if (dep[x] > dep[y])
             swap(x, y);
-        for (int i = 0, dif = dep[y] - dep[x]; dif; ++i, dif >>= 1)
-            if (dif & 1)
-                y = fa[y][i];
+        for(unsigned int dif = dep[y] - dep[x];dif;dif&=(dif-1))
+            y = anc[y][countr_zero(dif)];
         if (x == y)
             return x;
-        for (int i = bit_width((unsigned int)dep[u])-1; i >= 0; --i)
+        for (int i = bit_width((unsigned int)dep[x])-1; i >= 0; --i)
         {
             if (fa[x][i] == fa[y][i])
                 continue;
