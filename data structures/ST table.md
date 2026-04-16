@@ -21,13 +21,11 @@ namespace SparseTable
     int st[M][N];
     void init(unsigned int n)
     {
-        int m=bit_width(n)-1;
+        int m=bit_width(n);
         memcpy(st[0],a,sizeof(int)*(n+1));
-        for (int i = 1; i <=m; ++i)
-        {
+        for (int i = 1; i < m; ++i)
             for (int j = 1; j + (1 << i) - 1 <= n; ++j)
                 st[i][j] = min(st[i-1][j], st[i-1][j + (1 << (i - 1))]);
-        }
     }
     int query(unsigned int l, unsigned int r)
     {
