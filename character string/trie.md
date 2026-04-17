@@ -39,7 +39,11 @@ struct TRIE
     }
 };
 ```
+01字典树，N次插入值域为 [0,A] 的数，最坏情况的节点数 $S = \sum\limits_{i=0}^{\lceil \log_2 (A+1) \rceil - 1} \min(2^i, N)$
 
+若N,A变成不小于原数的2的幂，公式简化为
+
+$S = \begin{cases} 2A, & N \ge A \\ 2N + N \log_2 \frac{A}{N}, & N < A \end{cases}$
 ```c++
 const int N=1e5+3;
 struct TRIE
