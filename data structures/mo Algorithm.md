@@ -8,12 +8,12 @@
 
 这样奇偶块降升序能减少右指针移动次数
 
-设块长 $S$，$O(\frac{n^2}S+mS)$，当块长取 $\frac n{\sqrt m}$ 最优，此时复杂度为 $O(n\sqrt m)$
+设序列长度 n，询问次数 m，块长 $S$，$O(\frac{n^2}S+mS)$，当块长取 $\frac n{\sqrt m}$ 最优，此时复杂度为 $O(n\sqrt m)$
 ```cpp
-int sq;
+const unsigned int sq=N/sqrt(Q);
 struct query
 {
-    int l, r, id;
+    unsigned int l, r, id;
     bool operator<(const query &o) const
     {
         if (l / sq != o.l / sq)
@@ -22,29 +22,27 @@ struct query
             return r > o.r;
         return r < o.r;
     }
-}Q[MAXQ];
-int main()
+}q[Q];
+void solve(int T)
 {
-    cin>>q;
-    for (int i = 0; i < q; ++i)
+    for (int i = 0; i < T; ++i)
     {
-        cin>>Q[i].l>>Q[i].r;
-        Q[i].id = i;
+        cin>>q[i].l>>q[i].r;
+        q[i].id = i;
     }
-    sq=sqrt(n);
-    sort(Q, Q + q);
+    sort(q, q + T);
     l=1,r=0;
-    for (int i = 0; i < q; ++i)
+    for (int i = 0; i < T; ++i)
     {
-        while (l > Q[i].l)
+        while (l > q[i].l)
             add(--l);
-        while (r < Q[i].r)
+        while (r < q[i].r)
             add(++r);
-        while (l < Q[i].l)
+        while (l < q[i].l)
             del(l++);
-        while (r > Q[i].r)
+        while (r > q[i].r)
             del(r--);
-        ans[Q[i].id] = res;
+        ans[q[i].id] = res;
     }
 }
 ```
