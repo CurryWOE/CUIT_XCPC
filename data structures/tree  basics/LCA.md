@@ -1,3 +1,4 @@
+#! https://zhuanlan.zhihu.com/p/2031730090690745372
 # 最近公共祖先(Lowest Common Ancestor)
 ## 倍增(Binary Lifting)
 ```cpp
@@ -5,30 +6,30 @@ const uint32_t N=5e5+1,M=bit_width(N);
 namespace BinaryLiftingLCA
 {
     uint32_t fa[N][M],dep[N];
-    queue<int> q;
-    void init(int n,int root)
+    queue<uint32_t> q;
+    void init(uint32_t n,uint32_t root)
     {
         fill(dep+1,dep+n+1,0);
         fill(&fa[1][0], &fa[1][0] + n * M, 0);
         q.push(root);
         while(!q.empty())
         {
-            int u=q.front();
+            uint32_t u=q.front();
             q.pop();
-            int depth=bit_width(dep[u]);
+            uint32_t depth=bit_width(dep[u]);
             for(auto v:e[u])
             {
                 if(dep[v])
                     continue;
                 dep[v]=dep[u]+1;
                 fa[v][0]=u;
-                for(int j=1;j<depth;++j)
+                for(uint32_t j=1;j<depth;++j)
                     fa[v][j]=fa[fa[v][j-1]][j-1];
                 q.push(v);
             }
         }
     }
-    int lca(int x,int y)
+    uint32_t lca(uint32_t x,uint32_t y)
     {
         if(dep[x]>dep[y])
             swap(x,y);
@@ -115,6 +116,7 @@ namespace EulerOrderRMQLCA
     }
     void init(uint32_t n,uint32_t root)
     {
+        --n;
         tot=0;
         dfs(root,0);
         for(uint32_t i=1;i<=n;++i)
@@ -180,6 +182,8 @@ namespace tarjanLCA
 }
 ```
 ## 各个算法的优缺点对比
-根据[测试网站](https://judge.yosupo.jp/problem/lca)，[倍增](https://judge.yosupo.jp/submission/368670)372ms，[重链剖分](https://judge.yosupo.jp/submission/368668)255ms，[欧拉序+RMQ](https://judge.yosupo.jp/submission/368671)77ms，[tarjan](https://judge.yosupo.jp/submission/368676)93ms
+根据[测试网站1](https://judge.yosupo.jp/problem/lca)，[倍增](https://judge.yosupo.jp/submission/368670)372ms，[重链剖分](https://judge.yosupo.jp/submission/368668)255ms，[欧拉序+RMQ](https://judge.yosupo.jp/submission/368671)77ms，[tarjan](https://judge.yosupo.jp/submission/368676)93ms
 
-倍增可以动态加叶子，重链剖分可以配合线段树，欧拉序是最快，tarjan似乎完全没用（代码量和欧拉序差不多，速度比欧拉序慢，但要求离线，而欧拉序是在线）
+根据[测试网站2](https://www.luogu.com.cn/problem/P3379)，[倍增](https://www.luogu.com.cn/record/275582721)1.15s，[重链剖分](https://www.luogu.com.cn/record/275584773)953ms，[欧拉序+RMQ](https://www.luogu.com.cn/record/275585904)489ms，[tarjan](https://www.luogu.com.cn/record/275717894)487ms
+
+倍增可以动态加叶子，重链剖分可以配合线段树，欧拉序是最快在线，如果同时卡时间空间且离线，则选择tarjan
