@@ -201,8 +201,8 @@ namespace tarjanLCA
 }
 ```
 ## 各个算法的优缺点对比
-根据[测试网站1](https://judge.yosupo.jp/problem/lca)，[倍增](https://judge.yosupo.jp/submission/368670)372ms，[重链剖分](https://judge.yosupo.jp/submission/368668)255ms，[欧拉序+RMQ](https://judge.yosupo.jp/submission/368874)75ms，[tarjan](https://judge.yosupo.jp/submission/368676)93ms
+根据[测试网站1](https://judge.yosupo.jp/problem/lca)，[倍增](https://judge.yosupo.jp/submission/368670)372ms，[重链剖分](https://judge.yosupo.jp/submission/368668)255ms，[KACTL](https://judge.yosupo.jp/submission/368874)75ms，[tarjan](https://judge.yosupo.jp/submission/368676)93ms
 
-根据[测试网站2](https://www.luogu.com.cn/problem/P3379)，[倍增](https://www.luogu.com.cn/record/275582721)1.15s，[重链剖分](https://www.luogu.com.cn/record/275584773)953ms，[欧拉序+RMQ](https://www.luogu.com.cn/record/275585904)489ms，[tarjan](https://www.luogu.com.cn/record/275717894)487ms
+根据[测试网站2](https://www.luogu.com.cn/problem/P3379)，[倍增](https://www.luogu.com.cn/record/275582721)1.15s，[重链剖分](https://www.luogu.com.cn/record/275584773)953ms，[KACTL](https://www.luogu.com.cn/record/275585904)489ms，[tarjan](https://www.luogu.com.cn/record/275717894)487ms
 
 倍增可以动态加叶子，重链剖分可以配合线段树，欧拉序是最快在线，如果同时卡时间空间且离线，则选择tarjan
