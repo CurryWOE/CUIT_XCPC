@@ -49,7 +49,7 @@ const uint32_t N=5e5+3,K=16,BLOCK=(N+K-1)/K,M=bit_width(BLOCK),TYPE=1<<(K-1);
 namespace PlusMinusOneRMQ
 {
     int a[N],st[M][BLOCK];
-    uint32_t mask[BLOCK];
+    uint16_t mask[BLOCK];
     int8_t inBlock[TYPE][K][K];
     void init0()//只需执行一次，多测会用到此优化
     {
@@ -71,7 +71,7 @@ namespace PlusMinusOneRMQ
         uint32_t block=(n+K-1)/K;
         for(uint32_t i=1,cur=1;i<=block;++i,++cur)
         {
-            uint32_t mas=0;
+            uint16_t mas=0;
             for(uint32_t j=0,R=min(n,i*K);cur<R;++j,++cur)
                 if(a[cur+1]>a[cur])
                     mas|=(1<<j);
