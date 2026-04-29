@@ -101,10 +101,12 @@ namespace HeavyPathDecompositionLCA
 
 两个节点 u 和 v 的 LCA，一定是欧拉序列中从 u 第一次出现到 v 第一次出现之间，深度最小的那个节点
 
-因此在欧拉序列的深度数组上构建ST表，维护区间最小值，以及取得最小值的位置。查询区间最小值的位置，再通过“欧拉序列上的位置-树上点”的映射得到LCA
+因此在欧拉序列的深度数组上构建RMQ数据结构，维护区间最小值，以及取得最小值的位置。查询区间最小值的位置，再通过“欧拉序列上的位置-树上点”的映射得到LCA
 
-但是这个算法有时间空间代码量全方位上位替代 KACTL's LCA，因此这里不写出例程
-## KACTL's LCA
+RMQ使用稀疏表，还是和分块结合的稀疏表，还是通过欧拉序列，相邻两点深度差总是为1，使用+-1RMQ（又名Farach-Colton and Bender），其时间空间代码量不如 KACTL's LCA，因此这里不写出例程
+
+根据[测试网站](https://www.luogu.com.cn/problem/P3379)，[FCB](https://www.luogu.com.cn/record/275974429)648ms，[稀疏表+欧拉序列](https://www.luogu.com.cn/record/275984152)628ms，[块内暴力+块间稀疏表+块前后缀+欧拉序列](https://www.luogu.com.cn/record/275978207)534ms，[KACTL's LCA](https://www.luogu.com.cn/record/275585904)489ms
+## KACTL's LCA(DFS序LCA)
 树上DFS，遇到一个点，记录其父节点DFS序，（根的父节点DFS序不重要，因为具体实现会丢掉这个数据），组成一个序列，长度为 |V|
 
 对于u等于v的情况特殊处理，下面考虑u不等于v的情况，这里假设 u 的dfs序小于 v 的DFS序，如果不满足假设就交换 u 和 v
@@ -200,9 +202,88 @@ namespace tarjanLCA
     }
 }
 ```
+## 块内暴力+块间猫树+块前后缀+DFS序
+```cpp
+const uint32_t N=5e5+1,K=32,BLOCK=N/K,M=bit_width(BLOCK);
+namespace BlockCatTree
+{
+    uint32_t a[N],prefixInBlock[N],suffixInBlock[N],blockMin[BLOCK],ct[M][BLOCK];
+    inline void init(uint32_t n)
+    {
+        memcpy(prefixInBlock,a,sizeof(uint32_t)*(n+1));
+        for(uint32_t l=1;l<n;l+=K)
+            for(uint32_t i=l+1,r=min(n,l+K-1);i<=r;++i)
+                prefixInBlock[i]=min(prefixInBlock[i-1],prefixInBlock[i]);
+        memcpy(suffixInBlock,a,sizeof(uint32_t)*(n+1));
+        for(uint32_t l=1;l<n;l+=K)
+            for(uint32_t i=min(n,l+K-1)-1;i>=l;--i)
+                suffixInBlock[i]=min(suffixInBlock[i+1],suffixInBlock[i]);
+        uint32_t block = n / K;
+        for(uint32_t i=0;i<block;++i)
+            blockMin[i]=suffixInBlock[i*K+1];
+        for (uint32_t dep = 0, len = 1; len<block; ++dep, len <<= 1)
+            for (uint32_t l = 0; l+len < block; l += (len<<1))
+            {
+                uint32_t mid = l + len;
+                ct[dep][mid] = blockMin[mid];
+                for(uint32_t i = mid - 1; i >= l && ~i; --i)
+                    ct[dep][i] = min(ct[dep][i + 1], blockMin[i]);
+                ct[dep][mid + 1] = blockMin[mid+1];
+                for(uint32_t i = mid + 2,r=min(mid+len, block); i < r; ++i)
+                    ct[dep][i] = min(ct[dep][i - 1], blockMin[i]);
+            }
+    }
+    inline uint32_t query(uint32_t l, uint32_t r)
+    {
+        uint32_t bl = (l-1)/K, br = (r-1)/K;
+        if (bl == br)
+            return *min_element(a+l,a+r+1);
+        uint32_t res = min(suffixInBlock[l], prefixInBlock[r]);
+        if(bl+1==br)
+            return res;
+        ++bl,--br;
+        if(bl==br)
+            return min(res,blockMin[bl]);
+        uint32_t dep=bit_width(bl^br)-1;
+        return min({res,ct[dep][bl],ct[dep][br]});
+    }
+}
+namespace DFNLCA
+{
+    uint32_t path[N],dfn[N],tot;
+    void dfs(int u, int fa)
+    {
+        dfn[u] = ++tot;
+        path[tot] = u;
+        for(uint32_t i=head[u];i;i=e[i].nxt)
+        {
+            uint32_t v=e[i].to;
+            if (v == fa)
+                continue;
+            BlockCatTree::a[tot]=dfn[u];
+            dfs(v, u);
+        }
+    }
+    inline void init(int root)
+    {
+        tot = 0;
+        dfs(root, 0);
+        BlockCatTree::init(tot);
+    }
+    inline int lca(int u, int v)
+    {
+        if(u==v)
+            return u;
+        int l = dfn[u], r = dfn[v];
+        if (l > r)
+            swap(l, r);
+        return path[BlockCatTree::query(l, r-1)];
+    }
+}
+```
 ## 各个算法的优缺点对比
 根据[测试网站1](https://judge.yosupo.jp/problem/lca)，[倍增](https://judge.yosupo.jp/submission/368670)372ms，[重链剖分](https://judge.yosupo.jp/submission/368668)255ms，[KACTL](https://judge.yosupo.jp/submission/368874)75ms，[tarjan](https://judge.yosupo.jp/submission/368676)93ms
 
-根据[测试网站2](https://www.luogu.com.cn/problem/P3379)，[倍增](https://www.luogu.com.cn/record/275582721)1.15s，[重链剖分](https://www.luogu.com.cn/record/275584773)953ms，[KACTL](https://www.luogu.com.cn/record/275585904)489ms，[tarjan](https://www.luogu.com.cn/record/275717894)487ms
+根据[测试网站2](https://www.luogu.com.cn/problem/P3379)，[倍增](https://www.luogu.com.cn/record/275582721)1.15s，[重链剖分](https://www.luogu.com.cn/record/275584773)953ms，[稀疏表+DFS序](https://www.luogu.com.cn/record/275585904)489ms，[tarjan](https://www.luogu.com.cn/record/275717894)487ms，[块内暴力+块间稀疏表+块前后缀+DFS序](https://www.luogu.com.cn/record/275981113)374ms,[块内暴力+块间猫树+块前后缀+DFS序](https://www.luogu.com.cn/record/276042826)350ms
 
-倍增可以动态加叶子，重链剖分可以配合线段树，欧拉序是最快在线，如果同时卡时间空间且离线，则选择tarjan
+倍增可以动态加叶子，重链剖分可以配合线段树，KACTL是在线最短代码且速度不差，tarjan比KACTL省空间，但是要离线。块内暴力+块间猫树+块前后缀+DFS序最快
