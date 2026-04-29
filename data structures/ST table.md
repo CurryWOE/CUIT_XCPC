@@ -56,7 +56,7 @@ namespace PlusMinusOneRMQ
         for (uint32_t m = 0; m < TYPE; ++m)
             for (uint32_t l = 0; l < K; ++l)
             {
-                int cur = 0, mi = 0;
+                int8_t cur = 0, mi = 0;
                 inBlock[m][l][l] = 0;
                 for (uint32_t r = l + 1; r < K; ++r)
                 {
