@@ -286,4 +286,4 @@ namespace DFNLCA
 
 根据[测试网站2](https://www.luogu.com.cn/problem/P3379)，[倍增](https://www.luogu.com.cn/record/275582721)1.15s，[重链剖分](https://www.luogu.com.cn/record/275584773)953ms，[稀疏表+DFS序](https://www.luogu.com.cn/record/275585904)489ms，[tarjan](https://www.luogu.com.cn/record/275717894)487ms，[块内暴力+块间稀疏表+块前后缀+DFS序](https://www.luogu.com.cn/record/275981113)374ms,[块内暴力+块间猫树+块前后缀+DFS序](https://www.luogu.com.cn/record/276042826)350ms
 
-倍增可以动态加叶子，重链剖分可以配合线段树，KACTL是在线最短代码且速度不差，tarjan比KACTL省空间，但是要离线。块内暴力+块间猫树+块前后缀+DFS序最快
+倍增可以动态加叶子，维护不可减信息（比如链上max），重链剖分可以配合线段树，KACTL是在线最短代码且速度不差，tarjan比KACTL省空间，但是要离线。块内暴力+块间猫树+块前后缀+DFS序最快
