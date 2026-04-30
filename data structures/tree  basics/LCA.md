@@ -204,38 +204,38 @@ namespace tarjanLCA
 ```
 ## 块内暴力+块间猫树+块前后缀+DFS序
 ```cpp
-const uint32_t N=5e5+1,K=32,BLOCK=N/K,M=bit_width(BLOCK);
+const uint32_t N=5e5+1,K=16;
 namespace BlockCatTree
 {
-    uint32_t a[N],prefixInBlock[N],suffixInBlock[N],blockMin[BLOCK],ct[M][BLOCK];
+    uint32_t a[N],prefixInBlock[N],suffixInBlock[N],blockMin[N/K],ct[bit_width(N/K)][N/K];
     inline void init(uint32_t n)
     {
-        memcpy(prefixInBlock,a,sizeof(uint32_t)*(n+1));
-        for(uint32_t l=1;l<n;l+=K)
-            for(uint32_t i=l+1,r=min(n,l+K-1);i<=r;++i)
+        memcpy(prefixInBlock,a,sizeof(uint32_t)*n);
+        for(uint32_t l=0;l<n;l+=K)
+            for(uint32_t i=l+1,r=min(n,l+K)-1;i<=r;++i)
                 prefixInBlock[i]=min(prefixInBlock[i-1],prefixInBlock[i]);
-        memcpy(suffixInBlock,a,sizeof(uint32_t)*(n+1));
-        for(uint32_t l=1;l<n;l+=K)
-            for(uint32_t i=min(n,l+K-1)-1;i>=l;--i)
-                suffixInBlock[i]=min(suffixInBlock[i+1],suffixInBlock[i]);
+        memcpy(suffixInBlock,a,sizeof(uint32_t)*n);
+        for(uint32_t l=0;l<n;l+=K)
+            for(uint32_t i=min(n,l+K);i>l;--i)
+                suffixInBlock[i-1]=min(suffixInBlock[i],suffixInBlock[i-1]);
         uint32_t block = n / K;
         for(uint32_t i=0;i<block;++i)
-            blockMin[i]=suffixInBlock[i*K+1];
-        for (uint32_t dep = 0, len = 1; len<block; ++dep, len <<= 1)
-            for (uint32_t l = 0; l+len < block; l += (len<<1))
+            blockMin[i]=suffixInBlock[i*K];
+        for(uint32_t i=0;i<bit_width(block);++i)
+            memcpy(ct[i],blockMin,sizeof(uint32_t)*block);
+        for (uint32_t dep = 1, len = 2; len<block; ++dep, len <<= 1)
+            for (uint32_t l = 0; l < block; l += (len<<1))
             {
                 uint32_t mid = l + len;
-                ct[dep][mid] = blockMin[mid];
-                for(uint32_t i = mid - 1; i >= l && ~i; --i)
-                    ct[dep][i] = min(ct[dep][i + 1], blockMin[i]);
-                ct[dep][mid + 1] = blockMin[mid+1];
-                for(uint32_t i = mid + 2,r=min(mid+len, block); i < r; ++i)
-                    ct[dep][i] = min(ct[dep][i - 1], blockMin[i]);
+                for(uint32_t i = mid-1; i > l; --i)
+                    ct[dep][i-1] = min(ct[dep][i], ct[dep][i-1]);
+                for(uint32_t i = mid ,r=min(mid+len, block)-1; i < r; ++i)
+                    ct[dep][i+1] = min(ct[dep][i], ct[dep][i+1]);
             }
     }
     inline uint32_t query(uint32_t l, uint32_t r)
     {
-        uint32_t bl = (l-1)/K, br = (r-1)/K;
+        uint32_t bl = l/K, br = r/K;
         if (bl == br)
             return *min_element(a+l,a+r+1);
         uint32_t res = min(suffixInBlock[l], prefixInBlock[r]);
@@ -255,9 +255,8 @@ namespace DFNLCA
     {
         dfn[u] = ++tot;
         path[tot] = u;
-        for(uint32_t i=head[u];i;i=e[i].nxt)
+        for(auto v:e[u])
         {
-            uint32_t v=e[i].to;
             if (v == fa)
                 continue;
             BlockCatTree::a[tot]=dfn[u];
@@ -266,9 +265,9 @@ namespace DFNLCA
     }
     inline void init(int root)
     {
-        tot = 0;
+        tot = -1;
         dfs(root, 0);
-        BlockCatTree::init(tot);
+        BlockCatTree::init(tot+1);
     }
     inline int lca(int u, int v)
     {
@@ -284,6 +283,6 @@ namespace DFNLCA
 ## 各个算法的优缺点对比
 根据[测试网站1](https://judge.yosupo.jp/problem/lca)，[倍增](https://judge.yosupo.jp/submission/368670)372ms，[重链剖分](https://judge.yosupo.jp/submission/368668)255ms，[KACTL](https://judge.yosupo.jp/submission/368874)75ms，[tarjan](https://judge.yosupo.jp/submission/368676)93ms
 
-根据[测试网站2](https://www.luogu.com.cn/problem/P3379)，[倍增](https://www.luogu.com.cn/record/276088452)1.05s，[重链剖分](https://www.luogu.com.cn/record/276088680)843ms，[稀疏表+DFS序](https://www.luogu.com.cn/record/275585904)489ms，[tarjan](https://www.luogu.com.cn/record/275717894)487ms，[块内暴力+块间稀疏表+块前后缀+DFS序](https://www.luogu.com.cn/record/275981113)374ms,[块内暴力+块间猫树+块前后缀+DFS序](https://www.luogu.com.cn/record/276042826)350ms
+根据[测试网站2](https://www.luogu.com.cn/problem/P3379)，[倍增](https://www.luogu.com.cn/record/276088452)1.05s，[重链剖分](https://www.luogu.com.cn/record/276088680)843ms，[稀疏表+DFS序](https://www.luogu.com.cn/record/275585904)489ms，[tarjan](https://www.luogu.com.cn/record/275717894)487ms，[块内暴力+块间稀疏表+块前后缀+DFS序](https://www.luogu.com.cn/record/275981113)374ms,[块内暴力+块间猫树+块前后缀+DFS序](https://www.luogu.com.cn/record/276105276)333ms
 
 倍增可以动态加叶子，维护不可减信息（比如链上max），重链剖分可以配合线段树，KACTL是在线最短代码且速度不差，tarjan比KACTL省空间，但是要离线。块内暴力+块间猫树+块前后缀+DFS序最快
