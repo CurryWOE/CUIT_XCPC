@@ -25,7 +25,7 @@ void dfs(int u)
     int mxsz=0;
     for(auto &v:e[u])
     {
-        e[v].erase(remove(e[v].begin(),e[v].end(),u),e[v].end());
+        erase(e[v],u);
         dfs(v);
         siz[u]+=siz[v];
         if(siz[v]>mxsz)

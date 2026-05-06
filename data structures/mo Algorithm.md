@@ -11,18 +11,7 @@
 设序列长度 n，询问次数 m，块长 $S$，$O(\frac{n^2}S+mS)$，当块长取 $\frac n{\sqrt m}$ 最优，此时复杂度为 $O(n\sqrt m)$
 ```cpp
 const unsigned int sq=N/sqrt(Q);
-struct query
-{
-    unsigned int l, r, id;
-    bool operator<(const query &o) const
-    {
-        if (l / sq != o.l / sq)
-            return l < o.l;
-        if (l / sq & 1)
-            return r > o.r;
-        return r < o.r;
-    }
-}q[Q];
+struct query { uint32_t l, r, id; } q[Q];
 void solve(int T)
 {
     for (int i = 0; i < T; ++i)
@@ -30,19 +19,24 @@ void solve(int T)
         cin>>q[i].l>>q[i].r;
         q[i].id = i;
     }
-    sort(q, q + T);
+    auto qSpan = span(q,T);
+    ranges::sort(qSpan,[sq](const auto& x,const auto& y){
+        if(x.l / sq != y.l / sq)
+            return x.l < y.l;
+        return (x.l / sq & 1) ? (x.r > y.r) : (x.r < y.r);
+    });
     l=1,r=0;
-    for (int i = 0; i < T; ++i)
+    for (const auto& [ql,qr,id]:qSpan)
     {
-        while (l > q[i].l)
+        while (l > ql)
             add(--l);
-        while (r < q[i].r)
+        while (r < qr)
             add(++r);
-        while (l < q[i].l)
+        while (l < ql)
             del(l++);
-        while (r > q[i].r)
+        while (r > qr)
             del(r--);
-        ans[q[i].id] = res;
+        ans[id] = res;
     }
 }
 ```
