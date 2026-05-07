@@ -202,36 +202,31 @@ namespace tarjanLCA
     }
 }
 ```
-## 块内暴力+块间猫树+块前后缀+DFS序
+## 块内暴力+块间稀疏表+块前后缀+DFS序
+块间猫树和块间稀疏表速度差不多，但是猫树代码量大一点，因此这里只给出稀疏表写法
 ```cpp
 const uint32_t N=5e5+1,K=16;
-namespace BlockCatTree
+namespace BlockSparseTable
 {
-    uint32_t a[N],prefixInBlock[N],suffixInBlock[N],blockMin[N/K],ct[bit_width(N/K)][N/K];
+    uint32_t a[N],prefixInBlock[N],suffixInBlock[N],rmq[bit_width(N/K)][N/K];
     inline void init(uint32_t n)
     {
         memcpy(prefixInBlock,a,sizeof(uint32_t)*n);
         for(uint32_t l=0;l<n;l+=K)
-            for(uint32_t i=l+1,r=min(n,l+K)-1;i<=r;++i)
+            for(uint32_t i=l+1,r=min(n,l+K);i<r;++i)
                 prefixInBlock[i]=min(prefixInBlock[i-1],prefixInBlock[i]);
         memcpy(suffixInBlock,a,sizeof(uint32_t)*n);
         for(uint32_t l=0;l<n;l+=K)
-            for(uint32_t i=min(n,l+K);i>l;--i)
+            for(uint32_t i=min(n,l+K)-1;i>l;--i)
                 suffixInBlock[i-1]=min(suffixInBlock[i],suffixInBlock[i-1]);
         uint32_t block = n / K;
         for(uint32_t i=0;i<block;++i)
-            blockMin[i]=suffixInBlock[i*K];
-        for(uint32_t i=0;i<bit_width(block);++i)
-            memcpy(ct[i],blockMin,sizeof(uint32_t)*block);
-        for (uint32_t dep = 1, len = 2; len<block; ++dep, len <<= 1)
-            for (uint32_t l = 0; l < block; l += (len<<1))
-            {
-                uint32_t mid = l + len;
-                for(uint32_t i = mid-1; i > l; --i)
-                    ct[dep][i-1] = min(ct[dep][i], ct[dep][i-1]);
-                for(uint32_t i = mid ,r=min(mid+len, block)-1; i < r; ++i)
-                    ct[dep][i+1] = min(ct[dep][i], ct[dep][i+1]);
-            }
+            rmq[0][i]=suffixInBlock[i*K];
+        for(uint32_t i=1;i<bit_width(block);++i)
+            memcpy(rmq[i],rmq[0],sizeof(uint32_t)*block);
+        for (uint32_t i = 1; i < bit_width(block); ++i)
+            for (uint32_t j = 0; j + (1 << i) - 1 < block; ++j)
+                rmq[i][j] = min(rmq[i - 1][j], rmq[i - 1][j + (1 << (i - 1))]);
     }
     inline uint32_t query(uint32_t l, uint32_t r)
     {
@@ -241,11 +236,8 @@ namespace BlockCatTree
         uint32_t res = min(suffixInBlock[l], prefixInBlock[r]);
         if(bl+1==br)
             return res;
-        ++bl,--br;
-        if(bl==br)
-            return min(res,blockMin[bl]);
-        uint32_t dep=bit_width(bl^br)-1;
-        return min({res,ct[dep][bl],ct[dep][br]});
+        uint32_t s = bit_width(br - bl - 1) - 1;
+        return min(res, min(rmq[s][bl + 1], rmq[s][br - (1 << s)]));
     }
 }
 namespace DFNLCA
@@ -267,7 +259,7 @@ namespace DFNLCA
     {
         tot = -1;
         dfs(root, 0);
-        BlockCatTree::init(tot+1);
+        BlockCatTree::init(tot);
     }
     inline int lca(int u, int v)
     {
@@ -281,8 +273,8 @@ namespace DFNLCA
 }
 ```
 ## 各个算法的优缺点对比
-根据[测试网站1](https://judge.yosupo.jp/problem/lca)，[倍增](https://judge.yosupo.jp/submission/368670)372ms，[重链剖分](https://judge.yosupo.jp/submission/368668)255ms，[KACTL](https://judge.yosupo.jp/submission/370725)47ms，[tarjan](https://judge.yosupo.jp/submission/368676)93ms，[块内暴力+块间猫树+块前后缀+DFS序](https://judge.yosupo.jp/submission/370701)28ms
+根据[测试网站1](https://judge.yosupo.jp/problem/lca)，[倍增](https://judge.yosupo.jp/submission/368670)372ms，[重链剖分](https://judge.yosupo.jp/submission/368668)255ms，[KACTL](https://judge.yosupo.jp/submission/370725)47ms，[tarjan](https://judge.yosupo.jp/submission/368676)93ms，[块内暴力+块间稀疏表+块前后缀+DFS序](https://judge.yosupo.jp/submission/370926)27ms，[块内暴力+块间猫树+块前后缀+DFS序](https://judge.yosupo.jp/submission/370969)27ms
 
 根据[测试网站2](https://www.luogu.com.cn/problem/P3379)，[倍增](https://www.luogu.com.cn/record/276088452)1.05s，[重链剖分](https://www.luogu.com.cn/record/276088680)843ms，[稀疏表+DFS序](https://www.luogu.com.cn/record/275585904)489ms，[tarjan](https://www.luogu.com.cn/record/275717894)487ms，[块内暴力+块间稀疏表+块前后缀+DFS序](https://www.luogu.com.cn/record/275981113)374ms,[块内暴力+块间猫树+块前后缀+DFS序](https://www.luogu.com.cn/record/276105276)333ms
 
-倍增可以动态加叶子，维护不可减信息（比如链上max），重链剖分可以配合线段树，KACTL是在线最短代码且速度不差，tarjan比KACTL省空间，但是要离线。块内暴力+块间猫树+块前后缀+DFS序最快
+倍增可以动态加叶子，维护不可减信息（比如链上max），重链剖分可以配合线段树，KACTL是在线最短代码且速度不差，tarjan比KACTL省空间，但是要离线。块内暴力+块间(猫树/稀疏表)+块前后缀+DFS序最快
