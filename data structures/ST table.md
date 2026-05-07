@@ -41,11 +41,11 @@ namespace SparseTable
 
 去掉每个块的第一个元素，然后将该元素从块内所有其他元素中减去，那么每个块可以由一个长度为 K−1 的序列来标识，不同序列个数 $2^{K-1}$
 
-对每个序列暴力处理所有区间最值，时间复杂度 $O(\min(\frac NK,2^{K-1})\frac{K(K-1)}{2})$
+对每个序列暴力处理所有区间最值，时间复杂度 $O(2^{K-1}\frac{K(K-1)}{2})$
 
-总复杂度为 $O(\frac NK\log_2\frac NK+\min(\frac NK,2^{K-1})\frac{K(K-1)}{2})$
+总复杂度为 $O(\frac NK\log_2\frac NK+2^{K-1}\frac{K(K-1)}{2})$
 
-考虑到计算机的物理特性，K一般取16，此时总复杂度约为 $$\frac{N \log_2 N}{16} - \frac{N}{4}+\min(\frac NK,32768)*120$$，再考虑到竞争性编程中的N的范围，上式近似为 $O(N)$
+考虑到计算机的物理特性，K一般取16，此时总复杂度约为 $$\frac{N \log_2 N}{16} - \frac{N}{4}+4e6$$，再考虑到竞争性编程中的N的范围，上式近似为 $O(N)$
 ```cpp
 const uint32_t N=5e5+3,K=16;
 namespace PlusMinusOneRMQ
@@ -71,14 +71,11 @@ namespace PlusMinusOneRMQ
     void init(uint32_t n)
     {
         uint32_t block=n/K;
+        fill(mask,mask+block,0);
         for(uint32_t i=0,cur=1;i<block;++i,++cur)
-        {
-            uint16_t mas=0;
             for(uint32_t j=0,R=i*K+K;cur<R;++j,++cur)
                 if(a[cur+1]>a[cur])
-                    mas|=(1<<j);
-            mask[i]=mas;
-        }
+                    mask[i]|=(1<<j);
         for(uint32_t i=0;i<block;++i)
             st[0][i]=*min_element(a+i*K,a+i*K+K);
         for (uint32_t i = 1; i < bit_width(block); ++i)
