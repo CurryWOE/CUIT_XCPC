@@ -274,7 +274,7 @@ namespace DFNLCA
 }
 ```
 ## 各个算法的优缺点对比
-根据[测试网站1](https://judge.yosupo.jp/problem/lca)，[倍增](https://judge.yosupo.jp/submission/371322)287ms，[重链剖分](https://judge.yosupo.jp/submission/371324)229ms，[稀疏表+DFS序](https://judge.yosupo.jp/submission/370725)47ms，[猫树+DFS序](https://judge.yosupo.jp/submission/371419)66ms，[tarjan](https://judge.yosupo.jp/submission/368676)93ms，[块内暴力+块间稀疏表+块前后缀+DFS序](https://judge.yosupo.jp/submission/370926)27ms，[块内暴力+块间猫树+块前后缀+DFS序](https://judge.yosupo.jp/submission/370969)27ms
+根据[测试网站1](https://judge.yosupo.jp/problem/lca)，[倍增](https://judge.yosupo.jp/submission/371322)287ms，[重链剖分](https://judge.yosupo.jp/submission/371324)229ms，[稀疏表+DFS序](https://judge.yosupo.jp/submission/370725)47ms，[猫树+DFS序](https://judge.yosupo.jp/submission/371458)47ms，[tarjan](https://judge.yosupo.jp/submission/368676)93ms，[块内暴力+块间稀疏表+块前后缀+DFS序](https://judge.yosupo.jp/submission/370926)27ms，[块内暴力+块间猫树+块前后缀+DFS序](https://judge.yosupo.jp/submission/370969)27ms
 
 根据[测试网站2](https://www.luogu.com.cn/problem/P3379)，[倍增](https://www.luogu.com.cn/record/277164140)1.03s，[重链剖分](https://www.luogu.com.cn/record/276088680)843ms，[稀疏表+DFS序](https://www.luogu.com.cn/record/275585904)489ms，[tarjan](https://www.luogu.com.cn/record/275717894)487ms，[块内暴力+块间稀疏表+块前后缀+DFS序](https://www.luogu.com.cn/record/275981113)374ms，[块内暴力+块间猫树+块前后缀+DFS序](https://www.luogu.com.cn/record/276105276)333ms
 
