@@ -1,6 +1,7 @@
 #! https://zhuanlan.zhihu.com/p/2031730090690745372
 # 最近公共祖先(Lowest Common Ancestor)
 ## 倍增(Binary Lifting)
+fa数组的两维可以交换，对性能较大影响，不同平台测出来结论不一样
 ```cpp
 const uint32_t N=5e5+1,M=bit_width(N);
 namespace BinaryLiftingLCA
@@ -273,8 +274,8 @@ namespace DFNLCA
 }
 ```
 ## 各个算法的优缺点对比
-根据[测试网站1](https://judge.yosupo.jp/problem/lca)，[倍增](https://judge.yosupo.jp/submission/368670)372ms，[重链剖分](https://judge.yosupo.jp/submission/368668)255ms，[KACTL](https://judge.yosupo.jp/submission/370725)47ms，[tarjan](https://judge.yosupo.jp/submission/368676)93ms，[块内暴力+块间稀疏表+块前后缀+DFS序](https://judge.yosupo.jp/submission/370926)27ms，[块内暴力+块间猫树+块前后缀+DFS序](https://judge.yosupo.jp/submission/370969)27ms
+根据[测试网站1](https://judge.yosupo.jp/problem/lca)，[倍增](https://judge.yosupo.jp/submission/371322)287ms，[重链剖分](https://judge.yosupo.jp/submission/371324)229ms，[稀疏表+DFS序](https://judge.yosupo.jp/submission/370725)47ms，[tarjan](https://judge.yosupo.jp/submission/368676)93ms，[块内暴力+块间稀疏表+块前后缀+DFS序](https://judge.yosupo.jp/submission/370926)27ms，[块内暴力+块间猫树+块前后缀+DFS序](https://judge.yosupo.jp/submission/370969)27ms
 
-根据[测试网站2](https://www.luogu.com.cn/problem/P3379)，[倍增](https://www.luogu.com.cn/record/276088452)1.05s，[重链剖分](https://www.luogu.com.cn/record/276088680)843ms，[稀疏表+DFS序](https://www.luogu.com.cn/record/275585904)489ms，[tarjan](https://www.luogu.com.cn/record/275717894)487ms，[块内暴力+块间稀疏表+块前后缀+DFS序](https://www.luogu.com.cn/record/275981113)374ms,[块内暴力+块间猫树+块前后缀+DFS序](https://www.luogu.com.cn/record/276105276)333ms
+根据[测试网站2](https://www.luogu.com.cn/problem/P3379)，[倍增](https://www.luogu.com.cn/record/277164140)1.03s，[重链剖分](https://www.luogu.com.cn/record/276088680)843ms，[稀疏表+DFS序](https://www.luogu.com.cn/record/275585904)489ms，[tarjan](https://www.luogu.com.cn/record/275717894)487ms，[块内暴力+块间稀疏表+块前后缀+DFS序](https://www.luogu.com.cn/record/275981113)374ms，[块内暴力+块间猫树+块前后缀+DFS序](https://www.luogu.com.cn/record/276105276)333ms
 
 倍增可以动态加叶子，维护不可减信息（比如链上max），重链剖分可以配合线段树，KACTL是在线最短代码且速度不差，tarjan比KACTL省空间，但是要离线。块内暴力+块间(猫树/稀疏表)+块前后缀+DFS序最快
