@@ -120,10 +120,10 @@ LCA在序列上的 [u的DFS序+1，v的DFS序] 区间内（1-indexed），且LCA
 
 在下面的具体实现中，由于[u的DFS序+1，v的DFS序]会导致位置1永远用不上，所以整体前移一个位置，也就是--n和查询区间改为[u的DFS序，v的DFS序-1]
 ```cpp
-const uint32_t N=5e5+1,M=bit_width(N);
+const uint32_t N=5e5+1;
 namespace KACTLLCA
 {
-    uint32_t st[M][N],dfn[N],path[N],ret[N],tot;
+    uint32_t st[bit_width(N)][N],dfn[N],path[N],ret[N],tot;
     void dfs(uint32_t u,uint32_t fa)
     {
         dfn[u]=++tot;
@@ -223,8 +223,6 @@ namespace BlockSparseTable
         uint32_t block = n / K;
         for(uint32_t i=0;i<block;++i)
             rmq[0][i]=suffixInBlock[i*K];
-        for(uint32_t i=1;i<bit_width(block);++i)
-            memcpy(rmq[i],rmq[0],sizeof(uint32_t)*block);
         for (uint32_t i = 1; i < bit_width(block); ++i)
             for (uint32_t j = 0; j + (1 << i) - 1 < block; ++j)
                 rmq[i][j] = min(rmq[i - 1][j], rmq[i - 1][j + (1 << (i - 1))]);
