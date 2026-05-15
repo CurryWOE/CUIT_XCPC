@@ -1,3 +1,5 @@
+# 张昆玮线段树
+只支持标记永久化
 ```cpp
 #include <bit>
 struct zkwSegmentTree
