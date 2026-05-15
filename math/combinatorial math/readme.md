@@ -145,16 +145,23 @@ $$|A\cup B\cup C|=|A|+|B|+|C|-|A\cap B|-|B\cap C|-|C\cap A|+|A\cap B\cap C|$$
 # 常见数列
 
 ## 斐波那契数列
-
-$f(n)=\begin{cases}0&n=0\\1&n=1\\f(n-1)+f(n-2)&n\ge 2\end{cases}$
-
-$\begin{pmatrix}F(n+1) \\ F(n)\end{pmatrix}=\begin{pmatrix}1 & 1 \\1 & 0\end{pmatrix}^n\begin{pmatrix}1 \\0\end{pmatrix}$
+$F_n=\begin{cases}0&n=0\\1&n=1\\F_{n-1}+F_{n-2}&n\ge 2\end{cases}$
 
 $gcd(F_n,F_m)=F_{gcd(n,m)}$
+### 广义斐波那契数列
+$G_n=\begin{cases}任意常数&n=0\\任意常数&n=1\\ G_{n-1}+G_{n-2}&n\ge 2\end{cases}$
 
-$\sum\limits_{i=0}^n F_i=F_{n+2}-1$
+$\begin{pmatrix}G_{n+1} \\ G_n\end{pmatrix}=\begin{pmatrix}1 & 1 \\1 & 0\end{pmatrix}^n\begin{pmatrix}G_1 \\G_0\end{pmatrix}$
 
-模m意义下，循环节长度小于等于6m
+$\sum\limits_{i=0}^nG_i=G_{n+2}-G_1$
+
+$G_{n+m}=F_{m-1}G_n+F_mG_{n+1}$
+
+皮萨诺周期：模m意义下，循环节长度小于等于6m
+
+广义斐波那契数列 A,B，任意常数 $k_1,k_2$，设$C_n=k_1A_n+k_2B_n$，则C仍是广义斐波那契数列
+
+首两项数字可以表示一个广义斐波那契数列，又因为满足结合律，因此可以用线段树维护区间上多个广义斐波那契数列的线性组合，具体维护是两个懒标记 $C_0=k_1A_0+k_2B_0,C_1=k_1A_1+k_2B_1$，利用上面公式快速求数列第N项以及前N项和
 ## 错排问题
 
 我们把错位排列问题具体化，考虑这样一个问题：
