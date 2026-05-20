@@ -12,8 +12,7 @@ $O(V^2E)$，如果用在二分图，是 $O(E\sqrt V)$
 
 最大独立集：n-最大流，每个点只能分配到一边，通常和奇偶性有关
 ```c++
-const int N=3.2e3;
-const int M=1e6+3;
+const uint32_t N=3.2e3,M=1e6+3;
 const ll INF=1e18;
 namespace Dinic
 {

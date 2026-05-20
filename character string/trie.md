@@ -1,7 +1,6 @@
 # trie
 ```c++
-const int N=1e5+3;
-const int STR=26;
+const uint32_t N=1e5+3,STR=26;
 struct TRIE
 {
     int trie[N][STR],tot;

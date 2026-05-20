@@ -17,8 +17,7 @@
 ```cpp
 namespace AhoCorasickAutomaton
 {
-    const int M = 1e6 + 5;
-    const int STR = 26;
+    const uint32_t M = 1e6 + 5,STR = 26;
     int tot, dfn;
     struct node
     {
