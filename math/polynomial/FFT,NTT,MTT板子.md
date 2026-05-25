@@ -241,7 +241,7 @@ namespace poly
     using Z = cpl;
     using cZ = const Z;
     Z _pl[SZL << 1], *igp[25];
-    constexpr db pi = acos(-1);
+    constexpr db pi = std::numbers::pi;
     Z pool[SZL << 3], *cur = pool;
     inline void init(const int N)
     {

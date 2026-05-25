@@ -96,7 +96,7 @@ int mex(auto v) // v可以是vector、set等容器
 {
     set<int> S(v.begin(),v.end());
     for (int i = 0;; ++i)
-        if (S.find(i) == S.end())
+        if (!S.contains(i))
             return i;
 }
 ```
