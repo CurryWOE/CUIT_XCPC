@@ -250,7 +250,7 @@ namespace DFNLCA
         {
             if (v == fa)
                 continue;
-            BlockCatTree::a[tot]=dfn[u];
+            BlockSparseTable::a[tot]=dfn[u];
             dfs(v, u);
         }
     }
@@ -258,7 +258,7 @@ namespace DFNLCA
     {
         tot = -1;
         dfs(root, 0);
-        BlockCatTree::init(tot);
+        BlockSparseTable::init(tot);
     }
     inline int lca(int u, int v)
     {
@@ -267,7 +267,7 @@ namespace DFNLCA
         int l = dfn[u], r = dfn[v];
         if (l > r)
             swap(l, r);
-        return path[BlockCatTree::query(l, r-1)];
+        return path[BlockSparseTable::query(l, r-1)];
     }
 }
 ```
