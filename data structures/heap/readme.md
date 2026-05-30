@@ -9,10 +9,4 @@ std::priority_queue是基于二叉堆实现的优先队列，默认大根堆
 
 >小技巧，std::priority_queue的构造函数比N次插入更块
 
-algorithm库中的堆操作也是二叉堆
-
-std::priority_queue因为不能reserve，慢一点，但是因为封装性好，好写一点
-
-algorithm库中的堆操作，快一点，写起来麻烦一点
-
 在Dijkstra和Prim，二叉堆最优，二项堆和斐波那契堆只是理论复杂度更优，但实际效率不行
