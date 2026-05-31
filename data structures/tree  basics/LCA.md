@@ -17,14 +17,13 @@ namespace BinaryLiftingLCA
         {
             uint32_t u=q.front();
             q.pop();
-            uint32_t depth=bit_width(dep[u]);
             for(auto v:e[u])
             {
-                if(dep[v])
+                if(u==fa[v][0])
                     continue;
                 dep[v]=dep[u]+1;
                 fa[v][0]=u;
-                for(uint32_t j=1;j<depth;++j)
+                for(uint32_t j=1;j<bit_width(dep[v]);++j)
                     fa[v][j]=fa[fa[v][j-1]][j-1];
                 q.push(v);
             }
