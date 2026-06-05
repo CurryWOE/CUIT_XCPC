@@ -99,9 +99,9 @@ $$\binom{n}{0}+\binom{n}{1}+\cdots+\binom{n}{n}=\sum_{i=0}^n\binom{n}{i}=2^n\tag
 
 这是二项式定理的特殊情况。取 $a=b=1$ 就得到上式。
 
-$$\sum_{i=0}^m \binom{n}{i}\binom{m}{m-i} = \binom{m+n}{m}\ \ \ (n \geq m)\tag{5}$$
+$$\sum_{i=0}^{\infty} \binom{a}{i}\binom{b}{n-i} = \binom{a+b}{n}\ \ \ \tag{5}$$
 
-拆组合数的式子，在处理某些数据结构题时会用到。
+范德蒙恒等式
 
 $$\sum_{i=0}^n\binom{n}{i}^2=\binom{2n}{n}\tag{6}$$
 
