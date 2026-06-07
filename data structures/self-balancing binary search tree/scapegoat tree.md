@@ -92,12 +92,12 @@ namespace ScapegoatTree
     }
     uint32_t rank(uint32_t x,uint32_t val)//如果val插入多重集的排名
     {
-        for(uint32_t res=0;true;)
+        for(uint32_t res=1;true;)
         {
             if(!x)
-                return res+1;
+                return res;
             if(st[x].element==val)
-                return res+st[st[x].l].subtreeElementCount+1;
+                return res+st[st[x].l].subtreeElementCount;
             else if(st[x].element>val)
                 x=st[x].l;
             else
