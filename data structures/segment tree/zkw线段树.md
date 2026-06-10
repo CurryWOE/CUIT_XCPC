@@ -1,7 +1,7 @@
 # 张昆玮线段树
 只支持标记永久化
 
-[测试题目](https://www.luogu.com.cn/problem/P3372)，[递归线段树](https://www.luogu.com.cn/record/281354854)484ms，[张昆玮线段树](https://www.luogu.com.cn/record/281367814)274ms
+[测试题目](https://www.luogu.com.cn/problem/P3372)，[递归线段树](https://www.luogu.com.cn/record/281354854)484ms，[张昆玮线段树](https://www.luogu.com.cn/record/281375931)267ms
 ```cpp
 struct zkwSegmentTree
 {
@@ -21,58 +21,48 @@ struct zkwSegmentTree
     }
     void update(uint32_t l,uint32_t r,uint64_t val)
     {
-        uint32_t lNum=0,rNum=0;
         l=leaf+l-1;
         r=leaf+r+1;
-        for(uint32_t len=1;l^r^1;l>>=1,r>>=1,len<<=1)
+        const uint32_t l0=l,r0=r;
+        uint32_t i=0;
+        for(;l^r^1;l>>=1,r>>=1,++i)
         {
-            st[l].sum+=val*lNum;
-            st[r].sum+=val*rNum;
+            st[l].sum+=val*((~l0)&((1ull<<i)-1));
+            st[r].sum+=val*(r0&((1ull<<i)-1));
             if(~l&1)
             {
-                st[l^1].sum+=val*len;
+                st[l^1].sum+=val*(1ull<<i);
                 st[l^1].lz+=val;
-                lNum+=len;
             }
             if(r&1)
             {
-                st[r^1].sum+=val*len;
+                st[r^1].sum+=val*(1ull<<i);
                 st[r^1].lz+=val;
-                rNum+=len;
             }
         }
-        st[l].sum+=val*lNum;
-        st[r].sum+=val*rNum;
-        l>>=1;
-        lNum+=rNum;
-        for(;l;l>>=1)
-            st[l].sum+=val*lNum;
+        st[l].sum+=val*((~l0)&((1ull<<i)-1));
+        st[r].sum+=val*(r0&((1ull<<i)-1));
+        for(l>>=1;l;l>>=1)
+            st[l].sum+=val*(r0-l0-1);
     }
     uint64_t query(uint32_t l,uint32_t r)
     {
-        uint32_t lNum=0,rNum=0;
-        uint64_t res=0;
         l=leaf+l-1;
         r=leaf+r+1;
-        for(uint32_t len=1;l^r^1;l>>=1,r>>=1,len<<=1)
+        const uint32_t l0=l,r0=r;
+        uint32_t i=0;
+        uint64_t res=0;
+        for(;l^r^1;l>>=1,r>>=1,++i)
         {
-            res+=st[l].lz*lNum+st[r].lz*rNum;
+            res+=st[l].lz*((~l0)&((1ull<<i)-1))+st[r].lz*(r0&((1ull<<i)-1));
             if(~l&1)
-            {
                 res+=st[l^1].sum;
-                lNum+=len;
-            }
             if(r&1)
-            {
                 res+=st[r^1].sum;
-                rNum+=len;
-            }
         }
-        res+=st[l].lz*lNum+st[r].lz*rNum;
-        l>>=1;
-        lNum+=rNum;
-        for(;l;l>>=1)
-            res+=st[l].lz*lNum;
+        res+=st[l].lz*((~l0)&((1ull<<i)-1))+st[r].lz*(r0&((1ull<<i)-1));
+        for(l>>=1;l;l>>=1)
+            res+=st[l].lz*(r0-l0-1);
         return res;
     }
 };
