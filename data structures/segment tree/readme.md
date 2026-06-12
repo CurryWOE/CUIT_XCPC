@@ -150,6 +150,7 @@ st.update(st.root,MinVal,MaxVal,val);
 st.query(st.root,MinVal,MaxVal,l,r);
 ```
 # 进阶技巧
+0. zkw线段树
 1. 线段树上二分
 2. 可持久化
 3. 主席树
