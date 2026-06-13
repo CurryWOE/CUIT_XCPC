@@ -9,7 +9,7 @@
 [动态开点权值线段树](https://www.luogu.com.cn/record/281237063)130ms
 
 [静态开点权值线段树](https://www.luogu.com.cn/record/281238581)195ms
-
-[静态开点2权值线段树](https://www.luogu.com.cn/record/281248452)175ms
 ## 自平衡树
-替罪羊树。[提交](https://www.luogu.com.cn/record/281187714)162ms
+[Treap](https://www.luogu.com.cn/record/281781856)143ms
+
+[替罪羊树](https://www.luogu.com.cn/record/281779459)164ms

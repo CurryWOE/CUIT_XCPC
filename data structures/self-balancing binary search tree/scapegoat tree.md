@@ -90,9 +90,9 @@ namespace ScapegoatTree
         if(bad(x))
             rebuild(x);
     }
-    uint32_t rank(uint32_t x,uint32_t val)//如果val插入多重集的排名
+    uint32_t rank(uint32_t val)//如果val插入多重集的排名
     {
-        for(uint32_t res=1;true;)
+        for(uint32_t res=1,x=root;true;)
         {
             if(!x)
                 return res;
@@ -107,9 +107,9 @@ namespace ScapegoatTree
             }
         }
     }
-    uint32_t kth(uint32_t x,uint32_t k)//求第K小，需保证有解
+    uint32_t kth(uint32_t k)//求第K小，需保证有解
     {
-        while(true)
+        for(uint32_t x=root;true;)
         {
             auto l=st[x].l;
             if(k<=st[l].subtreeElementCount)
@@ -118,18 +118,18 @@ namespace ScapegoatTree
                 return st[x].element;
             else
             {
-                k-=(st[l].subtreeElementCount+st[x].elementCount);
+                k-=st[l].subtreeElementCount+st[x].elementCount;
                 x=st[x].r;
             }
         }
     }
     uint32_t prevElement(uint32_t val)//严格小于val的最大值，需保证有解
     {
-        return kth(root,rank(root,val)-1);
+        return kth(rank(val)-1);
     }
     uint32_t nextElement(uint32_t val)//严格大于val的最小值，需保证有解
     {
-        return kth(root,rank(root,val+1));
+        return kth(rank(val+1));
     }
 }
 ```
