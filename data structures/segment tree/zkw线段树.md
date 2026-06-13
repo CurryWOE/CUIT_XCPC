@@ -1,7 +1,9 @@
 # 张昆玮线段树
-只支持标记永久化
+只支持堆式编码和标记永久化
 
-[测试题目](https://www.luogu.com.cn/problem/P3372)，[递归线段树](https://www.luogu.com.cn/record/281354854)484ms，[张昆玮线段树](https://www.luogu.com.cn/record/281375931)267ms
+[测试题目1](https://www.luogu.com.cn/problem/P3372)，[递归线段树](https://www.luogu.com.cn/record/281354854)484ms，[张昆玮线段树](https://www.luogu.com.cn/record/281375931)267ms
+
+[测试题目2](https://judge.yosupo.jp/problem/range_affine_range_sum)，[堆式编码](https://judge.yosupo.jp/submission/378191)444ms，[张昆玮线段树](https://judge.yosupo.jp/submission/378990)229ms
 ```cpp
 constexpr bool isCommutative=true;
 struct zkwSegmentTree
