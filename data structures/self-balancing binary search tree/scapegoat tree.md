@@ -13,14 +13,15 @@ namespace ScapegoatTree
     uint32_t treeToArray[N],treeToArrayIndex,vectexCount,root;
     struct node
     {
-        uint32_t l,r,element,elementCount,subtreeElementCount,allNodeCount,aliveNodeCount;
+        uint32_t l,r,allNodeCount,aliveNodeCount;
+        int element;
+        bool alive;
     }st[N];
     void pushup(uint32_t x)//合并左右子树信息，用来自平衡
     {
         auto l=&st[st[x].l],r=&st[st[x].r];
-        st[x].subtreeElementCount=l->subtreeElementCount+r->subtreeElementCount+st[x].elementCount;
         st[x].allNodeCount=l->allNodeCount+r->allNodeCount+1;
-        st[x].aliveNodeCount=l->aliveNodeCount+r->aliveNodeCount+(st[x].elementCount>0);
+        st[x].aliveNodeCount=l->aliveNodeCount+r->aliveNodeCount+st[x].alive;
     }
     bool bad(uint32_t x)//判断子树是否平衡
     {
@@ -32,21 +33,22 @@ namespace ScapegoatTree
         if(!x)
             return;
         inOrderTraversal(st[x].l);
-        if(st[x].elementCount)
+        if(st[x].alive)
             treeToArray[++treeToArrayIndex]=x;
         inOrderTraversal(st[x].r);
     }
     void build(uint32_t& x,uint32_t l,uint32_t r)//重建完美平衡子树
     {
-        if(l>r)
-        {
-            x=0;
-            return;
-        }
         uint32_t mid=(l+r)>>1;
         x=treeToArray[mid];
-        build(st[x].l,l,mid-1);
-        build(st[x].r,mid+1,r);
+        if(l<mid)
+            build(st[x].l,l,mid-1);
+        else
+            st[x].l=0;
+        if(r>mid)
+            build(st[x].r,mid+1,r);
+        else
+            st[x].r=0;
         pushup(x);
     }
     void rebuild(uint32_t& x)//重构不平衡的子树
@@ -55,17 +57,15 @@ namespace ScapegoatTree
         inOrderTraversal(x);
         build(x,1,treeToArrayIndex);
     }
-    void insert(uint32_t&x,uint32_t val)
+    void insert(uint32_t& x,int val)
     {
         if(!x)
         {
             x=++vectexCount;
-            st[x]={0,0,val,1,1,1,1};
+            st[x]={0,0,1,1,val,true};
             return;
         }
-        if(st[x].element==val)
-            ++st[x].elementCount;
-        else if(st[x].element>val)
+        if(st[x].element>val)
             insert(st[x].l,val);
         else
             insert(st[x].r,val);
@@ -73,61 +73,72 @@ namespace ScapegoatTree
         if(bad(x))
             rebuild(x);
     }
-    void remove(uint32_t& x,uint32_t val)
+    bool remove(uint32_t& x,int val)
     {
-        if(st[x].element==val)
-            --st[x].elementCount;
-        else if(st[x].element>val)
-            remove(st[x].l,val);
+        if(!x)
+            return false;
+        bool del=false;
+        if(st[x].element>val)
+            del=remove(st[x].l,val);
+        else if(st[x].element<val)
+            del=remove(st[x].r,val);
+        else if(st[x].alive)
+        {
+            st[x].alive=false;
+            del=true;
+        }
         else
-            remove(st[x].r,val);
+        {
+            del=remove(st[x].l,val);
+            if(!del)
+                del=remove(st[x].r,val);
+        }
         pushup(x);
-        if(st[x].subtreeElementCount==0)
+        if(st[x].aliveNodeCount==0)
         {
             x=0;
-            return;
+            return del;
         }
         if(bad(x))
             rebuild(x);
+        return del;
     }
-    uint32_t rank(uint32_t val)//如果val插入多重集的排名
+    uint32_t rank(int val)//如果val插入多重集的排名
     {
         for(uint32_t res=1,x=root;true;)
         {
             if(!x)
                 return res;
-            if(st[x].element==val)
-                return res+st[st[x].l].subtreeElementCount;
-            else if(st[x].element>val)
+            if(st[x].element>=val)
                 x=st[x].l;
             else
             {
-                res+=st[st[x].l].subtreeElementCount+st[x].elementCount;
+                res+=st[st[x].l].aliveNodeCount+st[x].alive;
                 x=st[x].r;
             }
         }
     }
-    uint32_t kth(uint32_t k)//求第K小，需保证有解
+    int kth(uint32_t k)//求第K小，需保证有解
     {
         for(uint32_t x=root;true;)
         {
             auto l=st[x].l;
-            if(k<=st[l].subtreeElementCount)
+            if(k<=st[l].aliveNodeCount)
                 x=l;
-            else if(k<=st[l].subtreeElementCount+st[x].elementCount)
+            else if(st[x].alive && k==st[l].aliveNodeCount+1)
                 return st[x].element;
             else
             {
-                k-=st[l].subtreeElementCount+st[x].elementCount;
+                k-=st[l].aliveNodeCount+st[x].alive;
                 x=st[x].r;
             }
         }
     }
-    uint32_t prevElement(uint32_t val)//严格小于val的最大值，需保证有解
+    int prevElement(int val)//严格小于val的最大值，需保证有解
     {
         return kth(rank(val)-1);
     }
-    uint32_t nextElement(uint32_t val)//严格大于val的最小值，需保证有解
+    int nextElement(int val)//严格大于val的最小值，需保证有解
     {
         return kth(rank(val+1));
     }
