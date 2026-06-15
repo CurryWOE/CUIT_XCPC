@@ -10,12 +10,16 @@
 
 [静态开点权值线段树](https://www.luogu.com.cn/record/281238581)195ms
 ## 自平衡树
-[Size Balanced Tree](https://www.luogu.com.cn/record/281941003)131ms
+[SizeBalancedTree](https://www.luogu.com.cn/record/281941003)131ms
 
 [RotateTreap](https://www.luogu.com.cn/record/281781856)143ms
 
 [替罪羊树](https://www.luogu.com.cn/record/281840777)153ms
 
+[WeightBalancedLeafyTree 旋转](https://www.luogu.com.cn/record/281986229)167ms
+
 [SplitMergeTreap](https://www.luogu.com.cn/record/281852494)174ms
 
 [Splay](https://www.luogu.com.cn/record/281900559)181ms
+
+[WeightBalancedLeafyTree 合并](https://www.luogu.com.cn/record/281989118)203m
