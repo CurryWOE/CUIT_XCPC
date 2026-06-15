@@ -173,13 +173,13 @@ namespace SplitMergeTreap
     struct Node
     {
         int element;
-        uint32_t priority, subtreeSize, son[2];
+        uint32_t priority, subtreeSize, l, r;
     } tr[N];
     uint32_t vertexCount, root;
     inline void updateSize(uint32_t id)
     {
         auto &cur = tr[id];
-        cur.subtreeSize = 1 + tr[cur.son[0]].subtreeSize + tr[cur.son[1]].subtreeSize;
+        cur.subtreeSize = 1 + tr[cur.l].subtreeSize + tr[cur.r].subtreeSize;
     }
     void split(uint32_t id,int val,uint32_t& l,uint32_t& r)
     {
@@ -191,12 +191,12 @@ namespace SplitMergeTreap
         if(tr[id].element<=val)
         {
             l=id;
-            split(tr[id].son[1],val,tr[id].son[1],r);
+            split(tr[id].r,val,tr[id].r,r);
         }
         else
         {
             r=id;
-            split(tr[id].son[0],val,l,tr[id].son[0]);
+            split(tr[id].l,val,l,tr[id].l);
         }
         updateSize(id);
     }
@@ -206,11 +206,11 @@ namespace SplitMergeTreap
             return l|r;
         if(tr[l].priority<tr[r].priority)
         {
-            tr[l].son[1]=merge(tr[l].son[1],r);
+            tr[l].r=merge(tr[l].r,r);
             updateSize(l);
             return l;
         }
-        tr[r].son[0]=merge(l,tr[r].son[0]);
+        tr[r].l=merge(l,tr[r].l);
         updateSize(r);
         return r;
     }
@@ -222,7 +222,7 @@ namespace SplitMergeTreap
         tr[id].element=val;
         tr[id].priority=xorshift32();
         tr[id].subtreeSize=1;
-        tr[id].son[0]=tr[id].son[1]=0;
+        tr[id].l=tr[id].r=0;
         root=merge(merge(l,id),r);
     }
     void remove(int val)
@@ -230,7 +230,7 @@ namespace SplitMergeTreap
         uint32_t l, m, r;
         split(root, val - 1, l, r);
         split(r, val, m, r);
-        root=merge(merge(l,merge(tr[m].son[0],tr[m].son[1])),r);
+        root=merge(merge(l,merge(tr[m].l,tr[m].r)),r);
     }
     uint32_t rank(int val)
     {
@@ -239,11 +239,11 @@ namespace SplitMergeTreap
         {
             auto &cur = tr[x];
             if(cur.element >= val)
-                x = cur.son[0];
+                x = cur.l;
             else
             {
-                res += tr[cur.son[0]].subtreeSize + 1;
-                x = cur.son[1];
+                res += tr[cur.l].subtreeSize + 1;
+                x = cur.r;
             }
         }
         return res;
@@ -252,7 +252,7 @@ namespace SplitMergeTreap
     {
         for (auto x = root; true;)
         {
-            auto l = tr[x].son[0];
+            auto l = tr[x].l;
             if (k <= tr[l].subtreeSize)
                 x = l;
             else if (k == tr[l].subtreeSize + 1)
@@ -260,7 +260,7 @@ namespace SplitMergeTreap
             else
             {
                 k -= tr[l].subtreeSize + 1;
-                x = tr[x].son[1];
+                x = tr[x].r;
             }
         }
     }
@@ -272,10 +272,10 @@ namespace SplitMergeTreap
             if (tr[x].element < val)
             {
                 res = tr[x].element;
-                x = tr[x].son[1];
+                x = tr[x].r;
             }
             else
-                x = tr[x].son[0];
+                x = tr[x].l;
         }
         return res;
     }
@@ -287,12 +287,96 @@ namespace SplitMergeTreap
             if (tr[x].element > val)
             {
                 res = tr[x].element;
-                x = tr[x].son[0];
+                x = tr[x].l;
             }
             else
-                x = tr[x].son[1];
+                x = tr[x].r;
         }
         return res;
+    }
+}
+```
+## 区间操作SplitMergeTreap
+把数组下标作为键，优先级作为值，treap就是笛卡尔树
+```cpp
+const uint32_t N = 1e5 + 3;
+int a[N];//0-index，如果使用1-index需改一下build代码
+namespace SplitMergeTreap
+{
+    uint32_t xorshift32_state = 1;
+    uint32_t xorshift32()
+    {
+        uint32_t x = xorshift32_state;
+        x ^= x << 13;
+        x ^= x >> 17;
+        x ^= x << 5;
+        return xorshift32_state = x;
+    }
+    struct Node
+    {
+        int element;
+        uint32_t priority, subtreeSize, l, r;
+    } tr[N];
+    uint32_t vertexCount, root;
+    inline void updateSize(uint32_t id)
+    {
+        auto &cur = tr[id];
+        cur.subtreeSize = 1 + tr[cur.l].subtreeSize + tr[cur.r].subtreeSize;
+    }
+    void split(uint32_t id,uint32_t k,uint32_t& l,uint32_t& r)
+    {
+        if(!id)
+        {
+            l=r=0;
+            return;
+        }
+        if(tr[tr[id].l].subtreeSize>=k)
+        {
+            split(tr[id].l,k,l,tr[id].l);
+            r=id;
+        }
+        else
+        {
+            split(tr[id].r,k-tr[tr[id].l].subtreeSize-1,tr[id].r,r);
+            l=id;
+        }
+        updateSize(id);
+    }
+    uint32_t merge(uint32_t l,uint32_t r)
+    {
+        if(!l || !r)
+            return l|r;
+        if(tr[l].priority<tr[r].priority)
+        {
+            tr[l].r=merge(tr[l].r,r);
+            updateSize(l);
+            return l;
+        }
+        tr[r].l=merge(l,tr[r].l);
+        updateSize(r);
+        return r;
+    }
+    void build(int n)
+    {
+        vector<uint32_t> stk;
+        for(uint32_t i=0;i<n;++i)
+        {
+            auto id=++vertexCount;
+            tr[id]={a[i],xorshift32(),1,0,0};
+            uint32_t last=0;
+            for(;!stk.empty() && tr[stk.back()].priority>tr[id].priority;stk.pop_back())
+            {
+                updateSize(stk.back());
+                last=stk.back();
+            }
+            tr[id].l=last;
+            if(!stk.empty())
+                tr[stk.back()].r=id;
+            stk.push_back(id);
+        }
+        for(auto id:stk)
+            updateSize(id);
+        root = stk.front();
     }
 }
 ```

@@ -16,9 +16,9 @@
 
 [替罪羊树](https://www.luogu.com.cn/record/281840777)153ms
 
-[WeightBalancedLeafyTree 旋转](https://www.luogu.com.cn/record/281986229)167ms
+[SplitMergeTreap](https://www.luogu.com.cn/record/281994772)167ms
 
-[SplitMergeTreap](https://www.luogu.com.cn/record/281852494)174ms
+[WeightBalancedLeafyTree 旋转](https://www.luogu.com.cn/record/281986229)167ms
 
 [Splay](https://www.luogu.com.cn/record/281900559)181ms
 
