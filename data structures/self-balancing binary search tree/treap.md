@@ -181,36 +181,36 @@ namespace SplitMergeTreap
         auto &cur = tr[id];
         cur.subtreeSize = 1 + tr[cur.l].subtreeSize + tr[cur.r].subtreeSize;
     }
-    void split(uint32_t id,int val,uint32_t& l,uint32_t& r)
+    void splitByKey(uint32_t id, uint32_t val, uint32_t &l, uint32_t &r)
     {
-        if(!id)
+        if (!id)
         {
-            l=r=0;
+            l = r = 0;
             return;
         }
-        if(tr[id].element<=val)
+        if (tr[id].element <= val)
         {
-            l=id;
-            split(tr[id].r,val,tr[id].r,r);
+            l = id;
+            splitByKey(tr[id].r, val, tr[id].r, r);
         }
         else
         {
-            r=id;
-            split(tr[id].l,val,l,tr[id].l);
+            r = id;
+            splitByKey(tr[id].l, val, l, tr[id].l);
         }
         updateSize(id);
     }
-    uint32_t merge(uint32_t l,uint32_t r)
+    uint32_t merge(uint32_t l, uint32_t r)
     {
-        if(!l || !r)
-            return l|r;
-        if(tr[l].priority<tr[r].priority)
+        if (!l || !r)
+            return l | r;
+        if (tr[l].priority < tr[r].priority)
         {
-            tr[l].r=merge(tr[l].r,r);
+            tr[l].r = merge(tr[l].r, r);
             updateSize(l);
             return l;
         }
-        tr[r].l=merge(l,tr[r].l);
+        tr[r].l = merge(l, tr[r].l);
         updateSize(r);
         return r;
     }
@@ -300,7 +300,7 @@ namespace SplitMergeTreap
 把数组下标作为键，优先级作为值，treap就是笛卡尔树
 ```cpp
 const uint32_t N = 1e5 + 3;
-int a[N];//0-index，如果使用1-index需改一下build代码
+int a[N];//1-index
 namespace SplitMergeTreap
 {
     uint32_t xorshift32_state = 1;
@@ -314,7 +314,6 @@ namespace SplitMergeTreap
     }
     struct Node
     {
-        int element;
         uint32_t priority, subtreeSize, l, r;
     } tr[N];
     uint32_t vertexCount, root;
@@ -323,60 +322,72 @@ namespace SplitMergeTreap
         auto &cur = tr[id];
         cur.subtreeSize = 1 + tr[cur.l].subtreeSize + tr[cur.r].subtreeSize;
     }
-    void split(uint32_t id,uint32_t k,uint32_t& l,uint32_t& r)
+    void splitByRank(uint32_t id, uint32_t k, uint32_t &l, uint32_t &r)
     {
-        if(!id)
+        if (!id)
         {
-            l=r=0;
+            l = r = 0;
             return;
         }
-        if(tr[tr[id].l].subtreeSize>=k)
+        if (k <= tr[tr[id].l].subtreeSize)
         {
-            split(tr[id].l,k,l,tr[id].l);
-            r=id;
+            splitByRank(tr[id].l, k, l, tr[id].l);
+            r = id;
+            tr[r].subtreeSize -= k;
         }
         else
         {
-            split(tr[id].r,k-tr[tr[id].l].subtreeSize-1,tr[id].r,r);
-            l=id;
+            splitByRank(tr[id].r, k - tr[tr[id].l].subtreeSize - 1, tr[id].r, r);
+            l = id;
+            tr[l].subtreeSize = k;
         }
-        updateSize(id);
     }
-    uint32_t merge(uint32_t l,uint32_t r)
+    uint32_t merge(uint32_t l, uint32_t r)
     {
-        if(!l || !r)
-            return l|r;
-        if(tr[l].priority<tr[r].priority)
+        if (!l || !r)
+            return l | r;
+        if (tr[l].priority < tr[r].priority)
         {
-            tr[l].r=merge(tr[l].r,r);
+            tr[l].r = merge(tr[l].r, r);
             updateSize(l);
             return l;
         }
-        tr[r].l=merge(l,tr[r].l);
+        tr[r].l = merge(l, tr[r].l);
         updateSize(r);
         return r;
     }
     void build(int n)
     {
         vector<uint32_t> stk;
-        for(uint32_t i=0;i<n;++i)
+        stk.reserve(n);
+        for (uint32_t i = 1; i <= n; ++i)
         {
-            auto id=++vertexCount;
-            tr[id]={a[i],xorshift32(),1,0,0};
-            uint32_t last=0;
-            for(;!stk.empty() && tr[stk.back()].priority>tr[id].priority;stk.pop_back())
-            {
-                updateSize(stk.back());
-                last=stk.back();
-            }
-            tr[id].l=last;
-            if(!stk.empty())
-                tr[stk.back()].r=id;
-            stk.push_back(id);
+            tr[i] = {xorshift32(), 1, 0, 0};
+            uint32_t last = 0;
+            for (; !stk.empty() && tr[stk.back()].priority > tr[i].priority; stk.pop_back())
+                last = stk.back();
+            tr[i].l = last;
+            if (!stk.empty())
+                tr[stk.back()].r = i;
+            stk.push_back(i);
         }
-        for(auto id:stk)
-            updateSize(id);
         root = stk.front();
+        stk.resize(1);
+        vector<uint32_t> ord;
+        ord.reserve(n);
+        while (!stk.empty())
+        {
+            uint32_t u = stk.back();
+            stk.pop_back();
+            ord.push_back(u);
+            if (tr[u].l)
+                stk.push_back(tr[u].l);
+            if (tr[u].r)
+                stk.push_back(tr[u].r);
+        }
+        reverse(ord.begin(), ord.end());
+        for (auto u : ord)
+            tr[u].subtreeSize = tr[tr[u].l].subtreeSize + tr[tr[u].r].subtreeSize + 1;
     }
 }
 ```
