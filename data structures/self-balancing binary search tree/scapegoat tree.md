@@ -23,11 +23,6 @@ namespace ScapegoatTree
         st[x].allNodeCount=l->allNodeCount+r->allNodeCount+1;
         st[x].aliveNodeCount=l->aliveNodeCount+r->aliveNodeCount+st[x].alive;
     }
-    bool bad(uint32_t x)//判断子树是否平衡
-    {
-        return st[x].allNodeCount*Alpha <= max(st[st[x].l].allNodeCount,st[st[x].r].allNodeCount)
-        || st[x].allNodeCount*Alpha >= st[x].aliveNodeCount;
-    }
     void inOrderTraversal(uint32_t x)//中序遍历收集所有有效点
     {
         if(!x)
@@ -51,8 +46,11 @@ namespace ScapegoatTree
             st[x].r=0;
         pushup(x);
     }
-    void rebuild(uint32_t& x)//重构不平衡的子树
+    void checkAndRebuild(uint32_t& x)//重构不平衡的子树
     {
+        auto limit=st[x].allNodeCount*Alpha;
+        if(limit > max(st[st[x].l].allNodeCount,st[st[x].r].allNodeCount) || limit < st[x].aliveNodeCount)
+            return;
         treeToArrayIndex=0;
         inOrderTraversal(x);
         build(x,1,treeToArrayIndex);
@@ -70,8 +68,7 @@ namespace ScapegoatTree
         else
             insert(st[x].r,val);
         pushup(x);
-        if(bad(x))
-            rebuild(x);
+        checkAndRebuild(x);
     }
     bool remove(uint32_t& x,int val)
     {
@@ -99,8 +96,7 @@ namespace ScapegoatTree
             x=0;
             return del;
         }
-        if(bad(x))
-            rebuild(x);
+        checkAndRebuild(x);
         return del;
     }
     uint32_t rank(int val)//如果val插入多重集的排名
