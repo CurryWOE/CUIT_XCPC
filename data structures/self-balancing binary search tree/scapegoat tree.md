@@ -34,7 +34,7 @@ namespace ScapegoatTree
     }
     void build(uint32_t& x,uint32_t l,uint32_t r)//重建完美平衡子树
     {
-        uint32_t mid=(l+r)>>1;
+        auto mid=(l+r)>>1;
         x=treeToArray[mid];
         if(l<mid)
             build(st[x].l,l,mid-1);
@@ -137,6 +137,150 @@ namespace ScapegoatTree
     int nextElement(int val)//严格大于val的最小值，需保证有解
     {
         return kth(rank(val+1));
+    }
+}
+```
+## 区间操作替罪羊树
+```cpp
+const uint32_t N = 1e5 + 3;
+uint32_t a[N];//1-index
+namespace ScapegoatTree
+{
+    uint32_t treeToArray[N], treeToArrayIndex, root;
+    struct node
+    {
+        uint32_t son[2], subtreeSize, father;
+    } st[N];
+    void pushup(uint32_t x) // 合并左右子树信息，用来自平衡
+    {
+        auto l = st[x].son[0], r = st[x].son[1];
+        st[x].subtreeSize = st[l].subtreeSize + st[r].subtreeSize + 1;
+        if (l)
+            st[l].father = x;
+        if (r)
+            st[r].father = x;
+    }
+    void inOrderTraversal(uint32_t x) // 中序遍历收集所有点
+    {
+        if (!x)
+            return;
+        inOrderTraversal(st[x].son[0]);
+        treeToArray[++treeToArrayIndex] = x;
+        inOrderTraversal(st[x].son[1]);
+    }
+    void build(uint32_t &x, uint32_t l, uint32_t r) // 重建完美平衡子树
+    {
+        auto mid = (l + r) >> 1;
+        x = treeToArray[mid];
+        if (l < mid)
+            build(st[x].son[0], l, mid - 1);
+        else
+            st[x].son[0] = 0;
+        if (r > mid)
+            build(st[x].son[1], mid + 1, r);
+        else
+            st[x].son[1] = 0;
+        pushup(x);
+    }
+    void checkAndRebuild(uint32_t &x) // 重构不平衡的子树
+    {
+        if (st[x].subtreeSize * 3 > max(st[st[x].son[0]].subtreeSize, st[st[x].son[1]].subtreeSize) * 4)
+            return;
+        treeToArrayIndex = 0;
+        inOrderTraversal(x);
+        auto oldFather = st[x].father;
+        build(x, 1, treeToArrayIndex);
+        st[x].father = oldFather;
+    }
+    void rotate(uint32_t &x, bool dir)
+    {
+        auto son = st[x].son[dir ^ 1];
+        st[x].son[dir ^ 1] = st[son].son[dir];
+        st[son].son[dir] = x;
+        st[son].father = st[x].father;
+        pushup(x);
+        pushup(son);
+        x = son;
+    }
+    inline uint32_t rankToRoot(uint32_t id)
+    {
+        uint32_t res = st[st[id].son[0]].subtreeSize + 1;
+        auto fa = st[id].father;
+        while (fa)
+        {
+            if (st[fa].son[1] == id)
+                res += st[st[fa].son[0]].subtreeSize + 1;
+            id = fa;
+            fa = st[id].father;
+        }
+        return res;
+    }
+    void removeByRotate(uint32_t &x)
+    {
+        auto l = st[x].son[0], r = st[x].son[1];
+        if (l == 0 && r == 0)
+        {
+            st[x].son[0] = st[x].son[1] = st[x].father = 0;
+            st[x].subtreeSize = 1;
+            x = 0;
+            return;
+        }
+        auto dir = st[l].subtreeSize > st[r].subtreeSize;
+        rotate(x, dir);
+        removeByRotate(st[x].son[dir]);
+        pushup(x);
+        checkAndRebuild(x);
+    }
+    void removeByRank(uint32_t &x, uint32_t k)//调用后根的father记得清空
+    {
+        if (k <= st[st[x].son[0]].subtreeSize)
+            removeByRank(st[x].son[0], k);
+        else if (k == st[st[x].son[0]].subtreeSize + 1)
+        {
+            removeByRotate(x);
+            return;
+        }
+        else
+            removeByRank(st[x].son[1], k - (st[st[x].son[0]].subtreeSize + 1));
+        pushup(x);
+        checkAndRebuild(x);
+    }
+    void insertByRankFromOldNode(uint32_t &x, uint32_t k, uint32_t oldNodeID)//调用后根的father记得清空
+    {
+        if (!x)
+        {
+            x = oldNodeID;
+            return;
+        }
+        if (k <= st[st[x].son[0]].subtreeSize + 1)
+            insertByRankFromOldNode(st[x].son[0], k, oldNodeID);
+        else
+            insertByRankFromOldNode(st[x].son[1], k - (st[st[x].son[0]].subtreeSize + 1), oldNodeID);
+        pushup(x);
+        checkAndRebuild(x);
+    }
+    int kth(uint32_t k) // 求第K小，需保证有解
+    {
+        for (uint32_t x = root; true;)
+        {
+            auto l = st[x].son[0];
+            if (k <= st[l].subtreeSize)
+                x = l;
+            else if (k == st[l].subtreeSize + 1)
+                return x;
+            else
+            {
+                k -= st[l].subtreeSize + 1;
+                x = st[x].son[1];
+            }
+        }
+    }
+    inline void build(uint32_t n)
+    {
+        for (int i = 1; i <= n; ++i)
+            treeToArray[i] = i;
+        build(root, 1, n);
+        st[root].father=0;
     }
 }
 ```

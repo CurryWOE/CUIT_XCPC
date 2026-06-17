@@ -297,7 +297,7 @@ namespace SplitMergeTreap
 }
 ```
 ## 区间操作SplitMergeTreap
-把数组下标作为键，优先级作为值，treap就是笛卡尔树
+把数组下标作为键，优先级作为值，treap就是笛卡尔树，因此可以按照笛卡尔树方式建treap
 ```cpp
 const uint32_t N = 1e5 + 3;
 int a[N];//1-index
