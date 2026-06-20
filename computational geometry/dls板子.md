@@ -199,7 +199,7 @@ vector<P> convexHull(vector<P> ps)
     int n = ps.size();
     if (n <= 1)
         return ps;
-    sort(ps.begin(), ps.end());
+    ranges::sort(ps);
     vector<P> qs(n * 2);
     int k = 0;
     for (int i = 0; i < n; qs[k++] = ps[i++])
@@ -217,7 +217,7 @@ vector<P> convexHullNonStrict(vector<P> ps)
     int n = ps.size();
     if (n <= 1)
         return ps;
-    sort(ps.begin(), ps.end());
+    ranges::sort(ps);
     vector<P> qs(n * 2);
     int k = 0;
     for (int i = 0; i < n; qs[k++] = ps[i++])
@@ -283,8 +283,7 @@ db min_dist(vector<P> &ps, int l, int r)
     for(int i=l;i<r;++i)
         if (abs(ps[i].x - ps[m].x) <= ret)
             qs.push_back(ps[i]);
-    sort(qs.begin(), qs.end(), [](P a, P b) -> bool
-         { return a.y < b.y; });
+    ranges::sort(qs, {}, &P::y);
     for(int i=1;i<qs.size();++i) 
         for (int j = i - 1; j >= 0 && qs[j].y >= qs[i].y - ret; --j)
             ret = min(ret, qs[i].distTo(qs[j]));
@@ -417,7 +416,7 @@ bool check(L u, L v, L w)
 }
 vector<P> halfPlaneIS(vector<L> &l)
 {
-    sort(l.begin(), l.end());
+    ranges::sort(l);
     deque<L> q;
     for (int i = 0; i < (int)l.size(); ++i)
     {

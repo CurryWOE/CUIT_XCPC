@@ -385,8 +385,7 @@ namespace SplitMergeTreap
             if (tr[u].r)
                 stk.push_back(tr[u].r);
         }
-        reverse(ord.begin(), ord.end());
-        for (auto u : ord)
+        for (auto u : ord | ranges::views::reverse)
             tr[u].subtreeSize = tr[tr[u].l].subtreeSize + tr[tr[u].r].subtreeSize + 1;
     }
 }

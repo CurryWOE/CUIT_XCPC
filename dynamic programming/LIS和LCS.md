@@ -16,7 +16,7 @@ int lis(const vector<int>& arr)
         if (ans.back() < arr[i])
             ans.push_back(arr[i]);
         else
-            *(upper_bound(ans.begin(), ans.end(), arr[i])) = arr[i];
+            *ranges::upper_bound(ans, arr[i]) = arr[i];
     }
     return ans.size();
 }
@@ -77,7 +77,7 @@ int lcs(const vector<int>& a,const vector<int>& b)
         if(ans.empty() || ans.back()<g)
             ans.push_back(g);
         else
-            *(upper_bound(ans.begin(), ans.end(), g)) = g;
+            *ranges::upper_bound(ans, g) = g;
     }
     return ans.size();
 }

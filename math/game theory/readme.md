@@ -94,7 +94,7 @@ $$ SG(x)=mex\{SG(y) | y是x的后继\} $$
 ```cpp
 int mex(auto v) // v可以是vector、set等容器 
 {
-    set<int> S(v.begin(),v.end());
+    set<int> S(from_range,v);
     for (int i = 0;; ++i)
         if (!S.contains(i))
             return i;
