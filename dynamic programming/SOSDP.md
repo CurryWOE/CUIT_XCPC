@@ -29,7 +29,7 @@ for(int i=1;i<=n;++i)
 		s[i][j]=s[i][j-1]+a[i][j];
 for(int i=1;i<=n;++i)
 	for(int j=1;j<=n;++j)
-		s[i][j]=s[i-1][j]+s[i][j];
+		s[i][j]+=s[i-1][j];
 //
 for(int i=1;i<=n;++i)
 	for(int j=1;j<=n;++j)
@@ -38,11 +38,11 @@ for(int i=1;i<=n;++i)
 for(int i=1;i<=n;++i)
 	for(int j=1;j<=n;++j)
         for(int k=1;k<=n;++k)
-		    s[i][j][k]=s[i][j-1][k]+a[i][j][k];
+		    s[i][j][k]+=s[i][j-1][k];
 for(int i=1;i<=n;++i)
 	for(int j=1;j<=n;++j)
         for(int k=1;k<=n;++k)
-		    s[i][j][k]=s[i-1][j][k]+a[i][j][k];
+		    s[i][j][k]+=s[i-1][j][k];
 ```
 实际上是一维一维的统计，正确性可以对着二维前缀和模拟一下
 
