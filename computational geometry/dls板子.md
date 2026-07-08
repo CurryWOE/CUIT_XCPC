@@ -151,7 +151,7 @@ db disSS(P p1, P p2, P q1, P q2)
 {
     if (isSS(p1, p2, q1, q2))
         return 0;
-    return min(min(nearest(p1, p2, q1), nearest(p1, p2, q2)), min(nearest(q1, q2, p1), nearest(q1, q2, p2)));
+    return min({nearest(p1, p2, q1),nearest(p1, p2, q2),nearest(q1, q2, p1),nearest(q1, q2, p2)});
 }
 //线段距离
 db rad(P p1, P p2)

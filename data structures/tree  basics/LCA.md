@@ -235,7 +235,7 @@ namespace BlockSparseTable
         if(bl+1==br)
             return res;
         uint32_t s = bit_width(br - bl - 1) - 1;
-        return min(res, min(rmq[s][bl + 1], rmq[s][br - (1 << s)]));
+        return min({res, rmq[s][bl + 1], rmq[s][br - (1 << s)]});
     }
 }
 namespace DFNLCA
