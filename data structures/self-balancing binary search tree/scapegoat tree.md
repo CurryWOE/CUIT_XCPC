@@ -48,8 +48,7 @@ namespace ScapegoatTree
     }
     void checkAndRebuild(uint32_t& x)//重构不平衡的子树
     {
-        auto limit=st[x].allNodeCount*Alpha;
-        if(limit > max(st[st[x].l].allNodeCount,st[st[x].r].allNodeCount) || limit < st[x].aliveNodeCount)
+        if(auto limit=st[x].allNodeCount*Alpha; limit > max(st[st[x].l].allNodeCount,st[st[x].r].allNodeCount) || limit < st[x].aliveNodeCount)
             return;
         treeToArrayIndex=0;
         inOrderTraversal(x);
