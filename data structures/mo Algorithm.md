@@ -10,7 +10,7 @@
 
 设序列长度 n，询问次数 m，块长 $S$，$O(\frac{n^2}S+mS)$，当块长取 $\frac n{\sqrt m}$ 最优，此时复杂度为 $O(n\sqrt m)$
 ```cpp
-const unsigned int sq=N/sqrt(Q);
+const uint32_t sq=N/sqrt(Q);
 struct query { uint32_t l, r, id; } q[Q];
 void solve(int T)
 {
@@ -25,8 +25,7 @@ void solve(int T)
             return x.l < y.l;
         return (x.l / sq & 1) ? (x.r > y.r) : (x.r < y.r);
     });
-    l=1,r=0;
-    for (const auto& [ql,qr,id]:qSpan)
+    for(uint32_t l = 1, r = 0; const auto &[ql, qr, id] : qSpan)
     {
         while (l > ql)
             add(--l);
