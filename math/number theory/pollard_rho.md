@@ -30,13 +30,13 @@ ll pollardRho(ll n)
     }
     return __gcd(p, n);
 }
-bool millerRabin(ll x)
+bool millerRabin(uint64_t x)
 {
     if (x < 3)
         return x == 2;
     if ((x&1) == 0)
         return false;
-    ll v,r=__builtin_ctz(x-1),d=x>>r;
+    ll v,r=countr_zero(x-1),d=x>>r;
     for (ll a : {2, 325, 9375, 28178, 450775, 9780504, 1795265022})
     {
         v = fastPower(a, d, x);
