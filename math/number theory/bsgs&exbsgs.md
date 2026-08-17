@@ -133,7 +133,7 @@ ll EXbsgs(ll base,ll remain,ll mod)
 	if(remain==1)
         return 0;
 	ll k=0,a=1;
-	for(ll g=__gcd(base,mod);g>1;g=__gcd(base,mod))
+	for(ll g=gcd(base,mod);g>1;g=gcd(base,mod))
 	{
 		if(remain%g)
             return -1;

@@ -24,12 +24,12 @@ sz优化使得复杂度为 $O(n^2)$
 ```cpp
 void dfs(int u,int fa)
 {
-    int Usz=1,Vsz;
+    int Usz=1;
     for(auto v:e[u])
     {
         if(v==fa)
             continue;
-        Vsz=dfs(v,u);
+        auto Vsz=dfs(v,u);
         for(int i=Usz;i;--i)
         {
             for(int j=1;j<=Vsz;++j)

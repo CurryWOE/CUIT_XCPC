@@ -42,13 +42,13 @@ ll fastPower(ll a, ll n, ll p)
     }
     return ans;
 }
-bool Miller_Rabin(ll x)
+bool Miller_Rabin(uint64_t x)
 {
     if (x < 3)
         return x == 2;
     if ((x&1) == 0)
         return false;
-    ll v,r=__builtin_ctz(x-1),d=x>>r;
+    ll v,r=countr_zero(x-1),d=x>>r;
     for (ll a : {2, 325, 9375, 28178, 450775, 9780504, 1795265022})
     {
         v = fastPower(a, d, x);

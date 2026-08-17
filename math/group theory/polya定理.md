@@ -148,7 +148,7 @@ ll polya(ll n,ll m)
         return 0;
     ll sum=0;
     for(ll i=0;i<n;++i)
-        sum+=fast_power(m,__gcd(n,i));
+        sum+=fast_power(m,gcd(n,i));
     if(n&1)
         sum+=n*fast_power(m,(n+1)/2);
     else

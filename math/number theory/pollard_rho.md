@@ -17,7 +17,7 @@ ll pollardRho(ll n)
 {
     auto f = [&](ll x) { return (__int128)x*x%n + 1; };
     ll p = 2, q;
-    for (ll i = 1, x = 0, y = 0, t = 0; t++ % 255 || __gcd(p, n) == 1; x = f(x), y = f(f(y)))
+    for (ll i = 1, x = 0, y = 0, t = 0; t++ % 255 || gcd(p, n) == 1; x = f(x), y = f(f(y)))
     {
         if (x == y)
         {
@@ -28,15 +28,15 @@ ll pollardRho(ll n)
         if (q)
             p = q;
     }
-    return __gcd(p, n);
+    return gcd(p, n);
 }
-bool millerRabin(ll x)
+bool millerRabin(uint64_t x)
 {
     if (x < 3)
         return x == 2;
     if ((x&1) == 0)
         return false;
-    ll v,r=__builtin_ctz(x-1),d=x>>r;
+    ll v,r=countr_zero(x-1),d=x>>r;
     for (ll a : {2, 325, 9375, 28178, 450775, 9780504, 1795265022})
     {
         v = fastPower(a, d, x);
