@@ -30,22 +30,21 @@ array<int,2> oriEdge[E];//原始顺序存储的边
 int deg[V],e[E*2];//点编号1-index。度数，新顺序存储的边
 void build(int n,int m)
 {
-    for(int i=0;i<m;++i)
+    for(auto [u,v]:span(oriEdge,m))
     {
-        ++deg[oriEdge[i][0]];
-        ++deg[oriEdge[i][1]];//无向边加这一行
+        ++deg[u];
+        ++deg[v];//无向边加这一行
     }
     for(int i=0;i<=n;++i)
         deg[i+1]+=deg[i];
-    for(int i=0;i<m;++i)
+    for(auto [u,v]:span(oriEdge,m))
     {
-        e[--deg[oriEdge[i][0]]]=oriEdge[i][1];
-        e[--deg[oriEdge[i][1]]]=oriEdge[i][0];//无向边加这一行
+        e[--deg[u]]=v;
+        e[--deg[v]]=u;//无向边加这一行
     }
 }
 void getEdge(int u)
 {
-    for(int i=deg[u];i<deg[u+1];++i)
-        cout<<e[i]<<' ';
+    for (auto v : span(e + deg[u], e + deg[u + 1]))
 }
 ```
